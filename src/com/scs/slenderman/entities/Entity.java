@@ -1,4 +1,4 @@
-package com.scs.slenderman.gameentities;
+package com.scs.slenderman.entities;
 
 import java.io.IOException;
 import java.util.Iterator;

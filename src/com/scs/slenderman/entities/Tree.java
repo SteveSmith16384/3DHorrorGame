@@ -1,4 +1,4 @@
-package com.scs.slenderman.gameentities;
+package com.scs.slenderman.entities;
 
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
@@ -9,8 +9,8 @@ import com.scs.slenderman.shapes.MyCylinder;
 
 public class Tree extends Entity {
 	
-	private static final float HEIGHT = 5;
-	private static final float RAD = .5f;
+	private static final float HEIGHT = 15;
+	//private static final float RAD = .45f;
 	
 	private Geometry floor_geo;
 	private RigidBodyControl floor_phy;
@@ -18,6 +18,8 @@ public class Tree extends Entity {
 	public Tree(HorrorGame _game, float x, float z) {
 		super(_game, "Tree");
 		
+		float RAD = .3f + (HorrorGame.rnd.nextFloat() / 10f);
+		HorrorGame.p("Tree rad: " + RAD);
 		Geometry floor_geo = new MyCylinder(game.getAssetManager(), new Vector3f(x, HEIGHT, z), new Vector3f(x, 0, z), 2, 10, RAD, "Textures/Terrain/Pond/Pond.jpg");
 		this.main_node.attachChild(floor_geo);
 

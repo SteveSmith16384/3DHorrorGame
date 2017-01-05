@@ -8,5 +8,5 @@ public interface IMapInterface {
 	
 	int getCodeForSquare(int x, int z);
 	
-	int getNumCollectables();
+	//int getNumCollectables();
 }

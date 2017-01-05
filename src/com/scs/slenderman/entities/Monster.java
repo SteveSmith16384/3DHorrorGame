@@ -1,4 +1,4 @@
-package com.scs.slenderman.gameentities;
+package com.scs.slenderman.entities;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;

@@ -1,11 +1,12 @@
-package com.scs.slenderman;
+package com.scs.slenderman.entities;
 
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Box;
-import com.scs.slenderman.gameentities.Entity;
+import com.scs.slenderman.HorrorGame;
+import com.scs.slenderman.Settings;
 
 public class Player extends Entity {
 	

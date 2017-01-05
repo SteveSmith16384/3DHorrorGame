@@ -16,7 +16,7 @@ import com.scs.slenderman.Settings;
 
 public class CreateShapes {
 
-	public static Geometry initFloor(AssetManager assetManager, BulletAppState bulletAppState, Node rootNode, float x, float z, float w, float d) {
+	public static Geometry CreateFloorTL(AssetManager assetManager, BulletAppState bulletAppState, Node rootNode, float x, float z, float w, float d) {
 		Box floor = new Box(w/2, 0.1f, d/2);
 		floor.scaleTextureCoordinates(new Vector2f(w, d));
 
@@ -36,7 +36,7 @@ public class CreateShapes {
 
 		Geometry floor_geo = new Geometry("Floor", floor);
 		floor_geo.setMaterial(floor_mat);
-		floor_geo.setLocalTranslation(x, -0.1f, z);
+		floor_geo.setLocalTranslation(x+(w/2), -0.1f, z+(d/2)); // Move it into position
 		rootNode.attachChild(floor_geo);
 
 		/* Make the floor physical with mass 0.0f! */

@@ -1,8 +1,9 @@
 package com.scs.slenderman;
 
-import com.scs.slenderman.gameentities.Collectable;
-import com.scs.slenderman.gameentities.Entity;
-import com.scs.slenderman.gameentities.Monster;
+import com.scs.slenderman.entities.Collectable;
+import com.scs.slenderman.entities.Entity;
+import com.scs.slenderman.entities.Monster;
+import com.scs.slenderman.entities.Player;
 
 public class CollisionLogic {
 

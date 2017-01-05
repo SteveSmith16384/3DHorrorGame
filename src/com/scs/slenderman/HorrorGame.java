@@ -3,14 +3,15 @@ package com.scs.slenderman;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.prefs.BackingStoreException;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.VideoRecorderAppState;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -26,32 +27,44 @@ import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
-import com.scs.slenderman.gameentities.Collectable;
-import com.scs.slenderman.gameentities.Entity;
-import com.scs.slenderman.gameentities.Monster;
-import com.scs.slenderman.gameentities.Tree;
+import com.jme3.system.AppSettings;
+import com.scs.slenderman.effects.Lightening;
+import com.scs.slenderman.entities.Collectable;
+import com.scs.slenderman.entities.Entity;
+import com.scs.slenderman.entities.Fence;
+import com.scs.slenderman.entities.Monster;
+import com.scs.slenderman.entities.Player;
 import com.scs.slenderman.hud.HUD;
+import com.scs.slenderman.map.ArrayMap;
 import com.scs.slenderman.map.IMapInterface;
-import com.scs.slenderman.map.RandomMap;
 import com.scs.slenderman.shapes.CreateShapes;
 
 /**
  * Todo:-
- * Don't have trees near spider
- * Spider's collision box is wrong size
- * Add fences
- * Add blue hue to gfx?
- * DONE Fog
- * Floor slowly gives way
+ * Fenceposts
+ * Signposts
+ * Show face at end if caught
+ * Rope hanging from tree, blowing in wind
+ * Metal grill fence with transp texture
+ * Gravestone
+ * Create logo
+ * Fallen trees
+ * CSV map
+ * Show distance to nearest collectable
  * 
  * Add models - Look for statue models
- * Gravestone
+ * Children's playground
  * Gate
- * Metal grill fence with transp texture
  * Sfx - heavy breathing
  * Have sound that gets louder as enemy approaches
+ * 
+ * 
+ * LATER
+ * Eyes that watch you
  * Move a direction light for nice effect
- * Lightbox with moon in sky?  No, fog
+ * Floor slowly gives way
+ * Episodes - start episode 2 by finding a house
+ * 
  * 
  * Brief spec:
  * The player must walk around a spooky landscape and collect something.
@@ -66,7 +79,6 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	// Our movement speed
 	private static final float speed = 6f;
 	private static final float strafeSpeed = 4f;
-	//private static final float headHeight = 3f; // Dist above playermodel centre to position  cam
 
 	public BulletAppState bulletAppState;
 
@@ -81,18 +93,35 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private SpotLight spotlight;
 	private Monster monster;
 	private HUD hud;
-	public int num_collected = 0;
+	public int num_collected = 0; // todo - change to num_remaining
 	public boolean game_over = false;
 	private VideoRecorderAppState video_recorder;
-	private static final Random rnd = new Random();
+	public static final Random rnd = new Random();
 
+	private AudioNode ambient_node;
 
 	public List<IProcessable> objects = new ArrayList<IProcessable>();
 
 
 	public static void main(String[] args) {
+		AppSettings settings = new AppSettings(true);
+		try {
+			settings.load(Settings.NAME);
+		} catch (BackingStoreException e) {
+			e.printStackTrace();
+		}
+		settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
+		/*if (Settings.SHOW_LOGO) {
+			settings.setSettingsDialogImage("/ad_logo.png");
+		} else {*/
+			settings.setSettingsDialogImage(null);
+		//}
+
 		HorrorGame app = new HorrorGame();
+		app.setSettings(settings);
+		app.setPauseOnLostFocus(true);
 		app.start();
+
 	}
 
 
@@ -113,19 +142,21 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		setUpKeys();
 		setUpLight();
 
-		FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-		FogFilter fog = new FogFilter(ColorRGBA.Black, .5f, Settings.CAM_DIST/2);
-		fpp.addFilter(fog);
-		viewPort.addProcessor(fpp);
+		if (Settings.DEBUG_LIGHT == false) {
+			FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+			FogFilter fog = new FogFilter(ColorRGBA.Black, 1f, 5f);//Settings.CAM_DIST/2);
+			fpp.addFilter(fog);
+			viewPort.addProcessor(fpp);
+		}
 
 		player = new Player(this);
 		rootNode.attachChild(player.getMainNode());
 		this.objects.add(player);
 
-		createMonster();
-		IMapInterface map = new RandomMap();
+		//createMonster(7, 7);
+		IMapInterface map = new ArrayMap();//;RandomMap();//
 		loadMap(map);
-		addCollectables(map.getNumCollectables(), map.getWidth(), map.getDepth());
+		addCollectables((map.getWidth() * map.getDepth())/50, map.getWidth(), map.getDepth());
 
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
 
@@ -138,6 +169,15 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		hud = new HUD(this, this.getAssetManager(), cam.getWidth(), cam.getHeight(), guiFont_small);
 		this.guiNode.attachChild(hud);
 		this.objects.add(hud);
+
+		// Audio nodes
+		/*todo - ambient_node = new AudioNode(assetManager, "Sound/background_ambience.ogg", true);
+		ambient_node.setPositional(false);
+		ambient_node.setLooping(true);
+		this.rootNode.attachChild(ambient_node);
+		ambient_node.play();*/
+
+		this.objects.add(new Lightening(this));
 	}
 
 
@@ -175,8 +215,10 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		// HUD
 		StringBuilder text = new StringBuilder();
 		if (!game_over) {
-			float dist = this.monster.getGeometry().getWorldTranslation().distance(this.player.getGeometry().getWorldTranslation());
-			text.append("Distance: " + (int)dist + "\nBoxes collected: " + this.num_collected + "\n");
+			if (monster != null) {
+				float dist = this.monster.getGeometry().getWorldTranslation().distance(this.player.getGeometry().getWorldTranslation());
+				text.append("Distance: " + (int)dist + "\nBoxes collected: " + this.num_collected + "\n");
+			}
 		} else {
 			text.append("GaMe OvEr\n");
 		}
@@ -204,8 +246,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		// Floor first
 		for (int z=0 ; z<map.getDepth() ; z+= Settings.FLOOR_SECTION_SIZE) {
 			for (int x=0 ; x<map.getWidth() ; x+= Settings.FLOOR_SECTION_SIZE) {
-				CreateShapes.initFloor(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE);
-				//p("Creating floor at " + x + "," + z);
+				p("Creating floor at " + x + "," + z);
+				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE);
 			}			
 		}
 
@@ -222,13 +264,24 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER:
-					this.monster.warp(x, z);
+					//this.monster.warp(x, z);
+					this.createMonster(x, z);
 					break;
 
 				case Settings.MAP_TREE:
-					p("Adding tree to " + x + "," + z);
-					Tree tree = new Tree(this, x, z);
-					this.rootNode.attachChild(tree.getMainNode());
+					//p("Adding tree to " + x + "," + z);
+					//Tree tree = new Tree(this, x, z);
+					//this.rootNode.attachChild(tree.getMainNode());
+					break;
+
+				case Settings.MAP_FENCE_LR:
+					Fence fence1 = new Fence(this, x, z, 90);
+					this.rootNode.attachChild(fence1.getMainNode());
+					break;
+
+				case Settings.MAP_FENCE_FB:
+					Fence fence2 = new Fence(this, x, z, 0);
+					this.rootNode.attachChild(fence2.getMainNode());
 					break;
 
 				default:
@@ -247,26 +300,28 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			this.rootNode.removeLight(it);
 		}
 
-		// We add light so we see the scene
-		{
-			AmbientLight al = new AmbientLight();
-			al.setColor(ColorRGBA.White.mult(1));
-			rootNode.addLight(al);
-		}
+		if (Settings.DEBUG_LIGHT == false) {
+			// We add light so we see the scene
+			{
+				AmbientLight al = new AmbientLight();
+				al.setColor(ColorRGBA.White.mult(1));
+				rootNode.addLight(al);
+			}
 
-		{
-			/*DirectionalLight dl = new DirectionalLight();
-			dl.setColor(ColorRGBA.White);
-			dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
-			rootNode.addLight(dl);*/
-		}
+			this.spotlight = new SpotLight();
+			spotlight.setColor(ColorRGBA.White.mult(1f));
+			spotlight.setSpotRange(10f);
+			spotlight.setSpotInnerAngle(FastMath.QUARTER_PI / 8);
+			spotlight.setSpotOuterAngle(FastMath.QUARTER_PI / 2);
+			rootNode.addLight(spotlight);
+		} else {
+			{
+				AmbientLight al = new AmbientLight();
+				al.setColor(ColorRGBA.White.mult(3));
+				rootNode.addLight(al);
+			}
 
-		this.spotlight = new SpotLight();
-		spotlight.setColor(ColorRGBA.White.mult(1f));
-		spotlight.setSpotRange(10f);
-		spotlight.setSpotInnerAngle(FastMath.QUARTER_PI / 8);
-		spotlight.setSpotOuterAngle(FastMath.QUARTER_PI / 2);
-		rootNode.addLight(spotlight);
+		}
 	}
 
 
@@ -299,6 +354,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				right= isPressed;
 			} else if (binding.equals("Up")) {
 				up = isPressed;
+				p("player: " + this.player.getGeometry().getWorldTranslation());
 			} else if (binding.equals("Down")) {
 				down = isPressed;
 			} else if (binding.equals("Jump")) {
@@ -306,6 +362,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					player.playerControl.jump(); 
 				}
 			} else if (binding.equals(Settings.KEY_RECORD)) {
+				if (isPressed) {
 				if (video_recorder == null) {
 					//log("RECORDING VIDEO");
 					video_recorder = new VideoRecorderAppState();
@@ -317,14 +374,15 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					//log("STOPPED RECORDING");
 					stateManager.detach(video_recorder);
 					video_recorder = null;
-				}		
+				}
+				}
 			}
 		}
 	}
 
 
-	private void createMonster() {
-		monster = new Monster(this, this.assetManager, 7, 7);
+	private void createMonster(float x, float z) {
+		monster = new Monster(this, this.assetManager, x, z);
 		rootNode.attachChild(monster.getMainNode());
 		this.objects.add(monster);
 	}

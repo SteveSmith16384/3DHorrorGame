@@ -1,4 +1,4 @@
-package com.scs.slenderman.gameentities;
+package com.scs.slenderman.entities;
 
 import com.jme3.asset.TextureKey;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -40,11 +40,10 @@ public class Collectable extends Entity {
 		//geometry.setLocalTranslation(x, 5f, z);
 
 		this.main_node.attachChild(geometry);
-		main_node.setLocalTranslation(x, 5f, z);
+		main_node.setLocalTranslation(x, 5f, z); // Drop from sky
 
 		floor_phy = new RigidBodyControl(0.9f);
 		geometry.addControl(floor_phy);
-		//floor_phy.setKinematic(true);
 
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);
 		
