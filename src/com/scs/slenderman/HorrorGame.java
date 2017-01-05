@@ -34,6 +34,7 @@ import com.scs.slenderman.entities.Entity;
 import com.scs.slenderman.entities.Fence;
 import com.scs.slenderman.entities.Monster;
 import com.scs.slenderman.entities.Player;
+import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
 import com.scs.slenderman.map.IMapInterface;
@@ -41,25 +42,28 @@ import com.scs.slenderman.shapes.CreateShapes;
 
 /**
  * Todo:-
+ * Change fence tex
+ * Change ground tex
+ * Add sounds
+ * Put border of fences around map
+ * Add tex to collectable
  * Fenceposts
  * Signposts
  * Show face at end if caught
  * Rope hanging from tree, blowing in wind
- * Metal grill fence with transp texture
  * Gravestone
  * Create logo
  * Fallen trees
  * CSV map
- * Show distance to nearest collectable
  * 
  * Add models - Look for statue models
  * Children's playground
  * Gate
  * Sfx - heavy breathing
- * Have sound that gets louder as enemy approaches
  * 
  * 
  * LATER
+ * Show distance to nearest collectable
  * Eyes that watch you
  * Move a direction light for nice effect
  * Floor slowly gives way
@@ -94,11 +98,14 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private Monster monster;
 	private HUD hud;
 	public int num_collected = 0; // todo - change to num_remaining
-	public boolean game_over = false;
+	private boolean game_over = false;
 	private VideoRecorderAppState video_recorder;
 	public static final Random rnd = new Random();
 
 	private AudioNode ambient_node;
+	private AudioNode game_over_sound_node;
+	private AudioNode scary_sound1; // todo - set this
+	private float next_scary_sound = 10000;
 
 	public List<IProcessable> objects = new ArrayList<IProcessable>();
 
@@ -114,7 +121,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		/*if (Settings.SHOW_LOGO) {
 			settings.setSettingsDialogImage("/ad_logo.png");
 		} else {*/
-			settings.setSettingsDialogImage(null);
+		settings.setSettingsDialogImage(null);
 		//}
 
 		HorrorGame app = new HorrorGame();
@@ -170,14 +177,19 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.guiNode.attachChild(hud);
 		this.objects.add(hud);
 
+		this.objects.add(new Lightening(this));
+
 		// Audio nodes
-		/*todo - ambient_node = new AudioNode(assetManager, "Sound/background_ambience.ogg", true);
+		ambient_node = new AudioNode(assetManager, "Sound/horror ambient.ogg", true);
 		ambient_node.setPositional(false);
 		ambient_node.setLooping(true);
 		this.rootNode.attachChild(ambient_node);
-		ambient_node.play();*/
+		ambient_node.play();
 
-		this.objects.add(new Lightening(this));
+		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", true);
+		game_over_sound_node.setPositional(false);
+		this.rootNode.attachChild(game_over_sound_node);
+
 	}
 
 
@@ -206,6 +218,12 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				walkDirection.addLocal(camDir.negate());
 			}
 			player.playerControl.setWalkDirection(walkDirection);
+
+			next_scary_sound -= tpf;
+			if (next_scary_sound <= 0) {
+				playRandomScarySound();
+				next_scary_sound = 20 + rnd.nextInt(10);
+			}
 		}
 
 		for(IProcessable ip : objects) {
@@ -247,7 +265,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		for (int z=0 ; z<map.getDepth() ; z+= Settings.FLOOR_SECTION_SIZE) {
 			for (int x=0 ; x<map.getWidth() ; x+= Settings.FLOOR_SECTION_SIZE) {
 				p("Creating floor at " + x + "," + z);
-				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE);
+				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE, "Textures/bricktex.jpg");
 			}			
 		}
 
@@ -270,8 +288,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 				case Settings.MAP_TREE:
 					//p("Adding tree to " + x + "," + z);
-					//Tree tree = new Tree(this, x, z);
-					//this.rootNode.attachChild(tree.getMainNode());
+					Tree tree = new Tree(this, x, z);
+					this.rootNode.attachChild(tree.getMainNode());
 					break;
 
 				case Settings.MAP_FENCE_LR:
@@ -304,7 +322,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			// We add light so we see the scene
 			{
 				AmbientLight al = new AmbientLight();
-				al.setColor(ColorRGBA.White.mult(1));
+				al.setColor(ColorRGBA.White.mult(3));
 				rootNode.addLight(al);
 			}
 
@@ -363,18 +381,18 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				}
 			} else if (binding.equals(Settings.KEY_RECORD)) {
 				if (isPressed) {
-				if (video_recorder == null) {
-					//log("RECORDING VIDEO");
-					video_recorder = new VideoRecorderAppState();
-					stateManager.attach(video_recorder);
-					/*if (Statics.MUTE) {
+					if (video_recorder == null) {
+						//log("RECORDING VIDEO");
+						video_recorder = new VideoRecorderAppState();
+						stateManager.attach(video_recorder);
+						/*if (Statics.MUTE) {
 						log("Warning: sounds are muted");
 					}*/
-				} else {
-					//log("STOPPED RECORDING");
-					stateManager.detach(video_recorder);
-					video_recorder = null;
-				}
+					} else {
+						//log("STOPPED RECORDING");
+						stateManager.detach(video_recorder);
+						video_recorder = null;
+					}
 				}
 			}
 		}
@@ -422,6 +440,21 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 		if (a != null && b != null) {
 			CollisionLogic.collision(this, a, b);
+		}
+	}
+
+
+	public void gameOver() {
+		if (this.game_over == false) {
+			this.game_over = true;
+			game_over_sound_node.play();
+		}
+	}
+
+
+	private void playRandomScarySound() {
+		if (scary_sound1 != null) {
+			this.scary_sound1.play();
 		}
 	}
 

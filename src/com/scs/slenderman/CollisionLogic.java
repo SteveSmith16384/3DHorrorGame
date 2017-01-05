@@ -31,8 +31,8 @@ public class CollisionLogic {
 	
 
 	private static void Player_Monster(HorrorGame game, Player player, Monster col) {
-		//game.game_over = true;
 		game.p("Hit monster!");
+		game.gameOver();
 	}
 	
 }

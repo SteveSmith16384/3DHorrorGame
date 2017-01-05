@@ -1,6 +1,7 @@
 package com.scs.slenderman.entities;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
@@ -23,6 +24,9 @@ public class Monster extends Entity implements IProcessable {
 	private Geometry geometry;
 	private RigidBodyControl floor_phy;
 	
+	private AudioNode audio_node;
+	private float next_scary_sound = 10000;
+
 	public Monster(HorrorGame game, AssetManager assetManager, float x, float z) {
 		super(game, "Monster");
 
@@ -44,6 +48,11 @@ public class Monster extends Entity implements IProcessable {
 		this.main_node.updateModelBound();
 
 		this.geometry.setUserData(Settings.ENTITY, this);
+		
+		audio_node = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true);
+		audio_node.setPositional(true);
+		this.getMainNode().attachChild(audio_node);
+		//ambient_node.play(); todo
 
 	}
 
@@ -56,6 +65,12 @@ public class Monster extends Entity implements IProcessable {
 	
 	@Override
 	public void process(float tpf) {
+		next_scary_sound -= tpf;
+		if (next_scary_sound <= 0) {
+			this.audio_node.play();
+			next_scary_sound = 20 + HorrorGame.rnd.nextInt(10);
+		}
+
 		FrustumIntersect insideoutside = game.getInsideOutside(this);
 		if (insideoutside == FrustumIntersect.Outside || Settings.MONSTER_ALWAYS_MOVES) { // Only move if we can't be seen
 			Vector3f player_pos = game.player.getGeometry().getWorldTranslation(); 

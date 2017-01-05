@@ -16,11 +16,11 @@ import com.scs.slenderman.Settings;
 
 public class CreateShapes {
 
-	public static Geometry CreateFloorTL(AssetManager assetManager, BulletAppState bulletAppState, Node rootNode, float x, float z, float w, float d) {
+	public static Geometry CreateFloorTL(AssetManager assetManager, BulletAppState bulletAppState, Node rootNode, float x, float z, float w, float d, String tex) {
 		Box floor = new Box(w/2, 0.1f, d/2);
 		floor.scaleTextureCoordinates(new Vector2f(w, d));
 
-		TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
+		TextureKey key3 = new TextureKey(tex);
 		key3.setGenerateMips(true);
 		Texture tex3 = assetManager.loadTexture(key3);
 		tex3.setWrap(WrapMode.Repeat);

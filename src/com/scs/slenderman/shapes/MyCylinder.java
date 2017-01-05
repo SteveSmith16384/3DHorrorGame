@@ -4,6 +4,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Cylinder;
@@ -20,6 +21,7 @@ public class MyCylinder extends Geometry {
 		cyl = new Cylinder(axisSamples, radialSamples, radius, start.distance(end), false);
 		cyl.setBound(new BoundingBox());
 		cyl.updateBound();
+		//cyl.scaleTextureCoordinates(new Vector2f(1, 6));
 		this.setMesh(cyl);
 
 		setLocalTranslation(FastMath.interpolateLinear(.5f, start, end));

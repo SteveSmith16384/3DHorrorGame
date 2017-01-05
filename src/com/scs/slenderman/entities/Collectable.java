@@ -13,7 +13,7 @@ import com.scs.slenderman.Settings;
 
 public class Collectable extends Entity {
 
-	private static final float SIZE = .3f;
+	private static final float SIZE = .1f;
 
 	private Geometry geometry;
 	private RigidBodyControl floor_phy;
