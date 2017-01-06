@@ -13,7 +13,7 @@ import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 import com.scs.slenderman.JMEFunctions;
 import com.scs.slenderman.Settings;
-import com.scs.slenderman.models.SpiderModel;
+import com.scs.slenderman.models.MedievalStatue;
 
 public class Monster extends Entity implements IProcessable {
 
@@ -41,7 +41,7 @@ public class Monster extends Entity implements IProcessable {
 		floor_phy.setKinematic(true);
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);
 
-		main_node.attachChild(new SpiderModel(assetManager));
+		main_node.attachChild(new MedievalStatue(assetManager));
 
 		main_node.setLocalTranslation(new Vector3f(x, COLL_HEIGHT/2, z));
 
@@ -49,10 +49,9 @@ public class Monster extends Entity implements IProcessable {
 
 		this.geometry.setUserData(Settings.ENTITY, this);
 		
-		audio_node = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true); // todo - make mono
+		audio_node = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true);
 		audio_node.setPositional(true);
 		this.getMainNode().attachChild(audio_node);
-		//ambient_node.play(); todo
 
 	}
 

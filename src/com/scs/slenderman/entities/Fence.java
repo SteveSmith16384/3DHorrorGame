@@ -16,7 +16,7 @@ import com.scs.slenderman.Settings;
 public class Fence extends Entity {
 
 	private static final float WIDTH = 2f;
-	private static final float HEIGHT = 0.8f;
+	private static final float HEIGHT = 1.5f;
 
 	private Geometry geometry;
 	private RigidBodyControl floor_phy;
@@ -25,7 +25,7 @@ public class Fence extends Entity {
 		super(_game, "Fence");
 
 		Box box1 = new Box(WIDTH/2, HEIGHT/2, .1f);
-		box1.scaleTextureCoordinates(new Vector2f(WIDTH*3, HEIGHT*3));
+		box1.scaleTextureCoordinates(new Vector2f(WIDTH*6, HEIGHT*6));
 		geometry = new Geometry("Fence", box1);
 		//TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
 		TextureKey key3 = new TextureKey("Textures/fence.png"); // todo - scale tex

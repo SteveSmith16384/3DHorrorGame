@@ -42,32 +42,31 @@ import com.scs.slenderman.shapes.CreateShapes;
 
 /**
  * Todo:-
- * Change fence tex
+ * Where is fog
+ * Add models - Look for statue models
  * Change ground tex
- * Add sounds
  * Put border of fences around map
  * Add tex to collectable
  * Fenceposts
  * Signposts
  * Show face at end if caught
- * Rope hanging from tree, blowing in wind
  * Gravestone
  * Create logo
  * Fallen trees
  * CSV map
- * 
- * Add models - Look for statue models
+ * Map changes when not viewed 
  * Children's playground
  * Gate
- * Sfx - heavy breathing
  * 
  * 
  * LATER
+ * Rope hanging from tree, blowing in wind
  * Show distance to nearest collectable
  * Eyes that watch you
  * Move a direction light for nice effect
  * Floor slowly gives way
  * Episodes - start episode 2 by finding a house
+ * SCP style
  * 
  * 
  * Brief spec:
@@ -151,7 +150,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 		if (Settings.DEBUG_LIGHT == false) {
 			FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-			FogFilter fog = new FogFilter(ColorRGBA.Black, 1f, 5f);//Settings.CAM_DIST/2);
+			FogFilter fog = new FogFilter(ColorRGBA.Black, 1f, 2f);//Settings.CAM_DIST/2);
 			fpp.addFilter(fog);
 			viewPort.addProcessor(fpp);
 		}
@@ -160,7 +159,6 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		rootNode.attachChild(player.getMainNode());
 		this.objects.add(player);
 
-		//createMonster(7, 7);
 		IMapInterface map = new ArrayMap();//;RandomMap();//
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/50, map.getWidth(), map.getDepth());
@@ -180,11 +178,15 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.objects.add(new Lightening(this));
 
 		// Audio nodes
-		ambient_node = new AudioNode(assetManager, "Sound/horror ambient.ogg", true);
+		ambient_node = new AudioNode(assetManager, "Sound/horror ambient.ogg", false);
 		ambient_node.setPositional(false);
 		ambient_node.setLooping(true);
 		this.rootNode.attachChild(ambient_node);
 		ambient_node.play();
+
+		scary_sound1 = new AudioNode(assetManager, "Sound/ghost_1.ogg", true);
+		scary_sound1.setPositional(false);
+		this.rootNode.attachChild(scary_sound1);
 
 		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", true);
 		game_over_sound_node.setPositional(false);
@@ -264,8 +266,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		// Floor first
 		for (int z=0 ; z<map.getDepth() ; z+= Settings.FLOOR_SECTION_SIZE) {
 			for (int x=0 ; x<map.getWidth() ; x+= Settings.FLOOR_SECTION_SIZE) {
-				p("Creating floor at " + x + "," + z);
-				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE, "Textures/bricktex.jpg");
+				//p("Creating floor at " + x + "," + z);
+				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE, "Textures/mud.png");
 			}			
 		}
 
@@ -319,15 +321,14 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		}
 
 		if (Settings.DEBUG_LIGHT == false) {
-			// We add light so we see the scene
 			{
 				AmbientLight al = new AmbientLight();
-				al.setColor(ColorRGBA.White.mult(3));
+				al.setColor(ColorRGBA.White.mult(1.5f));
 				rootNode.addLight(al);
 			}
 
 			this.spotlight = new SpotLight();
-			spotlight.setColor(ColorRGBA.White.mult(1f));
+			spotlight.setColor(ColorRGBA.White.mult(3f));
 			spotlight.setSpotRange(10f);
 			spotlight.setSpotInnerAngle(FastMath.QUARTER_PI / 8);
 			spotlight.setSpotOuterAngle(FastMath.QUARTER_PI / 2);
@@ -372,7 +373,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				right= isPressed;
 			} else if (binding.equals("Up")) {
 				up = isPressed;
-				p("player: " + this.player.getGeometry().getWorldTranslation());
+				//p("player: " + this.player.getGeometry().getWorldTranslation());
 			} else if (binding.equals("Down")) {
 				down = isPressed;
 			} else if (binding.equals("Jump")) {

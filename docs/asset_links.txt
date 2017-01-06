@@ -9,9 +9,20 @@ atmospherealien http://opengameart.org/content/aliens-surrounding
 
 Models:
 http://opengameart.org/content/tree-stump
-http://opengameart.org/content/dead-tree-0
+http://opengameart.org/content/tiny-weeds-3
+
 http://opengameart.org/content/low-poly-spider
-http://opengameart.org/content/knight-statue
 http://opengameart.org/content/demon-statue
-http://opengameart.org/content/medieval-statue
 http://opengameart.org/content/daniel-anderssons-medieval-themed-models
+
+
+
+Used: 
+http://opengameart.org/content/medieval-statue
+
+
+UNUSED
+http://opengameart.org/content/modular-building-asset-0 - Just cubes
+http://opengameart.org/content/knight-statue - broken
+
+

@@ -25,7 +25,8 @@ public class Settings {
 	public static final int MAP_MONSTER = 3;
 	public static final int MAP_FENCE_LR = 4;
 	public static final int MAP_FENCE_FB = 5;
-	public static final int MAP_GRACESTONE = 6;
+	public static final int MAP_GRAVESTONE = 6;
+	public static final int MAP_STATUE = 7;
 	
 	// Key codes
 	public static final String KEY_RECORD = "record";

@@ -21,7 +21,7 @@ public class MyCylinder extends Geometry {
 		cyl = new Cylinder(axisSamples, radialSamples, radius, start.distance(end), false);
 		cyl.setBound(new BoundingBox());
 		cyl.updateBound();
-		//cyl.scaleTextureCoordinates(new Vector2f(1, 6));
+		cyl.scaleTextureCoordinates(new Vector2f(12, 1));
 		this.setMesh(cyl);
 
 		setLocalTranslation(FastMath.interpolateLinear(.5f, start, end));

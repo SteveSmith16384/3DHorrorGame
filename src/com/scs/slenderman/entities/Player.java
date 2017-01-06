@@ -22,7 +22,7 @@ public class Player extends Entity {
 		//Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
 		//mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
 		//playerModel.setMaterial(mat);    
-		playerGeometry.setLocalTranslation(new Vector3f(0,6,0));
+		playerGeometry.setLocalTranslation(new Vector3f(0,2,0));
 		//playerModel.setLocalTranslation(new Vector3f(0,6,0));
 		playerGeometry.setCullHint(CullHint.Always);
 		this.getMainNode().attachChild(playerGeometry);

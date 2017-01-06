@@ -19,7 +19,7 @@ public class Tree extends Entity {
 		super(_game, "Tree");
 		
 		float RAD = .3f + (HorrorGame.rnd.nextFloat() / 10f);
-		HorrorGame.p("Tree rad: " + RAD);
+		//HorrorGame.p("Tree rad: " + RAD);
 		//Geometry floor_geo = new MyCylinder(game.getAssetManager(), new Vector3f(x, HEIGHT, z), new Vector3f(x, 0, z), 2, 10, RAD, "Textures/Terrain/Pond/Pond.jpg");
 		Geometry floor_geo = new MyCylinder(game.getAssetManager(), new Vector3f(x, HEIGHT, z), new Vector3f(x, 0, z), 2, 10, RAD, "Textures/scarybark.jpg");
 		this.main_node.attachChild(floor_geo);
