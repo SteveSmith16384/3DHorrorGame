@@ -105,7 +105,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private AudioNode ambient_node;
 	private AudioNode game_over_sound_node;
 	private AudioNode scary_sound1; // todo - set this
-	private float next_scary_sound = 10000;
+	private float next_scary_sound = 10;
 
 	public List<IProcessable> objects = new ArrayList<IProcessable>();
 

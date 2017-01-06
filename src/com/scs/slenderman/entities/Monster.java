@@ -25,7 +25,7 @@ public class Monster extends Entity implements IProcessable {
 	private RigidBodyControl floor_phy;
 	
 	private AudioNode audio_node;
-	private float next_scary_sound = 10000;
+	private float next_scary_sound = 10;
 
 	public Monster(HorrorGame game, AssetManager assetManager, float x, float z) {
 		super(game, "Monster");
@@ -49,7 +49,7 @@ public class Monster extends Entity implements IProcessable {
 
 		this.geometry.setUserData(Settings.ENTITY, this);
 		
-		audio_node = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true);
+		audio_node = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true); // todo - make mono
 		audio_node.setPositional(true);
 		this.getMainNode().attachChild(audio_node);
 		//ambient_node.play(); todo
