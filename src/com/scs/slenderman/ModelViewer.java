@@ -28,9 +28,13 @@ public class ModelViewer extends SimpleApplication {
 
 		setupLight();
 		
-		Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
-		//Spatial model = assetManager.loadModel("Models/Free Nobiax modular building asset/brick_door.obj");
+		//Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
+		//Spatial model = assetManager.loadModel("Models/big_wood_barrel.obj");
 		//model.scale(.01f);
+		//Spatial model = assetManager.loadModel("Models/Stone_coffin.obj");
+		//model.scale(.01f);
+		Spatial model = assetManager.loadModel("Models/");
+		model.scale(.01f);
 		
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();

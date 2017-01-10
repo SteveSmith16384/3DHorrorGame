@@ -42,8 +42,8 @@ import com.scs.slenderman.shapes.CreateShapes;
 
 /**
  * Todo:-
- * Where is fog
- * Add models - Look for statue models
+ * Create simple building
+ * Create stairs
  * Change ground tex
  * Put border of fences around map
  * Add tex to collectable
@@ -54,12 +54,17 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Create logo
  * Fallen trees
  * CSV map
- * Map changes when not viewed 
+ * Map changes when not viewed
  * Children's playground
  * Gate
+ * Walls move when player not looking at them
+ * Graffiti that appears when the player stops looking at a wall
+ * Player turns round to see face looking at him
+ * Kids record scary noises
  * 
  * 
  * LATER
+ * Skulls rolling down stairs
  * Rope hanging from tree, blowing in wind
  * Show distance to nearest collectable
  * Eyes that watch you
@@ -185,6 +190,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		ambient_node.play();
 
 		scary_sound1 = new AudioNode(assetManager, "Sound/ghost_1.ogg", true);
+		scary_sound1.setVolume(.1f);
 		scary_sound1.setPositional(false);
 		this.rootNode.attachChild(scary_sound1);
 
@@ -323,7 +329,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		if (Settings.DEBUG_LIGHT == false) {
 			{
 				AmbientLight al = new AmbientLight();
-				al.setColor(ColorRGBA.White.mult(1.5f));
+				al.setColor(ColorRGBA.White.mult(1f));
 				rootNode.addLight(al);
 			}
 
