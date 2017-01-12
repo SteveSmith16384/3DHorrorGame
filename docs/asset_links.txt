@@ -6,6 +6,10 @@ Retinal Riders/Racers - http://opengameart.org/content/retinal-riders-horror-loo
 Ghost_1 - http://opengameart.org/content/scary-ghost-1
 atmospherealien http://opengameart.org/content/aliens-surrounding
 
+Images:
+http://freepngimages.com/skeleton-ghost-transparent-background/
+https://blingee.com/graphics/transparent-halloween-ghost/page/3?list_type=1032
+
 
 Models:
 http://opengameart.org/content/tree-stump
