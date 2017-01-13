@@ -30,10 +30,12 @@ import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import com.scs.slenderman.effects.Lightening;
 import com.scs.slenderman.entities.Collectable;
+import com.scs.slenderman.entities.Corridor;
 import com.scs.slenderman.entities.Entity;
 import com.scs.slenderman.entities.Fence;
 import com.scs.slenderman.entities.Monster;
 import com.scs.slenderman.entities.Player;
+import com.scs.slenderman.entities.Stairs;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
@@ -41,9 +43,17 @@ import com.scs.slenderman.map.IMapInterface;
 import com.scs.slenderman.shapes.CreateShapes;
 
 /**
- * Todo:-
+ * GAMEPLAY
+ * Must find something in a maze before time runs out, otherwise they are trapped
+
+ * TODO:-
+ * Stairs - make collider a sloping box
+ * Create sections of a structure
+ * Add wall to stairs
+ * Fog changes distance - player needs to collect lights?
+ * Search for todos
+ * Buzz-saw sfx
  * Create simple building
- * Create stairs
  * Change ground tex
  * Put border of fences around map
  * Add tex to collectable
@@ -64,6 +74,7 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 
  * 
  * LATER
+ * Double walking footsteps behind player
  * Skulls rolling down stairs
  * Rope hanging from tree, blowing in wind
  * Show distance to nearest collectable
@@ -85,7 +96,7 @@ import com.scs.slenderman.shapes.CreateShapes;
 public class HorrorGame extends SimpleApplication implements ActionListener, PhysicsCollisionListener {
 
 	// Our movement speed
-	private static final float speed = 6f;
+	private static final float speed = 4f;
 	private static final float strafeSpeed = 4f;
 
 	public BulletAppState bulletAppState;
@@ -257,7 +268,6 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		 * By default the location of the box is on the bottom of the terrain
 		 * we make a slight offset to adjust for head height.
 		 */
-		//player.getRootNode().updateGeometricState();
 		Vector3f vec = player.getMainNode().getWorldTranslation();
 		cam.setLocation(new Vector3f(vec.x, vec.y + Settings.PLAYER_HEIGHT, vec.z));
 
@@ -273,7 +283,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		for (int z=0 ; z<map.getDepth() ; z+= Settings.FLOOR_SECTION_SIZE) {
 			for (int x=0 ; x<map.getWidth() ; x+= Settings.FLOOR_SECTION_SIZE) {
 				//p("Creating floor at " + x + "," + z);
-				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, z, Settings.FLOOR_SECTION_SIZE, Settings.FLOOR_SECTION_SIZE, "Textures/mud.png");
+				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, 0f, z, Settings.FLOOR_SECTION_SIZE, 0.1f, Settings.FLOOR_SECTION_SIZE, "Textures/mud.png");
 			}			
 		}
 
@@ -315,6 +325,17 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				}
 			}
 		}
+
+		// Sections are general 4 wide and long and 2 high
+		/*Stairs stairs = new Stairs(this, 10f, 0, 10f, 4f, 2f, 4f);
+		this.rootNode.attachChild(stairs.getMainNode());
+
+		Corridor corr = new Corridor(this, 10f, 0, 10f, 4f, 2f, 4f, false, false);
+		this.rootNode.attachChild(corr.getMainNode());
+
+		Corridor corr2 = new Corridor(this, 10f, 2f, 14f, 4f, 2f, 4f, true, false);
+		this.rootNode.attachChild(corr2.getMainNode());*/
+		
 	}
 
 
@@ -376,7 +397,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			if (binding.equals("Left")) {
 				left = isPressed;
 			} else if (binding.equals("Right")) {
-				right= isPressed;
+				right = isPressed;
 			} else if (binding.equals("Up")) {
 				up = isPressed;
 				//p("player: " + this.player.getGeometry().getWorldTranslation());
@@ -468,6 +489,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 	public static void p(String s) {
 		System.out.println(System.currentTimeMillis() + ": " + s);
+	}
+
+
+	public BulletAppState getBulletAppState() {
+		return bulletAppState;
 	}
 
 }

@@ -16,8 +16,9 @@ import com.scs.slenderman.Settings;
 
 public class CreateShapes {
 
-	public static Geometry CreateFloorTL(AssetManager assetManager, BulletAppState bulletAppState, Node rootNode, float x, float z, float w, float d, String tex) {
-		Box floor = new Box(w/2, 0.1f, d/2);
+	// Return RigidBodyControl so we have a reference and can remove it.
+	public static RigidBodyControl CreateFloorTL(AssetManager assetManager, BulletAppState bulletAppState, Node node, float x, float y, float z, float w, float height, float d, String tex) {
+		Box floor = new Box(w/2, height/2, d/2);
 		floor.scaleTextureCoordinates(new Vector2f(w, d));
 
 		TextureKey key3 = new TextureKey(tex);
@@ -36,15 +37,17 @@ public class CreateShapes {
 
 		Geometry floor_geo = new Geometry("Floor", floor);
 		floor_geo.setMaterial(floor_mat);
-		floor_geo.setLocalTranslation(x+(w/2), -0.1f, z+(d/2)); // Move it into position
-		rootNode.attachChild(floor_geo);
+		floor_geo.setLocalTranslation(x+(w/2), y+(height/2), z+(d/2)); // Move it into position
+		node.attachChild(floor_geo);
 
-		/* Make the floor physical with mass 0.0f! */
+		// Make the floor physical with mass 0.0f!
 		RigidBodyControl floor_phy = new RigidBodyControl(0.0f);
 		floor_geo.addControl(floor_phy);
 		bulletAppState.getPhysicsSpace().add(floor_phy);
 		floor_phy.setFriction(1f);
-		return floor_geo;
+		
+		//return floor_geo;
+		return floor_phy;
 	}
 
 

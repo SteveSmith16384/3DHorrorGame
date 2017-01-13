@@ -22,7 +22,7 @@ public abstract class Entity implements IProcessable, Savable {
 	private static final float TURN_SPEED = 1f;
 	
 	protected HorrorGame game;
-	protected Node main_node, left_node, right_node; // 
+	protected Node main_node, left_node, right_node;
 	public String name;
 	
 	public Entity(HorrorGame _game, String _name) {

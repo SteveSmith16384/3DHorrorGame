@@ -34,7 +34,7 @@ public class Player extends Entity {
 		// set basic physical properties:
 		playerControl.setJumpForce(new Vector3f(0, 5f, 0)); 
 		playerControl.setGravity(new Vector3f(0, 1f, 0));
-		playerControl.warp(new Vector3f(0, 6, 0));
+		//playerControl.warp(new Vector3f(0, 6, 0)); // So we drop
 		this.getMainNode().addControl(playerControl);
 		
 		game.bulletAppState.getPhysicsSpace().add(playerControl);
@@ -52,14 +52,14 @@ public class Player extends Entity {
 
 	@Override
 	public void process(float tpf) {
-		
+		// Do nothing
 	}
 
 
 	@Override
 	public void remove() {
 		this.main_node.removeFromParent();
-		//todo this.game.bulletAppState.getPhysicsSpace().remove(this.floor_phy);
+		this.game.bulletAppState.getPhysicsSpace().remove(this.playerControl);
 		
 	}
 }
