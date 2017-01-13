@@ -28,13 +28,16 @@ public class ModelViewer extends SimpleApplication {
 
 		setupLight();
 		
-		//Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
-		//Spatial model = assetManager.loadModel("Models/big_wood_barrel.obj");
+		//Spatial model = assetManager.loadModel("Models/big_wood_barrel.obj"); // todo - use this
 		//model.scale(.01f);
-		//Spatial model = assetManager.loadModel("Models/Stone_coffin.obj");
-		//model.scale(.01f);
-		Spatial model = assetManager.loadModel("Models/");
-		model.scale(.01f);
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave1.obj"); // Cross // todo - use this
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave2.obj"); // Gravestone // todo - use this
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave3.obj"); // Large Gravestone // todo - use this
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave4.obj"); // Pillar // todo - use this
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave5.obj"); // Crypt // todo - use this
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave6.obj"); // Long grave // todo - use this
+		//Spatial model = assetManager.loadModel("Models/arbol_seco.blend");
+		Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this
 		
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();
@@ -44,7 +47,7 @@ public class ModelViewer extends SimpleApplication {
 
 		this.rootNode.attachChild(JMEFunctions.GetGrid(assetManager, 10));
 		
-		this.flyCam.setMoveSpeed(3.5f);
+		this.flyCam.setMoveSpeed(6f);
 		//cam.update();
 		
 		rootNode.updateGeometricState();
@@ -62,7 +65,7 @@ public class ModelViewer extends SimpleApplication {
 
 		// We add light so we see the scene
 		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(2.5f));
+		al.setColor(ColorRGBA.White.mult(3f));
 		rootNode.addLight(al);
 
 		DirectionalLight dirlight = new DirectionalLight(); // FSR need this for textures to show

@@ -16,25 +16,27 @@ http://opengameart.org/content/gutsy
 http://opengameart.org/content/bloody-wall
 
 
-Models:
-http://opengameart.org/content/zombie-head
-http://opengameart.org/content/cemetery
-http://opengameart.org/content/evil-tree-creature
+MODELS:
 http://opengameart.org/content/tree-0
 http://opengameart.org/content/tree-stump
 http://opengameart.org/content/tiny-weeds-3
-http://opengameart.org/content/low-poly-spider
 http://opengameart.org/content/demon-statue
 http://opengameart.org/content/daniel-anderssons-medieval-themed-models
 http://opengameart.org/content/graveyard-and-crypt
-http://opengameart.org/content/tree-dry-lowpoly
 http://opengameart.org/content/realistic-rocksboulders
+
 Used: 
+http://opengameart.org/content/low-poly-spider
 http://opengameart.org/content/medieval-statue
 http://opengameart.org/content/wood-barrels-pack
 http://opengameart.org/content/stone-coffin
+http://opengameart.org/content/evil-tree-creature
+http://opengameart.org/content/cemetery
+http://opengameart.org/content/tree-dry-lowpoly
+
 UNUSED
 http://opengameart.org/content/knight-statue - broken
 http://opengameart.org/content/covered-well - Broken
 http://opengameart.org/content/knight-lying - Broken
 http://opengameart.org/content/dead-tree-0 - too hi-poly
+http://opengameart.org/content/zombie-head - fbx format

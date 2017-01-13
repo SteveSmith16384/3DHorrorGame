@@ -5,9 +5,9 @@ import com.jme3.math.FastMath;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-public class MedievalStatue extends Node {
+public class MedievalStatueModel extends Node {
 	
-	public MedievalStatue(AssetManager assetManager) {
+	public MedievalStatueModel(AssetManager assetManager) {
 		super("MedeivalStatue");
 		
 		Spatial s = assetManager.loadModel("Models/InnansorraStatueUpload.blend");

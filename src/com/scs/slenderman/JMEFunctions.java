@@ -92,4 +92,17 @@ public class JMEFunctions {
 		return diff;
 	}
 
+
+	public static void SetMaterialOnSpatial(Spatial spatial, Material mat) {
+		if (spatial instanceof Node) {
+			Node node = (Node) spatial;
+			for (Spatial s : node.getChildren()) {
+				SetMaterialOnSpatial(s, mat);
+			}
+		} else {
+			Geometry g = (Geometry)spatial;
+			g.setMaterial(mat);
+		}
+	}
+
 }

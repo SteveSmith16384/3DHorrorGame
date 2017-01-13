@@ -25,7 +25,7 @@ public class Wall extends Entity {
 		super(_game, "Wall");
 
 		Box box1 = new Box(WIDTH/2, HEIGHT/2, .1f);
-		box1.scaleTextureCoordinates(new Vector2f(WIDTH*6, HEIGHT*6));
+		box1.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
 		geometry = new Geometry("Fence", box1);
 		//TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
 		TextureKey key3 = new TextureKey("Textures/fence.png"); // todo - scale tex

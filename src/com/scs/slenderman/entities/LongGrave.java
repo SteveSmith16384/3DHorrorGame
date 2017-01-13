@@ -3,17 +3,17 @@ package com.scs.slenderman.entities;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
-import com.scs.slenderman.models.GravestoneModel;
+import com.scs.slenderman.models.LongGraveModel;
 
-public class Gravestone extends Entity {
+public class LongGrave extends Entity {
 	
 	private Spatial floor_geo;
 	private RigidBodyControl floor_phy;
 	
-	public Gravestone(HorrorGame _game, float x, float z) {
-		super(_game, "Gravestone");
+	public LongGrave(HorrorGame _game, float x, float z) {
+		super(_game, "LongGrave");
 		
-		floor_geo = new GravestoneModel(game.getAssetManager());
+		floor_geo = new LongGraveModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
 		this.main_node.attachChild(floor_geo);
 		// todo - rotate random amount, and maybe scale slightly

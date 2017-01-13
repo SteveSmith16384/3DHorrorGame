@@ -33,7 +33,7 @@ public abstract class Entity implements IProcessable, Savable {
 
 		main_node = new Node(name + "_MainNode");
 		
-		left_node = new Node("left_node"); // todo - only monster needs these
+		left_node = new Node("left_node");
 		main_node.attachChild(left_node);
 		left_node.setLocalTranslation(-3, 0, 0);
 		

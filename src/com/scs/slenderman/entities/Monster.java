@@ -1,19 +1,19 @@
 package com.scs.slenderman.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Spatial.CullHint;
-import com.jme3.scene.shape.Box;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 import com.scs.slenderman.JMEFunctions;
 import com.scs.slenderman.Settings;
-import com.scs.slenderman.shapes.AbstractBillboard;
+import com.scs.slenderman.models.TreeCreatureModel;
 
 public class Monster extends Entity implements IProcessable {
 
@@ -24,7 +24,8 @@ public class Monster extends Entity implements IProcessable {
 	private Geometry geometry;
 	private RigidBodyControl floor_phy;
 
-	private AudioNode audio_node;
+	private AudioNode audio_node_i_see_you;
+	private List<AudioNode> audio_node_moans = new ArrayList<>();
 	private float next_scary_sound = 10;
 
 	public Monster(HorrorGame game, AssetManager assetManager, float x, float z) {
@@ -42,10 +43,11 @@ public class Monster extends Entity implements IProcessable {
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);*/
 
 		//main_node.attachChild(new MedievalStatue(assetManager));
+		main_node.attachChild(new TreeCreatureModel(assetManager));
 
-		this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
-		geometry.setLocalTranslation(-COLL_WIDTH/2, -COLL_HEIGHT/2, 0); // Keep origin in centre
-		main_node.attachChild(geometry);
+		//this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
+		//geometry.setLocalTranslation(-COLL_WIDTH/2, -COLL_HEIGHT/2, 0); // Keep origin in centre
+		//main_node.attachChild(geometry);
 
 		main_node.setLocalTranslation(new Vector3f(x, COLL_HEIGHT/2, z));
 
@@ -53,9 +55,16 @@ public class Monster extends Entity implements IProcessable {
 
 		this.geometry.setUserData(Settings.ENTITY, this);
 
-		audio_node = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true);
-		audio_node.setPositional(true);
-		this.getMainNode().attachChild(audio_node);
+		audio_node_i_see_you = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true);
+		audio_node_i_see_you.setPositional(true);
+		this.getMainNode().attachChild(audio_node_i_see_you);
+
+		for (int i=1 ; i<=5 ; i++) {
+			AudioNode an = new AudioNode(assetManager, "Sound/qubodup-GhostMoans/wav/qubodup-GhostMoan0" + i + ".ogg", true);
+			an.setPositional(true);
+			this.getMainNode().attachChild(an);
+			this.audio_node_moans.add(an);
+		}
 
 	}
 
@@ -72,7 +81,16 @@ public class Monster extends Entity implements IProcessable {
 	public void process(float tpf) {
 		next_scary_sound -= tpf;
 		if (next_scary_sound <= 0) {
-			this.audio_node.play();
+			int i = HorrorGame.rnd.nextInt(7);
+			switch (i) {
+			case 0:
+				this.audio_node_i_see_you.play();
+				break;
+
+			default:
+				AudioNode an = this.audio_node_moans.get(i-1);
+				an.play();
+			}
 			next_scary_sound = 20 + HorrorGame.rnd.nextInt(10);
 		}
 

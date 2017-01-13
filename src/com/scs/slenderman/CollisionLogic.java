@@ -26,7 +26,7 @@ public class CollisionLogic {
 	private static void Player_Collectable(HorrorGame game, Player player, Collectable col) {
 		col.remove();//getMainNode().removeFromParent();
 		//game.bulletAppState.getPhysicsSpace().remove(col.);
-		game.num_collected++;
+		game.num_remaining--;
 	}
 	
 

@@ -30,12 +30,16 @@ import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import com.scs.slenderman.effects.Lightening;
 import com.scs.slenderman.entities.Collectable;
-import com.scs.slenderman.entities.Corridor;
+import com.scs.slenderman.entities.Cross;
+import com.scs.slenderman.entities.Crypt;
 import com.scs.slenderman.entities.Entity;
 import com.scs.slenderman.entities.Fence;
+import com.scs.slenderman.entities.Gravestone;
+import com.scs.slenderman.entities.LargeGravestone;
+import com.scs.slenderman.entities.LongGrave;
 import com.scs.slenderman.entities.Monster;
+import com.scs.slenderman.entities.Pillar;
 import com.scs.slenderman.entities.Player;
-import com.scs.slenderman.entities.Stairs;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
@@ -44,40 +48,48 @@ import com.scs.slenderman.shapes.CreateShapes;
 
 /**
  * GAMEPLAY
- * Must find something in a maze before time runs out, otherwise they are trapped
+ * 1) Must find something in a maze before time runs out, otherwise they are trapped
+ * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * TODO:-
- * Stairs - make collider a sloping box
- * Create sections of a structure
- * Add wall to stairs
- * Fog changes distance - player needs to collect lights?
+ * stepdirt_ needs resaMPLING
+ * Game Over effect
+ * Thunder sfx
+ * DONE Footstep sound
+ * Add textures to models
+ * Graces rotate to face player
+ * Look for flying head
+ * Use atmospherealien
+ * Use working models
+ * DONE Change to stone wall
+ * Show distance to nearest collectable
  * Search for todos
- * Buzz-saw sfx
- * Create simple building
+ * Ghosts rise out of graves
  * Change ground tex
  * Put border of fences around map
  * Add tex to collectable
- * Fenceposts
- * Signposts
  * Show face at end if caught
- * Gravestone
  * Create logo
  * Fallen trees
  * CSV map
- * Map changes when not viewed
  * Children's playground
- * Gate
+ * Different areas of map - forest, cemetary, open area, buildings
+ * Stuff to read, e.g. notes on walls
  * Walls move when player not looking at them
  * Graffiti that appears when the player stops looking at a wall
- * Player turns round to see face looking at him
+ * Player turns round to see face looking at him - and then it runs away
  * Kids record scary noises
+ * Try bumpy floor
+ * Fog changes distance - player needs to collect lights?
+ * Buzz-saw sfx
+ * Use Retinal Racers as theme music
  * 
  * 
  * LATER
+ * Map changes when not viewed
  * Double walking footsteps behind player
  * Skulls rolling down stairs
  * Rope hanging from tree, blowing in wind
- * Show distance to nearest collectable
  * Eyes that watch you
  * Move a direction light for nice effect
  * Floor slowly gives way
@@ -112,14 +124,14 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private SpotLight spotlight;
 	private Monster monster;
 	private HUD hud;
-	public int num_collected = 0; // todo - change to num_remaining
+	public int num_remaining = 0;
 	private boolean game_over = false;
 	private VideoRecorderAppState video_recorder;
 	public static final Random rnd = new Random();
 
 	private AudioNode ambient_node;
 	private AudioNode game_over_sound_node;
-	private AudioNode scary_sound1; // todo - set this
+	private AudioNode scary_sound1, scary_sound2;
 	private float next_scary_sound = 10;
 
 	public List<IProcessable> objects = new ArrayList<IProcessable>();
@@ -205,6 +217,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		scary_sound1.setPositional(false);
 		this.rootNode.attachChild(scary_sound1);
 
+		scary_sound2 = new AudioNode(assetManager, "Sound/churchbell.ogg", true);
+		//scary_sound2.setVolume(.1f);
+		scary_sound2.setPositional(false);
+		this.rootNode.attachChild(scary_sound2);
+
 		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", true);
 		game_over_sound_node.setPositional(false);
 		this.rootNode.attachChild(game_over_sound_node);
@@ -254,7 +271,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		if (!game_over) {
 			if (monster != null) {
 				float dist = this.monster.getGeometry().getWorldTranslation().distance(this.player.getGeometry().getWorldTranslation());
-				text.append("Distance: " + (int)dist + "\nBoxes collected: " + this.num_collected + "\n");
+				text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.num_remaining + "\n");
 			}
 		} else {
 			text.append("GaMe OvEr\n");
@@ -306,7 +323,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 				case Settings.MAP_TREE:
 					//p("Adding tree to " + x + "," + z);
-					Tree tree = new Tree(this, x, z);
+					Tree tree = new Tree(this, x, z); // todo - need to add these to a list so we can remove them at the end
 					this.rootNode.attachChild(tree.getMainNode());
 					break;
 
@@ -320,8 +337,42 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					this.rootNode.attachChild(fence2.getMainNode());
 					break;
 
+				case Settings.MAP_MEDIEVAL_STATUE:
+					// todo
+					break;
+					
+				case Settings.MAP_CROSS:
+					Cross cross = new Cross(this, x, z);
+					this.rootNode.attachChild(cross.getMainNode());
+					break;
+					
+				case Settings.MAP_GRAVESTONE:
+					Gravestone gs = new Gravestone(this, x, z);
+					this.rootNode.attachChild(gs.getMainNode());
+					break;
+
+				case Settings.MAP_LARGE_GRAVESTONE:
+					LargeGravestone lgs = new LargeGravestone(this, x, z);
+					this.rootNode.attachChild(lgs.getMainNode());
+					break;
+
+				case Settings.MAP_PILLAR:
+					Pillar p = new Pillar(this, x, z);
+					this.rootNode.attachChild(p.getMainNode());
+					break;
+
+				case Settings.MAP_CRYPT:
+					Crypt c = new Crypt(this, x, z);
+					this.rootNode.attachChild(c.getMainNode());
+					break;
+
+				case Settings.MAP_LONG_GRAVE:
+					LongGrave lg = new LongGrave(this, x, z);
+					this.rootNode.attachChild(lg.getMainNode());
+					break;
+
 				default:
-					throw new RuntimeException("Unknown type:" + code);
+					//throw new RuntimeException("Unknown type:" + code);
 				}
 			}
 		}
@@ -435,6 +486,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 
 	private void addCollectables(int num, int max_w, float max_d) {
+		this.num_remaining = num;
 		for (int i=0 ; i<num ; i++) {
 			float x = rnd.nextFloat() * max_w;
 			float z = rnd.nextFloat() * max_d;
@@ -481,8 +533,14 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 
 	private void playRandomScarySound() {
-		if (scary_sound1 != null) {
+		int i = rnd.nextInt(2);
+		switch (i) {
+		case 0:
 			this.scary_sound1.play();
+			break;
+		case 1:
+			this.scary_sound2.play();
+			break;
 		}
 	}
 
