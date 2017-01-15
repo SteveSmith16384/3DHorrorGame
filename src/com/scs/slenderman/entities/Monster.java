@@ -9,6 +9,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 import com.scs.slenderman.JMEFunctions;
@@ -21,7 +22,7 @@ public class Monster extends Entity implements IProcessable {
 	private static final float COLL_HEIGHT = 2f;
 	private static final float SPEED = 1f;
 
-	private Geometry geometry;
+	private Spatial geometry;
 	private RigidBodyControl floor_phy;
 
 	private AudioNode audio_node_i_see_you;
@@ -43,7 +44,8 @@ public class Monster extends Entity implements IProcessable {
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);*/
 
 		//main_node.attachChild(new MedievalStatue(assetManager));
-		main_node.attachChild(new TreeCreatureModel(assetManager));
+		geometry = new TreeCreatureModel(assetManager);
+		main_node.attachChild(geometry);
 
 		//this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
 		//geometry.setLocalTranslation(-COLL_WIDTH/2, -COLL_HEIGHT/2, 0); // Keep origin in centre
@@ -60,7 +62,7 @@ public class Monster extends Entity implements IProcessable {
 		this.getMainNode().attachChild(audio_node_i_see_you);
 
 		for (int i=1 ; i<=5 ; i++) {
-			AudioNode an = new AudioNode(assetManager, "Sound/qubodup-GhostMoans/wav/qubodup-GhostMoan0" + i + ".ogg", true);
+			AudioNode an = new AudioNode(assetManager, "Sound/qubodup-GhostMoans/wav/qubodup-GhostMoan0" + i + ".wav", true);
 			an.setPositional(true);
 			this.getMainNode().attachChild(an);
 			this.audio_node_moans.add(an);
@@ -114,7 +116,7 @@ public class Monster extends Entity implements IProcessable {
 
 
 	@Override
-	public Geometry getGeometry() {
+	public Spatial getGeometry() {
 		return geometry;
 	}
 

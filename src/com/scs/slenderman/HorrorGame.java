@@ -52,6 +52,10 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * TODO:-
+ * Add more textures to other models
+ * Di=o proper map
+ * Footsteps wrongBlood drips down when caught
+ * Spin and face enemy when caught
  * stepdirt_ needs resaMPLING
  * Game Over effect
  * Thunder sfx
