@@ -8,7 +8,7 @@ atmospherealien http://opengameart.org/content/aliens-surrounding
 http://opengameart.org/content/foot-walking-step-sounds-on-stone-water-snow-wood-and-dirt - jute-dh-steps
 http://opengameart.org/content/ghost-monster-voice-moaning-growling - qubodup-GhostMoans
 http://opengameart.org/content/church-bell
-http://opengameart.org/content/thunder
+http://opengameart.org/content/rockbreaking
 
 Images:
 http://freepngimages.com/skeleton-ghost-transparent-background/
