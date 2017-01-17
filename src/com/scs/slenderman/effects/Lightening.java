@@ -15,6 +15,7 @@ public class Lightening implements IProcessable {
 
 		game = _game;
 	}
+	
 
 	@Override
 	public void process(float tpf) {
@@ -30,7 +31,7 @@ public class Lightening implements IProcessable {
 				next_flash = .1f; //Duration of flash
 				game.getViewPort().setBackgroundColor(new ColorRGBA(1f, 1f, 1f, 1f));
 				flash_on = true;
-				// todo - sfx
+				game.thunderclap_sound_node.play();
 				//HorrorGame.p("Lightening!");
 			}
 		}

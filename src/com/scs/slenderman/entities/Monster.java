@@ -62,7 +62,7 @@ public class Monster extends Entity implements IProcessable {
 		this.getMainNode().attachChild(audio_node_i_see_you);
 
 		for (int i=1 ; i<=5 ; i++) {
-			AudioNode an = new AudioNode(assetManager, "Sound/qubodup-GhostMoans/wav/qubodup-GhostMoan0" + i + ".wav", true);
+			AudioNode an = new AudioNode(assetManager, "Sound/qubodup-GhostMoans/wav/qubodup-GhostMoan0" + i + ".ogg", true);
 			an.setPositional(true);
 			this.getMainNode().attachChild(an);
 			this.audio_node_moans.add(an);
@@ -83,7 +83,7 @@ public class Monster extends Entity implements IProcessable {
 	public void process(float tpf) {
 		next_scary_sound -= tpf;
 		if (next_scary_sound <= 0) {
-			int i = HorrorGame.rnd.nextInt(7);
+			int i = HorrorGame.rnd.nextInt(audio_node_moans.size() + 1);
 			switch (i) {
 			case 0:
 				this.audio_node_i_see_you.play();
@@ -96,11 +96,11 @@ public class Monster extends Entity implements IProcessable {
 			next_scary_sound = 20 + HorrorGame.rnd.nextInt(10);
 		}
 
-		//this.getGeometry().lookAt(super.game.player.getGeometry().getWorldTranslation(), Vector3f.UNIT_Y);
+		this.getMainNode().lookAt(super.game.player.getGeometry().getWorldTranslation(), Vector3f.UNIT_Y);
 
 		FrustumIntersect insideoutside = game.getInsideOutside(this);
 		if (insideoutside == FrustumIntersect.Outside || Settings.MONSTER_ALWAYS_MOVES) { // Only move if we can't be seen
-			Vector3f player_pos = game.player.getGeometry().getWorldTranslation(); 
+			/*Vector3f player_pos = game.player.getGeometry().getWorldTranslation(); 
 			float left_dist = this.left_node.getWorldTranslation().distance(player_pos);
 			float right_dist = this.right_node.getWorldTranslation().distance(player_pos);
 
@@ -108,7 +108,7 @@ public class Monster extends Entity implements IProcessable {
 				this.turnRight(tpf);
 			} else {
 				this.turnLeft(tpf);
-			}
+			}*/
 
 			JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
 		}

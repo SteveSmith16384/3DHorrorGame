@@ -2,8 +2,9 @@ package com.scs.slenderman;
 
 public class Settings {
 	
-	public static final boolean DEBUG_LIGHT = true;//false;
+	public static final boolean DEBUG_LIGHT = false;//false;
 	public static final boolean MONSTER_ALWAYS_MOVES = true;
+	public static final boolean SHOW_LOGO = false;
 	
 	public static final float CAM_DIST = 30f;
 	public static final int FLOOR_SECTION_SIZE=12;

@@ -28,7 +28,7 @@ public class Wall extends Entity {
 		box1.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
 		geometry = new Geometry("Fence", box1);
 		//TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
-		TextureKey key3 = new TextureKey("Textures/fence.png"); // todo - scale tex
+		TextureKey key3 = new TextureKey("Textures/fence.png");
 		key3.setGenerateMips(true);
 		Texture tex3 = game.getAssetManager().loadTexture(key3);
 		tex3.setWrap(WrapMode.Repeat);

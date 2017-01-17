@@ -28,6 +28,7 @@ import com.jme3.post.filters.FogFilter;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import com.scs.slenderman.effects.DistanceToClosestCollectable;
 import com.scs.slenderman.effects.Lightening;
 import com.scs.slenderman.entities.Collectable;
 import com.scs.slenderman.entities.Cross;
@@ -52,32 +53,33 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * TODO:-
- * Add more textures to other models
- * Di=o proper map
- * Footsteps wrongBlood drips down when caught
- * Spin and face enemy when caught
- * stepdirt_ needs resaMPLING
- * Game Over effect
- * Thunder sfx
- * DONE Footstep sound
- * Add textures to models
- * Graces rotate to face player
- * Look for flying head
+ * On-screen log for debugging
+ * Copy turntowards function
+ * Test Evil Tree
+ * Texture not right on blank models
+ * Create a CSV map
+ * Add tex to trees?
+ * DONE Only footstep when walking
+ * DONE Show distance to nearest collectable
+ * Show churches in the distance
+ * Map: Different areas of map - forest, cemetary, open area, buildings
+ * Map: Put border of fences around map
+ * Win game - float up
+ * 
+ * Game Over effect - Spin and face enemy when caught
+ * Blood drips down when caught
+ * Change tex on grave when not looked at, to show blood
+ * Map changes when not viewed
+ * Smoke effect
  * Use atmospherealien
  * Use working models
- * DONE Change to stone wall
- * Show distance to nearest collectable
  * Search for todos
  * Ghosts rise out of graves
  * Change ground tex
- * Put border of fences around map
  * Add tex to collectable
  * Show face at end if caught
  * Create logo
- * Fallen trees
- * CSV map
  * Children's playground
- * Different areas of map - forest, cemetary, open area, buildings
  * Stuff to read, e.g. notes on walls
  * Walls move when player not looking at them
  * Graffiti that appears when the player stops looking at a wall
@@ -87,10 +89,6 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Fog changes distance - player needs to collect lights?
  * Buzz-saw sfx
  * Use Retinal Racers as theme music
- * 
- * 
- * LATER
- * Map changes when not viewed
  * Double walking footsteps behind player
  * Skulls rolling down stairs
  * Rope hanging from tree, blowing in wind
@@ -128,13 +126,16 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private SpotLight spotlight;
 	private Monster monster;
 	private HUD hud;
-	public int num_remaining = 0;
+	public List<Collectable> coll_remaining = new ArrayList<>();
 	private boolean game_over = false;
+	private boolean player_won = false;
 	private VideoRecorderAppState video_recorder;
 	public static final Random rnd = new Random();
+	private DistanceToClosestCollectable closest;
 
 	private AudioNode ambient_node;
 	private AudioNode game_over_sound_node;
+	public AudioNode thunderclap_sound_node;
 	private AudioNode scary_sound1, scary_sound2;
 	private float next_scary_sound = 10;
 
@@ -149,11 +150,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			e.printStackTrace();
 		}
 		settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
-		/*if (Settings.SHOW_LOGO) {
+		if (Settings.SHOW_LOGO) {
 			settings.setSettingsDialogImage("/ad_logo.png");
-		} else {*/
-		settings.setSettingsDialogImage(null);
-		//}
+		} else {
+			settings.setSettingsDialogImage(null);
+		}
 
 		HorrorGame app = new HorrorGame();
 		app.setSettings(settings);
@@ -208,6 +209,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.objects.add(hud);
 
 		this.objects.add(new Lightening(this));
+		closest = new DistanceToClosestCollectable(this);
+		this.objects.add(closest);
 
 		// Audio nodes
 		ambient_node = new AudioNode(assetManager, "Sound/horror ambient.ogg", false);
@@ -230,6 +233,10 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		game_over_sound_node.setPositional(false);
 		this.rootNode.attachChild(game_over_sound_node);
 
+		thunderclap_sound_node = new AudioNode(assetManager, "Sound/rock_breaking.ogg", true);
+		thunderclap_sound_node.setPositional(false);
+		this.rootNode.attachChild(thunderclap_sound_node);
+
 	}
 
 
@@ -245,6 +252,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			camDir.set(cam.getDirection()).multLocal(speed, 0.0f, speed);
 			camLeft.set(cam.getLeft()).multLocal(strafeSpeed);
 			walkDirection.set(0, 0, 0);
+			player.walking = up || down || left || right;
 			if (left) {
 				walkDirection.addLocal(camLeft);
 			}
@@ -273,10 +281,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		// HUD
 		StringBuilder text = new StringBuilder();
 		if (!game_over) {
+			float dist = 0;
 			if (monster != null) {
-				float dist = this.monster.getGeometry().getWorldTranslation().distance(this.player.getGeometry().getWorldTranslation());
-				text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.num_remaining + "\n");
+				dist = this.monster.getGeometry().getWorldTranslation().distance(this.player.getGeometry().getWorldTranslation());
 			}
+			text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.coll_remaining.size() + "\nClosest: " + this.closest.closestDistance);
 		} else {
 			text.append("GaMe OvEr\n");
 		}
@@ -332,24 +341,24 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_FENCE_LR:
-					Fence fence1 = new Fence(this, x, z, 90);
+					Fence fence1 = new Fence(this, x, z, 0);
 					this.rootNode.attachChild(fence1.getMainNode());
 					break;
 
 				case Settings.MAP_FENCE_FB:
-					Fence fence2 = new Fence(this, x, z, 0);
+					Fence fence2 = new Fence(this, x, z, 90);
 					this.rootNode.attachChild(fence2.getMainNode());
 					break;
 
 				case Settings.MAP_MEDIEVAL_STATUE:
 					// todo
 					break;
-					
+
 				case Settings.MAP_CROSS:
 					Cross cross = new Cross(this, x, z);
 					this.rootNode.attachChild(cross.getMainNode());
 					break;
-					
+
 				case Settings.MAP_GRAVESTONE:
 					Gravestone gs = new Gravestone(this, x, z);
 					this.rootNode.attachChild(gs.getMainNode());
@@ -390,7 +399,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 		Corridor corr2 = new Corridor(this, 10f, 2f, 14f, 4f, 2f, 4f, true, false);
 		this.rootNode.attachChild(corr2.getMainNode());*/
-		
+
 	}
 
 
@@ -490,12 +499,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 
 	private void addCollectables(int num, int max_w, float max_d) {
-		this.num_remaining = num;
+		//this.num_remaining = num;
 		for (int i=0 ; i<num ; i++) {
 			float x = rnd.nextFloat() * max_w;
 			float z = rnd.nextFloat() * max_d;
 			Collectable col = new Collectable(this, x, z);
 			rootNode.attachChild(col.getMainNode());
+			coll_remaining.add(col);
 		}
 	}
 
@@ -528,13 +538,24 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	}
 
 
-	public void gameOver() {
+	public void gameOver(boolean _player_won) {
 		if (this.game_over == false) {
 			this.game_over = true;
+			player_won =_player_won;
 			game_over_sound_node.play();
 		}
 	}
 
+	
+	public boolean isGameOver() {
+		return this.game_over;
+	}
+	
+
+	public boolean hasPlayerWon() {
+		return this.player_won;
+	}
+	
 
 	private void playRandomScarySound() {
 		int i = rnd.nextInt(2);
@@ -557,5 +578,6 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	public BulletAppState getBulletAppState() {
 		return bulletAppState;
 	}
+
 
 }

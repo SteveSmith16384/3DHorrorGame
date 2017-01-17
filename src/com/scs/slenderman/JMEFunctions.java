@@ -3,22 +3,22 @@ package com.scs.slenderman;
 import java.io.File;
 import java.io.IOException;
 
-import jme3tools.optimize.LodGenerator;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
+import com.jme3.asset.TextureKey;
 import com.jme3.export.binary.BinaryExporter;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Quaternion;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.control.LodControl;
 import com.jme3.scene.debug.Grid;
+import com.jme3.texture.Texture;
+import com.jme3.texture.Texture.WrapMode;
 
 public class JMEFunctions {
 
@@ -90,6 +90,24 @@ public class JMEFunctions {
 		Vector3f forward = spatial.getLocalRotation().mult(Vector3f.UNIT_Z).normalizeLocal();
 		float diff = forward.distance(dir_to_target);
 		return diff;
+	}
+
+
+	public static void SetTextureOnSpatial(AssetManager assetManager, Spatial spatial, String tex) {
+		TextureKey key3 = new TextureKey(tex);
+		key3.setGenerateMips(true);
+		Texture tex3 = assetManager.loadTexture(key3);
+		tex3.setWrap(WrapMode.Repeat);
+
+		Material material = null;
+		if (Settings.LIGHTING) {
+			material = new Material(assetManager,"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
+			material.setTexture("DiffuseMap", tex3);
+		} else {
+			material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+			material.setTexture("ColorMap", tex3);
+		}
+		SetMaterialOnSpatial(spatial, material);
 	}
 
 

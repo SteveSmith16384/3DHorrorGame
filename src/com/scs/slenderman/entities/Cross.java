@@ -16,7 +16,9 @@ public class Cross extends Entity {
 		floor_geo = new CrossModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
 		this.main_node.attachChild(floor_geo);
-		// todo - rotate random amount, and maybe scale slightly
+
+		floor_geo.scale(1f + (HorrorGame.rnd.nextFloat()));
+		floor_geo.rotate(0, (float)(HorrorGame.rnd.nextFloat() * Math.PI), 0); // rotate random amount, and maybe scale slightly
 
 		floor_phy = new RigidBodyControl(0f);
 		floor_geo.addControl(floor_phy);

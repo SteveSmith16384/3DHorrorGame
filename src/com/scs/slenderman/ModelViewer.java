@@ -30,14 +30,14 @@ public class ModelViewer extends SimpleApplication {
 		
 		//Spatial model = assetManager.loadModel("Models/big_wood_barrel.obj"); // todo - use this
 		//model.scale(.01f);
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave1.obj"); // Cross // todo - use this
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave2.obj"); // Gravestone // todo - use this
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave3.obj"); // Large Gravestone // todo - use this
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave4.obj"); // Pillar // todo - use this
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave5.obj"); // Crypt // todo - use this
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave6.obj"); // Long grave // todo - use this
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave1.obj"); // Cross
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave2.obj"); // Gravestone 
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave3.obj"); // Large Gravestone 
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave4.obj"); // Pillar
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave5.obj"); // Crypt
+		//Spatial model = assetManager.loadModel("Models/cemetery/grave6.obj"); // Long grave
 		//Spatial model = assetManager.loadModel("Models/arbol_seco.blend");
-		Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this
+		Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this?
 		
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();

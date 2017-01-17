@@ -14,7 +14,7 @@ import com.scs.slenderman.Settings;
 
 public class Player extends Entity {
 
-	private static final float FOOTSTEP_INTERVAL = 500f;
+	private static final float FOOTSTEP_INTERVAL = 1f;
 
 	private Geometry playerGeometry;
 	public BetterCharacterControl playerControl;
@@ -22,6 +22,7 @@ public class Player extends Entity {
 	private List<AudioNode> audio_node_footsteps = new ArrayList<>();
 	private float time_until_next_footstep_sfx = 10;
 	private int next_footstep_sound = 0;
+	public boolean walking = false;
 
 	public Player(HorrorGame _game) {
 		super(_game, "Player");
@@ -69,16 +70,23 @@ public class Player extends Entity {
 
 	@Override
 	public void process(float tpf) {
-		time_until_next_footstep_sfx -= tpf;
-		if (time_until_next_footstep_sfx <= 0) {
-			//int i = HorrorGame.rnd.nextInt(7);
-			AudioNode an = this.audio_node_footsteps.get(next_footstep_sound);
-			an.play();
-			next_footstep_sound++;
-			if (next_footstep_sound >= audio_node_footsteps.size()) {
-				next_footstep_sound = 0;
+		if (!game.isGameOver()) {
+			if (walking) {
+				time_until_next_footstep_sfx -= tpf;
+				if (time_until_next_footstep_sfx <= 0) {
+					AudioNode an = this.audio_node_footsteps.get(next_footstep_sound);
+					an.play();
+					next_footstep_sound++;
+					if (next_footstep_sound >= audio_node_footsteps.size()) {
+						next_footstep_sound = 0;
+					}
+					time_until_next_footstep_sfx = FOOTSTEP_INTERVAL;
+				}
+			} else {
+				time_until_next_footstep_sfx = 0;
 			}
-			time_until_next_footstep_sfx = FOOTSTEP_INTERVAL;
+		} else {
+			//todo JMEFunctions.r
 		}
 
 	}
@@ -90,4 +98,5 @@ public class Player extends Entity {
 		this.game.bulletAppState.getPhysicsSpace().remove(this.playerControl);
 
 	}
+	
 }

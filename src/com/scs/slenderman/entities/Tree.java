@@ -20,8 +20,10 @@ public class Tree extends Entity {
 		//Geometry floor_geo = new MyCylinder(game.getAssetManager(), new Vector3f(x, HEIGHT, z), new Vector3f(x, 0, z), 2, 10, RAD, "Textures/scarybark.jpg");
 		floor_geo = new Tree_arbol_seco_Model(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
+		floor_geo.scale(1f + (HorrorGame.rnd.nextFloat()));
+		floor_geo.rotate(0, (float)(HorrorGame.rnd.nextFloat() * Math.PI), 0); // rotate random amount, and maybe scale slightly
+
 		this.main_node.attachChild(floor_geo);
-		// todo - rotate random amount, and maybe scale slightly
 
 		floor_phy = new RigidBodyControl(0f);
 		floor_geo.addControl(floor_phy);

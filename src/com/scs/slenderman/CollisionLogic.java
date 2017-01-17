@@ -24,15 +24,17 @@ public class CollisionLogic {
 	
 	
 	private static void Player_Collectable(HorrorGame game, Player player, Collectable col) {
-		col.remove();//getMainNode().removeFromParent();
-		//game.bulletAppState.getPhysicsSpace().remove(col.);
-		game.num_remaining--;
+		col.remove();
+		game.coll_remaining.remove(col);
+		if (game.coll_remaining.isEmpty()) {
+			game.gameOver(true);
+		}
 	}
 	
 
 	private static void Player_Monster(HorrorGame game, Player player, Monster col) {
-		game.p("Hit monster!");
-		game.gameOver();
+		//game.p("Hit monster!");
+		game.gameOver(false);
 	}
 	
 }
