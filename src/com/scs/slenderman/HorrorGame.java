@@ -53,12 +53,12 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * TODO:-
+ * Get rid of getMainNode/ getMainGemoetry!
+ * Find models with textures
  * On-screen log for debugging
  * Copy turntowards function
  * Test Evil Tree
- * Texture not right on blank models
  * Create a CSV map
- * Add tex to trees?
  * DONE Only footstep when walking
  * DONE Show distance to nearest collectable
  * Show churches in the distance

@@ -8,13 +8,12 @@ import com.jme3.audio.AudioNode;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 import com.scs.slenderman.JMEFunctions;
 import com.scs.slenderman.Settings;
-import com.scs.slenderman.models.TreeCreatureModel;
+import com.scs.slenderman.shapes.AbstractBillboard;
 
 public class Monster extends Entity implements IProcessable {
 
@@ -43,15 +42,19 @@ public class Monster extends Entity implements IProcessable {
 		floor_phy.setKinematic(true);
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);*/
 
+		// MONSTERS
 		//main_node.attachChild(new MedievalStatue(assetManager));
-		geometry = new TreeCreatureModel(assetManager);
+		
+		//geometry = new TreeCreatureModel(assetManager);
+
+		//this.geometry = new AbstractBillboard(assetManager, "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
+		this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
+		geometry.setLocalTranslation(-COLL_WIDTH/2, -COLL_HEIGHT, 0); // Keep origin in centre
+
 		main_node.attachChild(geometry);
 
-		//this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
-		//geometry.setLocalTranslation(-COLL_WIDTH/2, -COLL_HEIGHT/2, 0); // Keep origin in centre
-		//main_node.attachChild(geometry);
-
-		main_node.setLocalTranslation(new Vector3f(x, COLL_HEIGHT/2, z));
+		//main_node.setLocalTranslation(new Vector3f(x, COLL_HEIGHT/2, z));
+		main_node.setLocalTranslation(new Vector3f(x, 0, z));
 
 		this.main_node.updateModelBound();
 
@@ -98,7 +101,7 @@ public class Monster extends Entity implements IProcessable {
 
 		this.getMainNode().lookAt(super.game.player.getGeometry().getWorldTranslation(), Vector3f.UNIT_Y);
 
-		FrustumIntersect insideoutside = game.getInsideOutside(this);
+		FrustumIntersect insideoutside = game.getInsideOutside(this); //this.getGeometry().getWorldTranslation();
 		if (insideoutside == FrustumIntersect.Outside || Settings.MONSTER_ALWAYS_MOVES) { // Only move if we can't be seen
 			/*Vector3f player_pos = game.player.getGeometry().getWorldTranslation(); 
 			float left_dist = this.left_node.getWorldTranslation().distance(player_pos);

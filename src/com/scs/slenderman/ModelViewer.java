@@ -37,8 +37,10 @@ public class ModelViewer extends SimpleApplication {
 		//Spatial model = assetManager.loadModel("Models/cemetery/grave5.obj"); // Crypt
 		//Spatial model = assetManager.loadModel("Models/cemetery/grave6.obj"); // Long grave
 		//Spatial model = assetManager.loadModel("Models/arbol_seco.blend");
-		Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this?
-		
+		//Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this?
+		Spatial model = assetManager.loadModel("Models/Tree_Creature.blend");
+		model.scale(0.1f);
+
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();
 

@@ -20,7 +20,7 @@ public class Player extends Entity {
 	public BetterCharacterControl playerControl;
 
 	private List<AudioNode> audio_node_footsteps = new ArrayList<>();
-	private float time_until_next_footstep_sfx = 10;
+	private float time_until_next_footstep_sfx = 1;
 	private int next_footstep_sound = 0;
 	public boolean walking = false;
 
@@ -83,7 +83,7 @@ public class Player extends Entity {
 					time_until_next_footstep_sfx = FOOTSTEP_INTERVAL;
 				}
 			} else {
-				time_until_next_footstep_sfx = 0;
+				//time_until_next_footstep_sfx = 0;
 			}
 		} else {
 			//todo JMEFunctions.r

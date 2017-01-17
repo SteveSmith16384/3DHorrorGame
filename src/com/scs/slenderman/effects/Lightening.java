@@ -32,7 +32,7 @@ public class Lightening implements IProcessable {
 				game.getViewPort().setBackgroundColor(new ColorRGBA(1f, 1f, 1f, 1f));
 				flash_on = true;
 				game.thunderclap_sound_node.play();
-				//HorrorGame.p("Lightening!");
+				HorrorGame.p("Lightening!");
 			}
 		}
 	}
