@@ -27,12 +27,13 @@ public class Settings {
 	public static final int MAP_FENCE_LR = 4;
 	public static final int MAP_FENCE_FB = 5;
 	public static final int MAP_MEDIEVAL_STATUE = 6;
-	public static final int MAP_CROSS = 7;
-	public static final int MAP_GRAVESTONE = 8;
-	public static final int MAP_LARGE_GRAVESTONE = 9;
-	public static final int MAP_PILLAR = 10;
-	public static final int MAP_CRYPT = 11;
-	public static final int MAP_LONG_GRAVE = 12;
+	public static final int MAP_CROSS = 7; // unused
+	public static final int MAP_GRAVESTONE = 8;// unused
+	public static final int MAP_LARGE_GRAVESTONE = 9;// unused
+	public static final int MAP_PILLAR = 10;// unused
+	public static final int MAP_CRYPT = 11;// unused
+	public static final int MAP_LONG_GRAVE = 12;// unused
+	public static final int MAP_STONE_COFFIN = 13;
 	
 	// Key codes
 	public static final String KEY_RECORD = "record";

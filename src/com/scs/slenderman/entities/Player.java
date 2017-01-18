@@ -12,9 +12,9 @@ import com.jme3.scene.shape.Box;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.Settings;
 
-public class Player extends Entity {
+public class Player extends AbstractEntity {
 
-	private static final float FOOTSTEP_INTERVAL = 1f;
+	private static final float FOOTSTEP_INTERVAL = .5f;
 
 	private Geometry playerGeometry;
 	public BetterCharacterControl playerControl;
@@ -63,12 +63,6 @@ public class Player extends Entity {
 
 
 	@Override
-	public Geometry getGeometry() {
-		return playerGeometry;
-	}
-
-
-	@Override
 	public void process(float tpf) {
 		if (!game.isGameOver()) {
 			if (walking) {
@@ -86,7 +80,9 @@ public class Player extends Entity {
 				//time_until_next_footstep_sfx = 0;
 			}
 		} else {
-			//todo JMEFunctions.r
+			if (game.hasPlayerWon() == false) {
+				this.main_node.lookAt(game.monster.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
+			}
 		}
 
 	}
@@ -98,5 +94,5 @@ public class Player extends Entity {
 		this.game.bulletAppState.getPhysicsSpace().remove(this.playerControl);
 
 	}
-	
+
 }

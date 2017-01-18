@@ -33,7 +33,7 @@ public class DistanceToClosestCollectable implements IProcessable {
 	private void calcDistance() {
 		closestDistance = 9999;
 		for (Collectable c : game.coll_remaining) {
-			float dist = c.distance(game.player.getGeometry().getWorldTranslation());
+			float dist = c.distance(game.player.getMainNode().getWorldTranslation());
 			if (dist < closestDistance) {
 				closestDistance = dist;
 			}

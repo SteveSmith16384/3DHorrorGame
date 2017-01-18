@@ -12,7 +12,9 @@ public class MedievalStatueModel extends Node {
 		
 		Spatial s = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
 		//s.rotate(0, 90 * FastMath.DEG_TO_RAD, 0);
-	
+		s.scale(1.3f);
+		s.setLocalTranslation(0, .8f, 0);
+
 		this.attachChild(s);
 	}
 

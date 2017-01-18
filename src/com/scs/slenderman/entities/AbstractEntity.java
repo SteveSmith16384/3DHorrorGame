@@ -17,7 +17,7 @@ import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 
-public abstract class Entity implements IProcessable, Savable {
+public abstract class AbstractEntity implements IProcessable, Savable {
 	
 	private static final float TURN_SPEED = 1f;
 	
@@ -25,7 +25,7 @@ public abstract class Entity implements IProcessable, Savable {
 	protected Node main_node, left_node, right_node;
 	public String name;
 	
-	public Entity(HorrorGame _game, String _name) {
+	public AbstractEntity(HorrorGame _game, String _name) {
 		super();
 		
 		this.game = _game;
@@ -47,7 +47,7 @@ public abstract class Entity implements IProcessable, Savable {
 	 * Since the root_node contains everything including the (invisible) left & right nodes, this method is for getting the actual visible Geometry.
 	 * 
 	 */
-	public abstract Spatial getGeometry();
+	//public abstract Spatial getGeometry();
 	
 	public abstract void remove();
 	
@@ -66,7 +66,7 @@ public abstract class Entity implements IProcessable, Savable {
 	}
 
 
-	public float distance(Entity o) {
+	public float distance(AbstractEntity o) {
 		return distance(o.getMainNode().getWorldTranslation());
 	}
 
@@ -77,7 +77,7 @@ public abstract class Entity implements IProcessable, Savable {
 	}
 
 
-	public boolean canSee(Entity cansee) {
+	public boolean canSee(AbstractEntity cansee) {
 		Ray r = new Ray(this.getMainNode().getWorldTranslation(), cansee.getMainNode().getWorldTranslation().subtract(this.getMainNode().getWorldTranslation()).normalizeLocal());
 		//synchronized (module.objects) {
 		//if (go.collides) {
@@ -85,8 +85,8 @@ public abstract class Entity implements IProcessable, Savable {
 		Iterator<IProcessable> it = game.objects.iterator();
 		while (it.hasNext()) {
 			IProcessable o = it.next();
-			if (o instanceof Entity && o != this) {
-				Entity go = (Entity)o;
+			if (o instanceof AbstractEntity && o != this) {
+				AbstractEntity go = (AbstractEntity)o;
 				// if (go.collides) {
 					if (go.getMainNode().getWorldBound() != null) {
 						results.clear();

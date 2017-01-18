@@ -1,10 +1,11 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.unused;
 
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
+import com.scs.slenderman.entities.AbstractEntity;
 import com.scs.slenderman.shapes.CreateShapes;
 
-public class Stairs extends Entity {
+public class Stairs extends AbstractEntity {
 	
 	//private static final float STAIRS_WIDTH = 2f;
 	//private static final float STAIR_DEPTH = .4f;
@@ -35,10 +36,10 @@ public class Stairs extends Entity {
 	}
 
 	
-	@Override
+	/*@Override
 	public Spatial getGeometry() {
 		return this.main_node;
-	}
+	}*/
 
 	
 	@Override

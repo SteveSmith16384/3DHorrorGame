@@ -1,11 +1,12 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.unused;
 
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
-import com.scs.slenderman.models.LongGraveModel;
+import com.scs.slenderman.entities.AbstractEntity;
+import com.scs.slenderman.models.unused.LongGraveModel;
 
-public class LongGrave extends Entity {
+public class LongGrave extends AbstractEntity {
 	
 	private Spatial floor_geo;
 	private RigidBodyControl floor_phy;
@@ -31,10 +32,10 @@ public class LongGrave extends Entity {
 	}
 
 	
-	@Override
+	/*@Override
 	public Spatial getGeometry() {
 		return floor_geo;
-	}
+	}*/
 
 	
 	@Override

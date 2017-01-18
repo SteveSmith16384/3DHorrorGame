@@ -1,19 +1,20 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.unused;
 
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
-import com.scs.slenderman.models.PillarModel;
+import com.scs.slenderman.entities.AbstractEntity;
+import com.scs.slenderman.models.unused.LargeGravestoneModel;
 
-public class Pillar extends Entity {
+public class LargeGravestone extends AbstractEntity {
 	
 	private Spatial floor_geo;
 	private RigidBodyControl floor_phy;
 	
-	public Pillar(HorrorGame _game, float x, float z) {
-		super(_game, "Pillar");
+	public LargeGravestone(HorrorGame _game, float x, float z) {
+		super(_game, "LargeGravestone");
 		
-		floor_geo = new PillarModel(game.getAssetManager());
+		floor_geo = new LargeGravestoneModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
 		this.main_node.attachChild(floor_geo);
 		// todo - rotate random amount, and maybe scale slightly
@@ -31,11 +32,11 @@ public class Pillar extends Entity {
 	}
 
 	
-	@Override
+	/*@Override
 	public Spatial getGeometry() {
 		return floor_geo;
 	}
-
+*/
 	
 	@Override
 	public void remove() {

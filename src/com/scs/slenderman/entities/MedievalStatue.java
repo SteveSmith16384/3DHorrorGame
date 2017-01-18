@@ -3,19 +3,19 @@ package com.scs.slenderman.entities;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
-import com.scs.slenderman.models.Tree_arbol_seco_Model;
+import com.scs.slenderman.models.MedievalStatueModel;
 
-public class Tree extends AbstractEntity {
+public class MedievalStatue extends AbstractEntity {
 	
 	private Spatial floor_geo;
 	private RigidBodyControl floor_phy;
 	
-	public Tree(HorrorGame _game, float x, float z) {
-		super(_game, "Tree");
+	public MedievalStatue(HorrorGame _game, float x, float z) {
+		super(_game, "MedievalStatue");
 		
-		floor_geo = new Tree_arbol_seco_Model(game.getAssetManager());
+		floor_geo = new MedievalStatueModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
-		floor_geo.scale(1f + (HorrorGame.rnd.nextFloat()));
+		//floor_geo.scale(1f + (HorrorGame.rnd.nextFloat()));
 		floor_geo.rotate(0, (float)(HorrorGame.rnd.nextFloat() * Math.PI), 0); // rotate random amount, and maybe scale slightly
 
 		this.main_node.attachChild(floor_geo);
@@ -40,5 +40,4 @@ public class Tree extends AbstractEntity {
 		this.game.bulletAppState.getPhysicsSpace().remove(this.floor_phy);
 		
 	}
-	
 }

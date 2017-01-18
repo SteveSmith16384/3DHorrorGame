@@ -11,7 +11,7 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -65,6 +65,28 @@ public class JMEFunctions {
 		//rootNode.attachChild(g);
 		g.move(-size/2, 0, -size/2);
 		return g;
+	}
+
+
+	public static void TurnTowards_Gentle(Spatial spatial, Vector3f target, float pcent) {
+		if (pcent <= 0) {
+			return; //throw new RuntimeException("Invalid pcent: " + pcent);
+		}
+		if (pcent > 1) {
+			pcent = 1;
+		}
+		Vector3f dir_to_target = target.subtract(spatial.getWorldTranslation()).normalizeLocal();
+		Quaternion target_q = new Quaternion();
+		target_q.lookAt(dir_to_target, Vector3f.UNIT_Y);
+		Quaternion our_q = spatial.getWorldRotation();
+		Quaternion new_q = new Quaternion();
+		if (target_q.dot(our_q) > 0.99f) {
+			// Just look at it
+			new_q = target_q;
+		} else {
+			new_q.slerp(our_q, target_q, pcent);
+		}
+		spatial.setLocalRotation(new_q);
 	}
 
 

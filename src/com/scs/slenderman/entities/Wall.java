@@ -13,7 +13,7 @@ import com.jme3.texture.Texture.WrapMode;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.Settings;
 
-public class Wall extends Entity {
+public class Wall extends AbstractEntity {
 
 	private static final float WIDTH = 2f;
 	private static final float HEIGHT = 1.5f;
@@ -66,10 +66,10 @@ public class Wall extends Entity {
 	}
 
 
-	@Override
+	/*@Override
 	public Geometry getGeometry() {
 		return geometry;
-	}
+	}*/
 
 
 	@Override

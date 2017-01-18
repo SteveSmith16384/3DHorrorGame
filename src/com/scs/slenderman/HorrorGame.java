@@ -30,17 +30,13 @@ import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import com.scs.slenderman.effects.DistanceToClosestCollectable;
 import com.scs.slenderman.effects.Lightening;
+import com.scs.slenderman.entities.AbstractEntity;
 import com.scs.slenderman.entities.Collectable;
-import com.scs.slenderman.entities.Cross;
-import com.scs.slenderman.entities.Crypt;
-import com.scs.slenderman.entities.Entity;
 import com.scs.slenderman.entities.Fence;
-import com.scs.slenderman.entities.Gravestone;
-import com.scs.slenderman.entities.LargeGravestone;
-import com.scs.slenderman.entities.LongGrave;
+import com.scs.slenderman.entities.MedievalStatue;
 import com.scs.slenderman.entities.Monster;
-import com.scs.slenderman.entities.Pillar;
 import com.scs.slenderman.entities.Player;
+import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
@@ -53,20 +49,20 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * TODO:-
- * Get rid of getMainNode/ getMainGemoetry!
- * Find models with textures
- * On-screen log for debugging
- * Copy turntowards function
- * Test Evil Tree
+ * TEST - Win game - float up
+ * Game Over effect - Spin and face enemy when caught
+ * Test Medieval Statue in game
  * Create a CSV map
- * DONE Only footstep when walking
- * DONE Show distance to nearest collectable
+ * Create my own simple models
+ * 
+ * Evil Tree too high
+ * Find models with textures
  * Show churches in the distance
  * Map: Different areas of map - forest, cemetary, open area, buildings
  * Map: Put border of fences around map
- * Win game - float up
+ * Colour screen red when dead - copy from Ares
  * 
- * Game Over effect - Spin and face enemy when caught
+ * Use different method to indicate how close a collectable is
  * Blood drips down when caught
  * Change tex on grave when not looked at, to show blood
  * Map changes when not viewed
@@ -124,7 +120,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private Vector3f camLeft = new Vector3f();
 
 	private SpotLight spotlight;
-	private Monster monster;
+	public Monster monster;
 	private HUD hud;
 	public List<Collectable> coll_remaining = new ArrayList<>();
 	private boolean game_over = false;
@@ -166,6 +162,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 	public void simpleInitApp() {
 		assetManager.registerLocator("assets/", FileLocator.class); // default
+		assetManager.registerLocator("assets/Textures/", FileLocator.class);
 
 		BitmapFont guiFont_small = assetManager.loadFont("Interface/Fonts/Console.fnt");
 
@@ -283,7 +280,10 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		if (!game_over) {
 			float dist = 0;
 			if (monster != null) {
-				dist = this.monster.getGeometry().getWorldTranslation().distance(this.player.getGeometry().getWorldTranslation());
+				dist = this.monster.getMainNode().getWorldTranslation().distance(this.player.getMainNode().getWorldTranslation());
+				if (dist <= 1) {
+					this.gameOver(false);
+				}
 			}
 			text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.coll_remaining.size() + "\nClosest: " + this.closest.closestDistance);
 		} else {
@@ -335,56 +335,62 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_TREE:
-					//p("Adding tree to " + x + "," + z);
-					Tree tree = new Tree(this, x, z); // todo - need to add these to a list so we can remove them at the end
+					AbstractEntity tree = new Tree(this, x, z); // todo - need to add these to a list so we can remove them at the end
 					this.rootNode.attachChild(tree.getMainNode());
 					break;
 
 				case Settings.MAP_FENCE_LR:
-					Fence fence1 = new Fence(this, x, z, 0);
+					AbstractEntity fence1 = new Fence(this, x, z, 0);
 					this.rootNode.attachChild(fence1.getMainNode());
 					break;
 
 				case Settings.MAP_FENCE_FB:
-					Fence fence2 = new Fence(this, x, z, 90);
+					AbstractEntity fence2 = new Fence(this, x, z, 90);
 					this.rootNode.attachChild(fence2.getMainNode());
 					break;
 
 				case Settings.MAP_MEDIEVAL_STATUE:
-					// todo
+					AbstractEntity ms = new MedievalStatue(this, x, z);
+					this.rootNode.attachChild(ms.getMainNode());
 					break;
 
-				case Settings.MAP_CROSS:
-					Cross cross = new Cross(this, x, z);
+				/*case Settings.MAP_CROSS:
+					AbstractEntity cross = new Cross(this, x, z);
 					this.rootNode.attachChild(cross.getMainNode());
 					break;
 
 				case Settings.MAP_GRAVESTONE:
-					Gravestone gs = new Gravestone(this, x, z);
+					AbstractEntity gs = new Gravestone(this, x, z);
 					this.rootNode.attachChild(gs.getMainNode());
 					break;
 
 				case Settings.MAP_LARGE_GRAVESTONE:
-					LargeGravestone lgs = new LargeGravestone(this, x, z);
+					AbstractEntity lgs = new LargeGravestone(this, x, z);
 					this.rootNode.attachChild(lgs.getMainNode());
 					break;
 
 				case Settings.MAP_PILLAR:
-					Pillar p = new Pillar(this, x, z);
+					AbstractEntity p = new Pillar(this, x, z);
 					this.rootNode.attachChild(p.getMainNode());
 					break;
 
 				case Settings.MAP_CRYPT:
-					Crypt c = new Crypt(this, x, z);
+					AbstractEntity c = new Crypt(this, x, z);
 					this.rootNode.attachChild(c.getMainNode());
 					break;
 
 				case Settings.MAP_LONG_GRAVE:
-					LongGrave lg = new LongGrave(this, x, z);
+					AbstractEntity lg = new LongGrave(this, x, z);
 					this.rootNode.attachChild(lg.getMainNode());
+					break;*/
+
+				case Settings.MAP_STONE_COFFIN:
+					AbstractEntity gs = new StoneCoffin(this, x, z);
+					this.rootNode.attachChild(gs.getMainNode());
 					break;
 
 				default:
+					p("Ignoring map code " + code);
 					//throw new RuntimeException("Unknown type:" + code);
 				}
 			}
@@ -510,8 +516,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	}
 
 
-	public FrustumIntersect getInsideOutside(Entity entity) {
-		FrustumIntersect insideoutside = cam.contains(entity.getGeometry().getWorldBound());
+	public FrustumIntersect getInsideOutside(AbstractEntity entity) {
+		FrustumIntersect insideoutside = cam.contains(entity.getMainNode().getWorldBound());
 		return insideoutside;
 	}
 
@@ -521,13 +527,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		//System.out.println(event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString());
 
 		Spatial ga = (Spatial)event.getObjectA().getUserObject(); 
-		Entity a = ga.getUserData(Settings.ENTITY);
+		AbstractEntity a = ga.getUserData(Settings.ENTITY);
 		/*if (a == null) {
 			throw new RuntimeException("Geometry " + ga.getName() + " has no entity");
 		}*/
 
 		Spatial gb = (Spatial)event.getObjectB().getUserObject(); 
-		Entity b = gb.getUserData(Settings.ENTITY);
+		AbstractEntity b = gb.getUserData(Settings.ENTITY);
 		/*if (b == null) {
 			throw new RuntimeException("Geometry " + gb.getName() + " has no entity");
 		}*/
@@ -540,9 +546,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 	public void gameOver(boolean _player_won) {
 		if (this.game_over == false) {
+			p("GAME OVER!");
 			this.game_over = true;
 			player_won =_player_won;
 			game_over_sound_node.play();
+			//player.playerControl.setGravity(new Vector3f(0f, 1f, 0f)); // float upwards
 		}
 	}
 

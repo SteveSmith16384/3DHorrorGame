@@ -13,9 +13,10 @@ import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 import com.scs.slenderman.JMEFunctions;
 import com.scs.slenderman.Settings;
+import com.scs.slenderman.models.TreeCreatureModel;
 import com.scs.slenderman.shapes.AbstractBillboard;
 
-public class Monster extends Entity implements IProcessable {
+public class Monster extends AbstractEntity implements IProcessable {
 
 	private static final float COLL_WIDTH = 1f;
 	private static final float COLL_HEIGHT = 2f;
@@ -47,10 +48,11 @@ public class Monster extends Entity implements IProcessable {
 		
 		//geometry = new TreeCreatureModel(assetManager);
 
-		//this.geometry = new AbstractBillboard(assetManager, "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
-		this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
-		geometry.setLocalTranslation(-COLL_WIDTH/2, -COLL_HEIGHT, 0); // Keep origin in centre
-
+		// 2D ghost
+		this.geometry = new AbstractBillboard(assetManager, "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
+		//this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
+		geometry.setLocalTranslation(-COLL_WIDTH/2, 0, 0); // Keep origin at bottom
+		
 		main_node.attachChild(geometry);
 
 		//main_node.setLocalTranslation(new Vector3f(x, COLL_HEIGHT/2, z));
@@ -99,7 +101,7 @@ public class Monster extends Entity implements IProcessable {
 			next_scary_sound = 20 + HorrorGame.rnd.nextInt(10);
 		}
 
-		this.getMainNode().lookAt(super.game.player.getGeometry().getWorldTranslation(), Vector3f.UNIT_Y);
+		this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
 
 		FrustumIntersect insideoutside = game.getInsideOutside(this); //this.getGeometry().getWorldTranslation();
 		if (insideoutside == FrustumIntersect.Outside || Settings.MONSTER_ALWAYS_MOVES) { // Only move if we can't be seen
@@ -118,10 +120,10 @@ public class Monster extends Entity implements IProcessable {
 	}
 
 
-	@Override
+	/*@Override
 	public Spatial getGeometry() {
 		return geometry;
-	}
+	}*/
 
 
 	@Override

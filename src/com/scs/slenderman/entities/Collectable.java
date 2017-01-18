@@ -11,7 +11,7 @@ import com.jme3.texture.Texture.WrapMode;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.Settings;
 
-public class Collectable extends Entity {
+public class Collectable extends AbstractEntity {
 
 	private static final float SIZE = .1f;
 
@@ -58,10 +58,10 @@ public class Collectable extends Entity {
 	}
 
 
-	@Override
+	/*@Override
 	public Geometry getGeometry() {
 		return geometry;
-	}
+	}*/
 
 
 	@Override

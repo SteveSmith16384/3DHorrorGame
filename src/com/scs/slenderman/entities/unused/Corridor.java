@@ -1,10 +1,11 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.unused;
 
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
+import com.scs.slenderman.entities.AbstractEntity;
 import com.scs.slenderman.shapes.CreateShapes;
 
-public class Corridor extends Entity {
+public class Corridor extends AbstractEntity {
 
 	//private static final float CORRIDOR_WIDTH = 2;
 	private static final float WALL_THICKNESS = .1f;
@@ -46,10 +47,10 @@ public class Corridor extends Entity {
 
 	}
 
-	@Override
+	/*@Override
 	public Spatial getGeometry() {
 		return this.main_node;
-	}
+	}*/
 
 	@Override
 	public void remove() {

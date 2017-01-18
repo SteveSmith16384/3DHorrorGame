@@ -1,13 +1,13 @@
 package com.scs.slenderman;
 
 import com.scs.slenderman.entities.Collectable;
-import com.scs.slenderman.entities.Entity;
+import com.scs.slenderman.entities.AbstractEntity;
 import com.scs.slenderman.entities.Monster;
 import com.scs.slenderman.entities.Player;
 
 public class CollisionLogic {
 
-	public static void collision(HorrorGame game, Entity a, Entity b) {
+	public static void collision(HorrorGame game, AbstractEntity a, AbstractEntity b) {
 		if (a instanceof Player && b instanceof Collectable) {
 			Player_Collectable(game, (Player)a, (Collectable)b);
 		}
@@ -33,8 +33,8 @@ public class CollisionLogic {
 	
 
 	private static void Player_Monster(HorrorGame game, Player player, Monster col) {
-		//game.p("Hit monster!");
-		game.gameOver(false);
+		// Do nothing - we do this by checking the distance
+		//game.gameOver(false);
 	}
 	
 }

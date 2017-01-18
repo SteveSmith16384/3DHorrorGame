@@ -23,34 +23,40 @@ public class ModelViewer extends SimpleApplication {
 	public void simpleInitApp() {
 		assetManager.registerLocator("assets/", FileLocator.class); // default
 		
-		//cam.setFrustumPerspective(45, settings.getWidth() / settings.getHeight(), .1f, 1000);
+		//assetManager.registerLocator("assets/Models/", FileLocator.class);
+		//assetManager.registerLocator("assets/Textures/", FileLocator.class);
+		/*assetManager.registerLocator("assets/Sound/", FileLocator.class);
+		assetManager.registerLocator("assets/Shaders/", FileLocator.class);
+		*/
+		
 		cam.setFrustumPerspective(60, settings.getWidth() / settings.getHeight(), .1f, 100);
 
 		setupLight();
 		
 		//Spatial model = assetManager.loadModel("Models/big_wood_barrel.obj"); // todo - use this
 		//model.scale(.01f);
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave1.obj"); // Cross
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave2.obj"); // Gravestone 
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave3.obj"); // Large Gravestone 
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave4.obj"); // Pillar
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave5.obj"); // Crypt
-		//Spatial model = assetManager.loadModel("Models/cemetery/grave6.obj"); // Long grave
+
 		//Spatial model = assetManager.loadModel("Models/arbol_seco.blend");
 		//Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this?
-		Spatial model = assetManager.loadModel("Models/Tree_Creature.blend");
-		model.scale(0.1f);
+		
+		/*Spatial model = assetManager.loadModel("Models/Tree_Creature.blend");
+		model.scale(0.1f);*/
 
+		Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
+		model.setLocalTranslation(0, .8f, 0);
+
+		/*Spatial model = assetManager.loadModel("Models/Stone_coffin.obj");
+		model.scale(0.1f);
+		JMEFunctions.SetTextureOnSpatial(assetManager, model, "stonecoffin.tga");*/
+		
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();
 
-		//model.setLocalTranslation(0, 0, 5);
 		rootNode.attachChild(model);
 
 		this.rootNode.attachChild(JMEFunctions.GetGrid(assetManager, 10));
 		
-		this.flyCam.setMoveSpeed(6f);
-		//cam.update();
+		this.flyCam.setMoveSpeed(12f);
 		
 		rootNode.updateGeometricState();
 
@@ -67,11 +73,10 @@ public class ModelViewer extends SimpleApplication {
 
 		// We add light so we see the scene
 		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(3f));
+		al.setColor(ColorRGBA.White.mult(4f));
 		rootNode.addLight(al);
 
 		DirectionalLight dirlight = new DirectionalLight(); // FSR need this for textures to show
-		//dirlight.set
 		rootNode.addLight(dirlight);
 
 	}
