@@ -57,15 +57,14 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * HOME:-
- * Add SimpleCross to map
- * Add skull and skull2 to map
- * Add 2 monsters to map
+ * Add skull2 to map
  * Create logo
  * Kids record scary noises
  * 
  * TODO:-
  * DONE Player hitting monster straight away
- * Find brick tex
+ * Test skull2 on map
+ * Use brick tex
  * Change tex on simplepillar
  * Create my own simple models
  * Lean simplecross back
