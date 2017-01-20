@@ -3,24 +3,24 @@ package com.scs.slenderman.entities;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
-import com.scs.slenderman.models.StoneCoffinModel;
+import com.scs.slenderman.models.SkullModel;
 
-public class StoneCoffin extends AbstractEntity {
+public class Skull extends AbstractEntity {
 	
 	private Spatial floor_geo;
 	private RigidBodyControl floor_phy;
 	
-	public StoneCoffin(HorrorGame _game, float x, float z) {
-		super(_game, "StoneCoffin");
+	public Skull(HorrorGame _game, float x, float z) {
+		super(_game, "Skull");
 		
-		floor_geo = new StoneCoffinModel(game.getAssetManager());
+		floor_geo = new SkullModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
-		//floor_geo.scale(1f + (HorrorGame.rnd.nextFloat()));
 		floor_geo.rotate(0, (float)(HorrorGame.rnd.nextFloat() * Math.PI * .1f), 0); // rotate random amount, and maybe scale slightly
 
 		this.main_node.attachChild(floor_geo);
+		this.main_node.setLocalTranslation(0, 1f, 0); // Drop from sky
 
-		floor_phy = new RigidBodyControl(0f);
+		floor_phy = new RigidBodyControl(1f);
 		floor_geo.addControl(floor_phy);
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);
 		floor_phy.setFriction(1f);
@@ -40,5 +40,4 @@ public class StoneCoffin extends AbstractEntity {
 		this.game.bulletAppState.getPhysicsSpace().remove(this.floor_phy);
 		
 	}
-	
 }

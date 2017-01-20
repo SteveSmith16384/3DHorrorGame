@@ -11,6 +11,7 @@ public class SkullModel extends Node {
 		super("SkullModel");
 		
 		Spatial s = assetManager.loadModel("Models/skull/obj/skull_monster.obj");
+		s.scale(0.1f);
 		s.rotate(0, 90 * FastMath.DEG_TO_RAD, 0);
 	
 		this.attachChild(s);

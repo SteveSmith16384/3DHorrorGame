@@ -2,7 +2,7 @@ package com.scs.slenderman;
 
 public class Settings {
 	
-	public static final boolean DEBUG_LIGHT = true;
+	public static final boolean DEBUG_LIGHT = false;
 	public static final boolean MONSTER_ALWAYS_MOVES = false;
 	public static final boolean SHOW_LOGO = false;
 	
@@ -29,6 +29,9 @@ public class Settings {
 	public static final int MAP_MEDIEVAL_STATUE = 6;
 	public static final int MAP_SIMPLE_PILLAR = 7;
 	public static final int MAP_MONSTER_STATUE = 8;
+	public static final int MAP_SIMPLE_CROSS = 9;
+	public static final int MAP_SKULL = 10;
+	public static final int MAP_SKULL2 = 11;
 	public static final int MAP_STONE_COFFIN = 13;
 	
 	// Key codes

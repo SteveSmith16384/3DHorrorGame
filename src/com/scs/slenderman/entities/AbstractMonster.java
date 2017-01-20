@@ -18,7 +18,7 @@ import com.scs.slenderman.shapes.AbstractBillboard;
 
 public abstract class AbstractMonster extends AbstractEntity implements IProcessable {
 
-	private static final float SPEED = 1f;
+	private static final float SPEED = .7f;
 
 	private Spatial geometry;
 	private RigidBodyControl floor_phy;

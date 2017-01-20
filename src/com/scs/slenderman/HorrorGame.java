@@ -38,7 +38,10 @@ import com.scs.slenderman.entities.MedievalStatue;
 import com.scs.slenderman.entities.Monster2DGhost;
 import com.scs.slenderman.entities.MonsterStatue;
 import com.scs.slenderman.entities.Player;
+import com.scs.slenderman.entities.SimpleCross;
 import com.scs.slenderman.entities.SimplePillar;
+import com.scs.slenderman.entities.Skull;
+import com.scs.slenderman.entities.Skull2;
 import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
@@ -53,24 +56,29 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 1) Must find something in a maze before time runs out, otherwise they are trapped
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
- * TODO:-
- * Create my own simple models - cross
- * Create logo
- * Find brick tex
- * Change tex on simplepuillar
- * Use new skulls
+ * HOME:-
+ * Add SimpleCross to map
+ * Add skull and skull2 to map
  * Add 2 monsters to map
- * Add skull models lying around
- * More plant models
+ * Create logo
+ * Kids record scary noises
+ * 
+ * TODO:-
+ * Fog still not working
  * Player hitting monster straight away
+ * Create my own simple models
+ * Lean simplecross back
+ * OGA - mention on statue model
+ * Find models with textures
+ * Find brick tex
+ * Change tex on simplepillar
+ * More plant models
  * TEST - Win game - float up
  * TEST Game Over effect - Spin and face enemy when caught
  * 
  * Move a direction light for nice effect
- * Kids record scary noises
  * Mention on OpengameArt
  * Evil Tree too high
- * Find models with textures
  * 
  * Mention on JavaGaming once monster in vid
  * Stuff rises out of ground
@@ -200,7 +208,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			map = new CSVMap("./maps/map1.csv");
 		} catch (IOException e) {
 			e.printStackTrace();
-			
+
 			map = new ArrayMap(); //ArrayMap();//;RandomMap();//
 		}*/
 		map = new ArrayMap(); //ArrayMap();//;RandomMap();//
@@ -296,7 +304,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			if (monster != null) {
 				dist = this.monster.getMainNode().getWorldTranslation().distance(this.player.getMainNode().getWorldTranslation());
 				if (dist <= 1) {
-					//todo - re-add this.gameOver(false);
+					//todo - re-add 
+					this.gameOver(false);
 				}
 			}
 			text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.coll_remaining.size() + "\nClosest: " + this.closest.closestDistance);
@@ -385,9 +394,24 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					this.rootNode.attachChild(gs.getMainNode());
 					break;
 
+				case Settings.MAP_SIMPLE_CROSS:
+					AbstractEntity cross = new SimpleCross(this, x, z);
+					this.rootNode.attachChild(cross.getMainNode());
+					break;
+
+				case Settings.MAP_SKULL:
+					AbstractEntity skull = new Skull(this, x, z);
+					this.rootNode.attachChild(skull.getMainNode());
+					break;
+
+				case Settings.MAP_SKULL2:
+					AbstractEntity skull2 = new Skull2(this, x, z);
+					this.rootNode.attachChild(skull2.getMainNode());
+					break;
+
 				default:
-					p("Ignoring map code " + code);
-					//throw new RuntimeException("Unknown type:" + code);
+					//p("Ignoring map code " + code);
+					throw new RuntimeException("Unknown type:" + code);
 				}
 			}
 		}
@@ -414,11 +438,9 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		}
 
 		if (Settings.DEBUG_LIGHT == false) {
-			{
-				AmbientLight al = new AmbientLight();
-				al.setColor(ColorRGBA.White.mult(.6f));
-				rootNode.addLight(al);
-			}
+			AmbientLight al = new AmbientLight();
+			al.setColor(ColorRGBA.White.mult(.6f));
+			rootNode.addLight(al);
 
 			this.spotlight = new SpotLight();
 			spotlight.setColor(ColorRGBA.White.mult(3f));
@@ -427,12 +449,9 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			spotlight.setSpotOuterAngle(FastMath.QUARTER_PI / 2);
 			rootNode.addLight(spotlight);
 		} else {
-			{
-				AmbientLight al = new AmbientLight();
-				al.setColor(ColorRGBA.White.mult(3));
-				rootNode.addLight(al);
-			}
-
+			AmbientLight al = new AmbientLight();
+			al.setColor(ColorRGBA.White.mult(3));
+			rootNode.addLight(al);
 		}
 	}
 
@@ -547,16 +566,16 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		}
 	}
 
-	
+
 	public boolean isGameOver() {
 		return this.game_over;
 	}
-	
+
 
 	public boolean hasPlayerWon() {
 		return this.player_won;
 	}
-	
+
 
 	private void playRandomScarySound() {
 		int i = rnd.nextInt(2);

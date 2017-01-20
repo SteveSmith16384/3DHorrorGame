@@ -15,25 +15,21 @@ import com.scs.slenderman.Settings;
 
 public class SimpleCross extends AbstractEntity { // todo - finish this
 
-	private static final float THICKNESS = .3f;
-	private static final float WIDTH = .5f;
-	private static final float HEIGHT = .8f;
+	private static final float THICKNESS = .2f;
+	private static final float WIDTH = .7f;
+	private static final float HEIGHT = 1f;
 	private static final String TEX = "Textures/bricktex.jpg";
 
-	private Geometry geometry;
+	//private Geometry geometry;
 	private RigidBodyControl floor_phy;
-	
+
 	public SimpleCross(HorrorGame _game, float x, float z) {
 		super(_game, "SimpleCross");
 
-		Box vert = new Box(WIDTH/2, HEIGHT/2, .1f);
-		vert.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
-		geometry = new Geometry("Fence", vert);
 		TextureKey key3 = new TextureKey(TEX);
 		key3.setGenerateMips(true);
 		Texture tex3 = game.getAssetManager().loadTexture(key3);
 		tex3.setWrap(WrapMode.Repeat);
-
 		Material floor_mat = null;
 		if (Settings.LIGHTING) {
 			floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
@@ -42,18 +38,32 @@ public class SimpleCross extends AbstractEntity { // todo - finish this
 			floor_mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 			floor_mat.setTexture("ColorMap", tex3);
 		}
-		geometry.setMaterial(floor_mat);
-		
-		this.main_node.attachChild(geometry);
-		
+
+		{
+			Box vert = new Box(THICKNESS/2, HEIGHT/2, THICKNESS/2);
+			vert.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
+			Geometry geometry = new Geometry("vert", vert);
+			geometry.setMaterial(floor_mat);
+			this.main_node.attachChild(geometry);
+		}
+
+		{
+			Box horiz = new Box(WIDTH/2, THICKNESS/2, THICKNESS/3);
+			horiz.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
+			Geometry geometry = new Geometry("horiz", horiz);
+			geometry.setMaterial(floor_mat);
+			geometry.setLocalTranslation(0, .1f, z);
+			this.main_node.attachChild(geometry);
+		}
+
 		main_node.setLocalTranslation(x+(WIDTH/2), HEIGHT/2, z+0.5f);
 
 		floor_phy = new RigidBodyControl(0);
 		main_node.addControl(floor_phy);
 
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);
-		
-		this.geometry.setUserData(Settings.ENTITY, this);
+
+		this.main_node.setUserData(Settings.ENTITY, this);
 
 	}
 
@@ -68,7 +78,7 @@ public class SimpleCross extends AbstractEntity { // todo - finish this
 	public void remove() {
 		this.main_node.removeFromParent();
 		this.game.bulletAppState.getPhysicsSpace().remove(this.floor_phy);
-		
+
 	}
 
 
