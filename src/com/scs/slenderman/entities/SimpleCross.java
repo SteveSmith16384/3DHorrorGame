@@ -13,22 +13,23 @@ import com.jme3.texture.Texture.WrapMode;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.Settings;
 
-public class Fence extends AbstractEntity {
+public class SimpleCross extends AbstractEntity { // todo - finish this
 
-	private static final float WIDTH = 2f;
-	private static final float HEIGHT = 1.5f;
+	private static final float THICKNESS = .3f;
+	private static final float WIDTH = .5f;
+	private static final float HEIGHT = .8f;
+	private static final String TEX = "Textures/bricktex.jpg";
 
 	private Geometry geometry;
 	private RigidBodyControl floor_phy;
 	
-	public Fence(HorrorGame _game, float x, float z, float rot) {
-		super(_game, "Fence");
+	public SimpleCross(HorrorGame _game, float x, float z) {
+		super(_game, "SimpleCross");
 
-		Box box1 = new Box(WIDTH/2, HEIGHT/2, .1f);
-		box1.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
-		geometry = new Geometry("Fence", box1);
-		//TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
-		TextureKey key3 = new TextureKey("Textures/bricktex.jpg");
+		Box vert = new Box(WIDTH/2, HEIGHT/2, .1f);
+		vert.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
+		geometry = new Geometry("Fence", vert);
+		TextureKey key3 = new TextureKey(TEX);
 		key3.setGenerateMips(true);
 		Texture tex3 = game.getAssetManager().loadTexture(key3);
 		tex3.setWrap(WrapMode.Repeat);
@@ -41,17 +42,14 @@ public class Fence extends AbstractEntity {
 			floor_mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 			floor_mat.setTexture("ColorMap", tex3);
 		}
-		floor_mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		geometry.setMaterial(floor_mat);
-		geometry.setQueueBucket(Bucket.Transparent);
 		
 		this.main_node.attachChild(geometry);
-		float rads = (float)Math.toRadians(rot);
-		main_node.rotate(0, rads, 0);
+		
 		main_node.setLocalTranslation(x+(WIDTH/2), HEIGHT/2, z+0.5f);
 
 		floor_phy = new RigidBodyControl(0);
-		geometry.addControl(floor_phy);
+		main_node.addControl(floor_phy);
 
 		game.bulletAppState.getPhysicsSpace().add(floor_phy);
 		

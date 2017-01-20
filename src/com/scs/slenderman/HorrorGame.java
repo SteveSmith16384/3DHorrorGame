@@ -31,11 +31,14 @@ import com.jme3.system.AppSettings;
 import com.scs.slenderman.effects.DistanceToClosestCollectable;
 import com.scs.slenderman.effects.Lightening;
 import com.scs.slenderman.entities.AbstractEntity;
+import com.scs.slenderman.entities.AbstractMonster;
 import com.scs.slenderman.entities.Collectable;
 import com.scs.slenderman.entities.Fence;
 import com.scs.slenderman.entities.MedievalStatue;
-import com.scs.slenderman.entities.Monster;
+import com.scs.slenderman.entities.Monster2DGhost;
+import com.scs.slenderman.entities.MonsterStatue;
 import com.scs.slenderman.entities.Player;
+import com.scs.slenderman.entities.SimplePillar;
 import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
@@ -44,43 +47,47 @@ import com.scs.slenderman.map.IMapInterface;
 import com.scs.slenderman.shapes.CreateShapes;
 
 /**
+ * SOLE COLLECTOR
+ * 
  * GAMEPLAY
  * 1) Must find something in a maze before time runs out, otherwise they are trapped
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * TODO:-
+ * Create my own simple models - cross
+ * Create logo
+ * Find brick tex
+ * Change tex on simplepuillar
+ * Use new skulls
+ * Add 2 monsters to map
+ * Add skull models lying around
+ * More plant models
+ * Player hitting monster straight away
  * TEST - Win game - float up
- * Game Over effect - Spin and face enemy when caught
- * Test Medieval Statue in game
- * Create a CSV map
- * Create my own simple models
+ * TEST Game Over effect - Spin and face enemy when caught
  * 
+ * Move a direction light for nice effect
+ * Kids record scary noises
+ * Mention on OpengameArt
  * Evil Tree too high
  * Find models with textures
- * Show churches in the distance
- * Map: Different areas of map - forest, cemetary, open area, buildings
- * Map: Put border of fences around map
- * Colour screen red when dead - copy from Ares
  * 
+ * Mention on JavaGaming once monster in vid
+ * Stuff rises out of ground
  * Use different method to indicate how close a collectable is
- * Blood drips down when caught
  * Change tex on grave when not looked at, to show blood
  * Map changes when not viewed
  * Smoke effect
  * Use atmospherealien
- * Use working models
  * Search for todos
  * Ghosts rise out of graves
- * Change ground tex
  * Add tex to collectable
  * Show face at end if caught
- * Create logo
  * Children's playground
  * Stuff to read, e.g. notes on walls
  * Walls move when player not looking at them
  * Graffiti that appears when the player stops looking at a wall
  * Player turns round to see face looking at him - and then it runs away
- * Kids record scary noises
  * Try bumpy floor
  * Fog changes distance - player needs to collect lights?
  * Buzz-saw sfx
@@ -89,7 +96,6 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Skulls rolling down stairs
  * Rope hanging from tree, blowing in wind
  * Eyes that watch you
- * Move a direction light for nice effect
  * Floor slowly gives way
  * Episodes - start episode 2 by finding a house
  * SCP style
@@ -106,8 +112,8 @@ import com.scs.slenderman.shapes.CreateShapes;
 public class HorrorGame extends SimpleApplication implements ActionListener, PhysicsCollisionListener {
 
 	// Our movement speed
-	private static final float speed = 4f;
-	private static final float strafeSpeed = 4f;
+	private static final float speed = 3f;
+	private static final float strafeSpeed = 3f;
 
 	public BulletAppState bulletAppState;
 
@@ -120,7 +126,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private Vector3f camLeft = new Vector3f();
 
 	private SpotLight spotlight;
-	public Monster monster;
+	public AbstractMonster monster;
 	private HUD hud;
 	public List<Collectable> coll_remaining = new ArrayList<>();
 	private boolean game_over = false;
@@ -189,7 +195,15 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		rootNode.attachChild(player.getMainNode());
 		this.objects.add(player);
 
-		IMapInterface map = new ArrayMap();//;RandomMap();//
+		IMapInterface map;
+		/*try {
+			map = new CSVMap("./maps/map1.csv");
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+			map = new ArrayMap(); //ArrayMap();//;RandomMap();//
+		}*/
+		map = new ArrayMap(); //ArrayMap();//;RandomMap();//
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/50, map.getWidth(), map.getDepth());
 
@@ -282,7 +296,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			if (monster != null) {
 				dist = this.monster.getMainNode().getWorldTranslation().distance(this.player.getMainNode().getWorldTranslation());
 				if (dist <= 1) {
-					this.gameOver(false);
+					//todo - re-add this.gameOver(false);
 				}
 			}
 			text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.coll_remaining.size() + "\nClosest: " + this.closest.closestDistance);
@@ -313,7 +327,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		for (int z=0 ; z<map.getDepth() ; z+= Settings.FLOOR_SECTION_SIZE) {
 			for (int x=0 ; x<map.getWidth() ; x+= Settings.FLOOR_SECTION_SIZE) {
 				//p("Creating floor at " + x + "," + z);
-				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, 0f, z, Settings.FLOOR_SECTION_SIZE, 0.1f, Settings.FLOOR_SECTION_SIZE, "Textures/mud.png");
+				CreateShapes.CreateFloorTL(assetManager, bulletAppState, this.rootNode, x, 0f, z, Settings.FLOOR_SECTION_SIZE, 0.1f, Settings.FLOOR_SECTION_SIZE, "Textures/DirtWithWeeds_S.jpg");
 			}			
 		}
 
@@ -326,12 +340,19 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_PLAYER:
-					player.playerControl.warp(new Vector3f(x, 6f, z));
+					player.playerControl.warp(new Vector3f(x, 2f, z));
 					break;
 
-				case Settings.MAP_MONSTER:
-					//this.monster.warp(x, z);
-					this.createMonster(x, z);
+				case Settings.MAP_MONSTER_GHOST:
+					monster = new Monster2DGhost(this, this.assetManager, x, z);
+					rootNode.attachChild(monster.getMainNode());
+					this.objects.add(monster);
+					break;
+
+				case Settings.MAP_MONSTER_STATUE:
+					monster = new MonsterStatue(this, this.assetManager, x, z);
+					rootNode.attachChild(monster.getMainNode());
+					this.objects.add(monster);
 					break;
 
 				case Settings.MAP_TREE:
@@ -354,35 +375,10 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					this.rootNode.attachChild(ms.getMainNode());
 					break;
 
-				/*case Settings.MAP_CROSS:
-					AbstractEntity cross = new Cross(this, x, z);
-					this.rootNode.attachChild(cross.getMainNode());
-					break;
-
-				case Settings.MAP_GRAVESTONE:
-					AbstractEntity gs = new Gravestone(this, x, z);
-					this.rootNode.attachChild(gs.getMainNode());
-					break;
-
-				case Settings.MAP_LARGE_GRAVESTONE:
-					AbstractEntity lgs = new LargeGravestone(this, x, z);
-					this.rootNode.attachChild(lgs.getMainNode());
-					break;
-
-				case Settings.MAP_PILLAR:
-					AbstractEntity p = new Pillar(this, x, z);
-					this.rootNode.attachChild(p.getMainNode());
-					break;
-
-				case Settings.MAP_CRYPT:
-					AbstractEntity c = new Crypt(this, x, z);
-					this.rootNode.attachChild(c.getMainNode());
-					break;
-
-				case Settings.MAP_LONG_GRAVE:
-					AbstractEntity lg = new LongGrave(this, x, z);
+				case Settings.MAP_SIMPLE_PILLAR:
+					AbstractEntity lg = new SimplePillar(this, x, z);
 					this.rootNode.attachChild(lg.getMainNode());
-					break;*/
+					break;
 
 				case Settings.MAP_STONE_COFFIN:
 					AbstractEntity gs = new StoneCoffin(this, x, z);
@@ -420,7 +416,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		if (Settings.DEBUG_LIGHT == false) {
 			{
 				AmbientLight al = new AmbientLight();
-				al.setColor(ColorRGBA.White.mult(1f));
+				al.setColor(ColorRGBA.White.mult(.6f));
 				rootNode.addLight(al);
 			}
 
@@ -497,19 +493,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	}
 
 
-	private void createMonster(float x, float z) {
-		monster = new Monster(this, this.assetManager, x, z);
-		rootNode.attachChild(monster.getMainNode());
-		this.objects.add(monster);
-	}
-
-
 	private void addCollectables(int num, int max_w, float max_d) {
 		//this.num_remaining = num;
+		int INSETS = 3;
 		for (int i=0 ; i<num ; i++) {
-			float x = rnd.nextFloat() * max_w;
-			float z = rnd.nextFloat() * max_d;
-			Collectable col = new Collectable(this, x, z);
+			float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
+			float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
+			Collectable col = new Collectable(this, x+INSETS, z+INSETS);
 			rootNode.attachChild(col.getMainNode());
 			coll_remaining.add(col);
 		}
@@ -550,7 +540,10 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			this.game_over = true;
 			player_won =_player_won;
 			game_over_sound_node.play();
-			//player.playerControl.setGravity(new Vector3f(0f, 1f, 0f)); // float upwards
+			player.playerControl.setGravity(new Vector3f(0f, 1f, 0f)); // float upwards
+			if (!player_won) {
+				hud.showDamageBox();
+			}
 		}
 	}
 

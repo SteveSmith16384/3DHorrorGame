@@ -24,7 +24,7 @@ public class ModelViewer extends SimpleApplication {
 		assetManager.registerLocator("assets/", FileLocator.class); // default
 		
 		//assetManager.registerLocator("assets/Models/", FileLocator.class);
-		//assetManager.registerLocator("assets/Textures/", FileLocator.class);
+		assetManager.registerLocator("assets/Textures/", FileLocator.class);
 		/*assetManager.registerLocator("assets/Sound/", FileLocator.class);
 		assetManager.registerLocator("assets/Shaders/", FileLocator.class);
 		*/
@@ -37,18 +37,21 @@ public class ModelViewer extends SimpleApplication {
 		//model.scale(.01f);
 
 		//Spatial model = assetManager.loadModel("Models/arbol_seco.blend");
-		//Spatial model = assetManager.loadModel("Models/arbol_seco1.blend"); // todo - use this?
 		
 		/*Spatial model = assetManager.loadModel("Models/Tree_Creature.blend");
 		model.scale(0.1f);*/
 
-		Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
-		model.setLocalTranslation(0, .8f, 0);
+		/*Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
+		model.scale(1.3f);
+		model.setLocalTranslation(0, 1f, 0);*/
 
 		/*Spatial model = assetManager.loadModel("Models/Stone_coffin.obj");
 		model.scale(0.1f);
 		JMEFunctions.SetTextureOnSpatial(assetManager, model, "stonecoffin.tga");*/
 		
+		Spatial model = assetManager.loadModel("Models/skull2/skull/skull.obj");
+		JMEFunctions.SetTextureOnSpatial(assetManager, model, "skull.tga");
+
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();
 

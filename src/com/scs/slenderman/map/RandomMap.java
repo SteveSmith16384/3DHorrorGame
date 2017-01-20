@@ -37,7 +37,7 @@ public class RandomMap implements IMapInterface {
 		}
 
 		if (x == MONSTER_X && z == MONSTER_Z) {
-			return Settings.MAP_MONSTER;
+			//return Settings.MAP_MONSTER;
 		}
 
 		int num = rnd.nextInt(25)-23;

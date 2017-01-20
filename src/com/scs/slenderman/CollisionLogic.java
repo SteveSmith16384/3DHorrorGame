@@ -2,7 +2,7 @@ package com.scs.slenderman;
 
 import com.scs.slenderman.entities.Collectable;
 import com.scs.slenderman.entities.AbstractEntity;
-import com.scs.slenderman.entities.Monster;
+import com.scs.slenderman.entities.AbstractMonster;
 import com.scs.slenderman.entities.Player;
 
 public class CollisionLogic {
@@ -14,11 +14,11 @@ public class CollisionLogic {
 		if (a instanceof Collectable && b instanceof Player) {
 			Player_Collectable(game, (Player)b, (Collectable)a);
 		}
-		if (a instanceof Player && b instanceof Monster) {
-			Player_Monster(game, (Player)a, (Monster)b);
+		if (a instanceof Player && b instanceof AbstractMonster) {
+			Player_Monster(game, (Player)a, (AbstractMonster)b);
 		}
-		if (a instanceof Monster && b instanceof Player) {
-			Player_Monster(game, (Player)b, (Monster)a);
+		if (a instanceof AbstractMonster && b instanceof Player) {
+			Player_Monster(game, (Player)b, (AbstractMonster)a);
 		}
 	}
 	
@@ -32,7 +32,7 @@ public class CollisionLogic {
 	}
 	
 
-	private static void Player_Monster(HorrorGame game, Player player, Monster col) {
+	private static void Player_Monster(HorrorGame game, Player player, AbstractMonster col) {
 		// Do nothing - we do this by checking the distance
 		//game.gameOver(false);
 	}

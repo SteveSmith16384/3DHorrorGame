@@ -19,7 +19,7 @@ public class CreateShapes {
 	// Return RigidBodyControl so we have a reference and can remove it.
 	public static RigidBodyControl CreateFloorTL(AssetManager assetManager, BulletAppState bulletAppState, Node node, float x, float y, float z, float w, float height, float d, String tex) {
 		Box floor = new Box(w/2, height/2, d/2);
-		floor.scaleTextureCoordinates(new Vector2f(w, d));
+		floor.scaleTextureCoordinates(new Vector2f(w/3, d/3));
 
 		TextureKey key3 = new TextureKey(tex);
 		key3.setGenerateMips(true);

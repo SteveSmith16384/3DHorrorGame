@@ -1,3 +1,5 @@
+https://www.youtube.com/watch?v=jknVwypk9vI
+
 Sound:
 I see you - http://opengameart.org/content/i-see-you-voice
 Horror Ambient http://opengameart.org/content/horror-ambient
@@ -19,8 +21,6 @@ http://opengameart.org/content/bloody-wall
 
 MODELS:
 http://opengameart.org/content/flying-skull
-http://opengameart.org/content/skull-1
-http://opengameart.org/content/old-skull
 http://opengameart.org/content/skull-prop
 http://opengameart.org/content/3d-dungeon-tileset
 http://opengameart.org/content/tree-0
@@ -30,13 +30,17 @@ http://opengameart.org/content/demon-statue
 http://opengameart.org/content/daniel-anderssons-medieval-themed-models
 http://opengameart.org/content/realistic-rocksboulders
 
+
 Used: 
 http://opengameart.org/content/low-poly-spider
 http://opengameart.org/content/medieval-statue
 http://opengameart.org/content/wood-barrels-pack
-http://opengameart.org/content/stone-coffin
+http://opengameart.org/content/stone-coffin - posted to OGA
 http://opengameart.org/content/evil-tree-creature
 http://opengameart.org/content/tree-dry-lowpoly
+http://opengameart.org/content/skull-1
+http://opengameart.org/content/old-skull
+
 
 UNUSED
 http://opengameart.org/content/savinos-cemetery-redux - not loading textures properly (black)
@@ -47,3 +51,29 @@ http://opengameart.org/content/covered-well - Broken
 http://opengameart.org/content/knight-lying - Broken
 http://opengameart.org/content/dead-tree-0 - too hi-poly
 http://opengameart.org/content/zombie-head - fbx format
+http://opengameart.org/content/low-poly-plants - multiple in one .blend file
+
+TEXTURES:
+http://opengameart.org/content/ground-outdoors-dirt-with-weeds-seamless-texture-with-normalmap-0
+
+
+
+
+    Warning: Invalid argument supplied for foreach() in element_children() (line 6540 of /var/www/sites/opengameart/includes/common.inc).
+    Warning: Illegal string offset '#tree' in form_builder() (line 1890 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#tree' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#parents' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
+    Notice: Array to string conversion in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#array_parents' in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
+    Notice: Array to string conversion in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#weight' in form_builder() (line 1919 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#processed' in form_builder() (line 1801 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Invalid argument supplied for foreach() in element_children() (line 6540 of /var/www/sites/opengameart/includes/common.inc).
+    Warning: Illegal string offset '#tree' in form_builder() (line 1890 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#tree' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#parents' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
+    Notice: Array to string conversion in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#array_parents' in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
+    Notice: Array to string conversion in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#weight' in form_builder() (line 1919 of /var/www/sites/opengameart/includes/form.inc).
+    Warning: Illegal string offset '#processed' in form_builder() (line 1801 of /var/www/sites/opengameart/includes/form.inc).

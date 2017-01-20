@@ -16,10 +16,8 @@ import com.scs.slenderman.Settings;
 import com.scs.slenderman.models.TreeCreatureModel;
 import com.scs.slenderman.shapes.AbstractBillboard;
 
-public class Monster extends AbstractEntity implements IProcessable {
+public abstract class AbstractMonster extends AbstractEntity implements IProcessable {
 
-	private static final float COLL_WIDTH = 1f;
-	private static final float COLL_HEIGHT = 2f;
 	private static final float SPEED = 1f;
 
 	private Spatial geometry;
@@ -29,7 +27,7 @@ public class Monster extends AbstractEntity implements IProcessable {
 	private List<AudioNode> audio_node_moans = new ArrayList<>();
 	private float next_scary_sound = 10;
 
-	public Monster(HorrorGame game, AssetManager assetManager, float x, float z) {
+	public AbstractMonster(HorrorGame game, AssetManager assetManager, float x, float z) {
 		super(game, "Monster");
 
 		/*Box box1 = new Box(COLL_RAD, COLL_HEIGHT/2, COLL_RAD); // Don't use box, just use model.  No!  Use box for physics!
@@ -49,9 +47,12 @@ public class Monster extends AbstractEntity implements IProcessable {
 		//geometry = new TreeCreatureModel(assetManager);
 
 		// 2D ghost
-		this.geometry = new AbstractBillboard(assetManager, "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
+		/*this.geometry = new AbstractBillboard(assetManager, "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
 		//this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
 		geometry.setLocalTranslation(-COLL_WIDTH/2, 0, 0); // Keep origin at bottom
+		*/
+		
+		geometry = this.getModel();
 		
 		main_node.attachChild(geometry);
 
@@ -76,6 +77,8 @@ public class Monster extends AbstractEntity implements IProcessable {
 	}
 
 
+	protected abstract Spatial getModel();
+	
 	public void warp(float x, float z) {
 		if (floor_phy != null) {
 			this.floor_phy.setPhysicsLocation(new Vector3f(x, 0, z));

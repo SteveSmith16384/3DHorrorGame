@@ -16,7 +16,7 @@ public class StoneCoffin extends AbstractEntity {
 		floor_geo = new StoneCoffinModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
 		//floor_geo.scale(1f + (HorrorGame.rnd.nextFloat()));
-		floor_geo.rotate(0, (float)(HorrorGame.rnd.nextFloat() * Math.PI), 0); // rotate random amount, and maybe scale slightly
+		floor_geo.rotate(0, (float)(HorrorGame.rnd.nextFloat() * Math.PI * .1f), 0); // rotate random amount, and maybe scale slightly
 
 		this.main_node.attachChild(floor_geo);
 

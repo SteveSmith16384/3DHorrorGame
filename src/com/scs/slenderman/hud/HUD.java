@@ -78,8 +78,8 @@ public class HUD extends Node implements IProcessable {
 	}
 
 
-	public void startDamageBox() {
-		process_damage_box = true;
+	public void showDamageBox() {
+		//process_damage_box = true;
 		this.dam_box_col.a = .5f;
 		this.dam_box_col.r = 1f;
 		this.dam_box_col.g = 0f;
