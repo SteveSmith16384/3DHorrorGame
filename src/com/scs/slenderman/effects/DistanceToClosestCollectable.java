@@ -9,7 +9,7 @@ public class DistanceToClosestCollectable implements IProcessable {
 	private static final float INTERVAL = 2;
 	
 	private float nextCalc = 0;
-	public float closestDistance;
+	private float closestDistance;
 	private HorrorGame game;
 	
 	public DistanceToClosestCollectable(HorrorGame _game) {
@@ -38,6 +38,11 @@ public class DistanceToClosestCollectable implements IProcessable {
 				closestDistance = dist;
 			}
 		}
+	}
+	
+	
+	public int getClosestDistance() {
+		return (int)this.closestDistance;
 	}
 
 }

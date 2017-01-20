@@ -64,14 +64,13 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Kids record scary noises
  * 
  * TODO:-
- * Fog still not working
- * Player hitting monster straight away
+ * DONE Player hitting monster straight away
+ * Find brick tex
+ * Change tex on simplepillar
  * Create my own simple models
  * Lean simplecross back
  * OGA - mention on statue model
  * Find models with textures
- * Find brick tex
- * Change tex on simplepillar
  * More plant models
  * TEST - Win game - float up
  * TEST Game Over effect - Spin and face enemy when caught
@@ -300,15 +299,18 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		// HUD
 		StringBuilder text = new StringBuilder();
 		if (!game_over) {
-			float dist = 0;
-			if (monster != null) {
-				dist = this.monster.getMainNode().getWorldTranslation().distance(this.player.getMainNode().getWorldTranslation());
-				if (dist <= 1) {
-					//todo - re-add 
-					this.gameOver(false);
+			if (Settings.SHOW_DEBUG) {
+				float dist_to_monster = 0;
+				if (monster != null) {
+					dist_to_monster = this.monster.getMainNode().getWorldTranslation().distance(this.player.getMainNode().getWorldTranslation());
+					if (dist_to_monster <= 1) {
+						//todo - re-add 
+						this.gameOver(false);
+					}
 				}
+				text.append("Distance: " + (int)dist_to_monster + "\n");
 			}
-			text.append("Distance: " + (int)dist + "\nBoxes Remaining: " + this.coll_remaining.size() + "\nClosest: " + this.closest.closestDistance);
+			text.append("There are " + this.coll_remaining.size() + " boxes remaining\nThe closest box is " + this.closest.getClosestDistance() + "m away\n");
 		} else {
 			text.append("GaMe OvEr\n");
 		}
