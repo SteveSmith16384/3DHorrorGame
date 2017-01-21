@@ -1,5 +1,6 @@
 package com.scs.slenderman;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -46,6 +47,7 @@ import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
+import com.scs.slenderman.map.CSVMap;
 import com.scs.slenderman.map.IMapInterface;
 import com.scs.slenderman.shapes.CreateShapes;
 
@@ -62,6 +64,13 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Kids record scary noises
  * 
  * TODO:-
+ * Footstep sfx jumpy
+ * Make brick tex dirtier
+ * Statue don't turn unless close to player
+ * Hide FPS 
+ * Distance to collectable not right
+ * No collision with monster
+ * Statue not always move
  * DONE Player hitting monster straight away
  * Test skull2 on map
  * Use brick tex
@@ -193,6 +202,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		if (Settings.DEBUG_LIGHT == false) {
 			FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
 			FogFilter fog = new FogFilter(ColorRGBA.Black, 1f, 2f);//Settings.CAM_DIST/2);
+			fog.setFogDistance(2);
 			fpp.addFilter(fog);
 			viewPort.addProcessor(fpp);
 		}
@@ -202,16 +212,16 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.objects.add(player);
 
 		IMapInterface map;
-		/*try {
+		try {
 			map = new CSVMap("./maps/map1.csv");
 		} catch (IOException e) {
 			e.printStackTrace();
 
-			map = new ArrayMap(); //ArrayMap();//;RandomMap();//
-		}*/
-		map = new ArrayMap(); //ArrayMap();//;RandomMap();//
+			map = new ArrayMap();
+		}
+		//map = new ArrayMap();
 		loadMap(map);
-		addCollectables((map.getWidth() * map.getDepth())/50, map.getWidth(), map.getDepth());
+		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
 
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
 
@@ -354,9 +364,9 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER_GHOST:
-					monster = new Monster2DGhost(this, this.assetManager, x, z);
-					rootNode.attachChild(monster.getMainNode());
-					this.objects.add(monster);
+					//monster = new Monster2DGhost(this, this.assetManager, x, z);
+					//rootNode.attachChild(monster.getMainNode());
+					//this.objects.add(monster);
 					break;
 
 				case Settings.MAP_MONSTER_STATUE:
@@ -411,8 +421,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				default:
-					//p("Ignoring map code " + code);
-					throw new RuntimeException("Unknown type:" + code);
+					p("Ignoring map code " + code);
+					//throw new RuntimeException("Unknown type:" + code);
 				}
 			}
 		}

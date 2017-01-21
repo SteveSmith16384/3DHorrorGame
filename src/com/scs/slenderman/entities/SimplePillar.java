@@ -15,7 +15,7 @@ public class SimplePillar extends AbstractEntity {
 
 	private static final float THICKNESS = .3f;
 	private static final float HEIGHT = 4f;
-	private static final String TEX = "Textures/bricktex.jpg";
+	private static final String TEX = "Textures/bricks.jpg";
 
 	private Geometry geometry;
 	private RigidBodyControl floor_phy;

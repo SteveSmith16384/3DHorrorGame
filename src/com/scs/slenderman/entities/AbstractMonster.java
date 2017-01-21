@@ -18,7 +18,7 @@ import com.scs.slenderman.shapes.AbstractBillboard;
 
 public abstract class AbstractMonster extends AbstractEntity implements IProcessable {
 
-	private static final float SPEED = .7f;
+	private static final float SPEED = .4f;
 
 	private Spatial geometry;
 	private RigidBodyControl floor_phy;
@@ -101,7 +101,8 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 				AudioNode an = this.audio_node_moans.get(i-1);
 				an.play();
 			}
-			next_scary_sound = 20 + HorrorGame.rnd.nextInt(10);
+			HorrorGame.p("Monster sound!");
+			next_scary_sound = 10 + HorrorGame.rnd.nextInt(5);
 		}
 
 		this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
