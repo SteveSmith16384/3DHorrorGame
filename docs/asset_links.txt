@@ -33,7 +33,7 @@ http://opengameart.org/content/realistic-rocksboulders
 
 Used: 
 http://opengameart.org/content/low-poly-spider
-http://opengameart.org/content/medieval-statue
+http://opengameart.org/content/medieval-statue - posted to OGA
 http://opengameart.org/content/wood-barrels-pack
 http://opengameart.org/content/stone-coffin - posted to OGA
 http://opengameart.org/content/evil-tree-creature
@@ -55,7 +55,7 @@ http://opengameart.org/content/low-poly-plants - multiple in one .blend file
 
 TEXTURES:
 http://opengameart.org/content/ground-outdoors-dirt-with-weeds-seamless-texture-with-normalmap-0
-
+http://opengameart.org/content/old-red-brick-wall-seamless-texture-with-normalmap
 
 
 

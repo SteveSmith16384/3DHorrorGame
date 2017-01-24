@@ -22,7 +22,6 @@ public class DistanceToClosestCollectable implements IProcessable {
 	@Override
 	public void process(float tpf) {
 		nextCalc -= tpf;
-		//closestDistance = nextCalc;
 		if (nextCalc <= 0) {
 			calcDistance();
 			nextCalc = INTERVAL;

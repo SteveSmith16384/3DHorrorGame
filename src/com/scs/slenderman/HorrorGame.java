@@ -1,11 +1,13 @@
 package com.scs.slenderman;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.prefs.BackingStoreException;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.StatsAppState;
 import com.jme3.app.state.VideoRecorderAppState;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.audio.AudioNode;
@@ -46,6 +48,7 @@ import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
+import com.scs.slenderman.map.CSVMap;
 import com.scs.slenderman.map.IMapInterface;
 import com.scs.slenderman.shapes.CreateShapes;
 
@@ -57,27 +60,24 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * HOME:-
- * Add skull2 to map
- * Create logo
  * Kids record scary noises
+ * Kids create scary images
+ * Walls not touching on map
  * 
  * TODO:-
- * DONE Player hitting monster straight away
+ * Create credits file
+ * Create screenshots
+ * Create runnable game and upload
+ * Use new logo
  * Test skull2 on map
- * Use brick tex
- * Change tex on simplepillar
- * Create my own simple models
- * Lean simplecross back
- * OGA - mention on statue model
  * Find models with textures
- * More plant models
- * TEST - Win game - float up
- * TEST Game Over effect - Spin and face enemy when caught
  * 
- * Move a direction light for nice effect
  * Mention on OpengameArt
+ * Move a direction light for nice effect
  * Evil Tree too high
- * 
+ * Lean simplecross back
+ * Add skull2 to map
+ * Create my own simple models
  * Mention on JavaGaming once monster in vid
  * Stuff rises out of ground
  * Use different method to indicate how close a collectable is
@@ -132,7 +132,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private Vector3f camLeft = new Vector3f();
 
 	private SpotLight spotlight;
-	public AbstractMonster monster;
+	public AbstractMonster monster_that_killed_player;
 	private HUD hud;
 	public List<Collectable> coll_remaining = new ArrayList<>();
 	private boolean game_over = false;
@@ -193,6 +193,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		if (Settings.DEBUG_LIGHT == false) {
 			FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
 			FogFilter fog = new FogFilter(ColorRGBA.Black, 1f, 2f);//Settings.CAM_DIST/2);
+			fog.setFogDistance(2);
 			fpp.addFilter(fog);
 			viewPort.addProcessor(fpp);
 		}
@@ -202,24 +203,17 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.objects.add(player);
 
 		IMapInterface map;
-		/*try {
+		try {
 			map = new CSVMap("./maps/map1.csv");
 		} catch (IOException e) {
 			e.printStackTrace();
-
-			map = new ArrayMap(); //ArrayMap();//;RandomMap();//
-		}*/
-		map = new ArrayMap(); //ArrayMap();//;RandomMap();//
+			map = new ArrayMap();
+		}
+		//map = new ArrayMap();
 		loadMap(map);
-		addCollectables((map.getWidth() * map.getDepth())/50, map.getWidth(), map.getDepth());
+		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
 
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
-
-		//CreateShapes.initFloor(assetManager, this.bulletAppState, this.rootNode, 30f, 30f);
-		//CreateShapes.addBoxTL("Wall", assetManager, this.bulletAppState, this.rootNode, 4, 2f, .1f, 0, 2.1f, 4f, 0.1f);
-		//CreateShapes.addCylinder_Top(assetManager, this.bulletAppState, this.rootNode, .5f, 4, 6, 4, 1, 0.1f);
-
-		//cam.lookAt(this.monster.getGeometry().getWorldTranslation(), Vector3f.UNIT_Y);
 
 		hud = new HUD(this, this.getAssetManager(), cam.getWidth(), cam.getHeight(), guiFont_small);
 		this.guiNode.attachChild(hud);
@@ -242,7 +236,6 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.rootNode.attachChild(scary_sound1);
 
 		scary_sound2 = new AudioNode(assetManager, "Sound/churchbell.ogg", true);
-		//scary_sound2.setVolume(.1f);
 		scary_sound2.setPositional(false);
 		this.rootNode.attachChild(scary_sound2);
 
@@ -254,11 +247,12 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		thunderclap_sound_node.setPositional(false);
 		this.rootNode.attachChild(thunderclap_sound_node);
 
+		stateManager.getState(StatsAppState.class).toggleStats(); // Turn off stats
 	}
 
 
 	@Override
-	public void simpleUpdate(float tpf) {
+	public void simpleUpdate(float tpf_secs) {
 		/*
 		 * The direction of character is determined by the camera angle
 		 * the Y direction is set to zero to keep our character from
@@ -284,7 +278,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			}
 			player.playerControl.setWalkDirection(walkDirection);
 
-			next_scary_sound -= tpf;
+			next_scary_sound -= tpf_secs;
 			if (next_scary_sound <= 0) {
 				playRandomScarySound();
 				next_scary_sound = 20 + rnd.nextInt(10);
@@ -292,13 +286,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		}
 
 		for(IProcessable ip : objects) {
-			ip.process(tpf);
+			ip.process(tpf_secs);
 		}
 
 		// HUD
 		StringBuilder text = new StringBuilder();
 		if (!game_over) {
-			if (Settings.SHOW_DEBUG) {
+			/*if (Settings.SHOW_DEBUG) {
 				float dist_to_monster = 0;
 				if (monster != null) {
 					dist_to_monster = this.monster.getMainNode().getWorldTranslation().distance(this.player.getMainNode().getWorldTranslation());
@@ -308,7 +302,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					}
 				}
 				text.append("Distance: " + (int)dist_to_monster + "\n");
-			}
+			}*/
 			text.append("There are " + this.coll_remaining.size() + " boxes remaining\nThe closest box is " + this.closest.getClosestDistance() + "m away\n");
 		} else {
 			text.append("GaMe OvEr\n");
@@ -324,6 +318,12 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		 */
 		Vector3f vec = player.getMainNode().getWorldTranslation();
 		cam.setLocation(new Vector3f(vec.x, vec.y + Settings.PLAYER_HEIGHT, vec.z));
+
+		if (this.isGameOver()) {
+			if (this.monster_that_killed_player != null) {
+				cam.lookAt(this.monster_that_killed_player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
+			}
+		}
 
 		if (spotlight != null) {
 			this.spotlight.setPosition(cam.getLocation());
@@ -354,13 +354,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER_GHOST:
-					monster = new Monster2DGhost(this, this.assetManager, x, z);
-					rootNode.attachChild(monster.getMainNode());
-					this.objects.add(monster);
+					AbstractEntity monster2 = new Monster2DGhost(this, this.assetManager, x, z);
+					rootNode.attachChild(monster2.getMainNode());
+					this.objects.add(monster2);
 					break;
 
 				case Settings.MAP_MONSTER_STATUE:
-					monster = new MonsterStatue(this, this.assetManager, x, z);
+					AbstractEntity monster = new MonsterStatue(this, this.assetManager, x, z);
 					rootNode.attachChild(monster.getMainNode());
 					this.objects.add(monster);
 					break;
@@ -411,8 +411,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				default:
-					//p("Ignoring map code " + code);
-					throw new RuntimeException("Unknown type:" + code);
+					p("Ignoring map code " + code);
+					//throw new RuntimeException("Unknown type:" + code);
 				}
 			}
 		}
@@ -440,7 +440,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 		if (Settings.DEBUG_LIGHT == false) {
 			AmbientLight al = new AmbientLight();
-			al.setColor(ColorRGBA.White.mult(.6f));
+			al.setColor(ColorRGBA.White.mult(.5f));
 			rootNode.addLight(al);
 
 			this.spotlight = new SpotLight();
@@ -554,8 +554,9 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	}
 
 
-	public void gameOver(boolean _player_won) {
+	public void gameOver(boolean _player_won, AbstractMonster monster) {
 		if (this.game_over == false) {
+			this.monster_that_killed_player = monster;
 			p("GAME OVER!");
 			this.game_over = true;
 			player_won =_player_won;
