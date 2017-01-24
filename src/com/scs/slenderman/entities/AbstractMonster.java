@@ -26,7 +26,9 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 	private AudioNode audio_node_i_see_you;
 	private List<AudioNode> audio_node_moans = new ArrayList<>();
 	private float next_scary_sound = 10;
-
+	protected float dist_to_player;
+	protected FrustumIntersect insideoutside;
+	
 	public AbstractMonster(HorrorGame game, AssetManager assetManager, float x, float z) {
 		super(game, "Monster");
 
@@ -89,6 +91,11 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 
 	@Override
 	public void process(float tpf) {
+		dist_to_player = this.getMainNode().getWorldTranslation().distance(game.player.getMainNode().getWorldTranslation());
+		if (dist_to_player <= 1) {
+			game.gameOver(false, this);
+		}
+
 		next_scary_sound -= tpf;
 		if (next_scary_sound <= 0) {
 			int i = HorrorGame.rnd.nextInt(audio_node_moans.size() + 1);
@@ -105,9 +112,7 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 			next_scary_sound = 10 + HorrorGame.rnd.nextInt(5);
 		}
 
-		this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
-
-		FrustumIntersect insideoutside = game.getInsideOutside(this); //this.getGeometry().getWorldTranslation();
+		insideoutside = game.getInsideOutside(this); //this.getGeometry().getWorldTranslation();
 		if (insideoutside == FrustumIntersect.Outside || Settings.MONSTER_ALWAYS_MOVES) { // Only move if we can't be seen
 			/*Vector3f player_pos = game.player.getGeometry().getWorldTranslation(); 
 			float left_dist = this.left_node.getWorldTranslation().distance(player_pos);
@@ -122,12 +127,6 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 			JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
 		}
 	}
-
-
-	/*@Override
-	public Spatial getGeometry() {
-		return geometry;
-	}*/
 
 
 	@Override

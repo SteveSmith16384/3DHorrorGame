@@ -27,7 +27,7 @@ public class CollisionLogic {
 		col.remove();
 		game.coll_remaining.remove(col);
 		if (game.coll_remaining.isEmpty()) {
-			game.gameOver(true);
+			game.gameOver(true, null);
 		}
 	}
 	

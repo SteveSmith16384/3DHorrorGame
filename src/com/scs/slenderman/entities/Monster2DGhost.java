@@ -1,6 +1,7 @@
 package com.scs.slenderman.entities;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.shapes.AbstractBillboard;
@@ -14,6 +15,15 @@ public class Monster2DGhost extends AbstractMonster {
 		super(game, assetManager, x, z);
 	}
 
+	
+	@Override
+	public void process(float tpf) {
+		super.process(tpf);
+
+		this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
+
+	}
+	
 	
 	@Override
 	protected Spatial getModel() {

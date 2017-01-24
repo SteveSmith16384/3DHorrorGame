@@ -52,7 +52,7 @@ public class SimpleCross extends AbstractEntity { // todo - finish this
 			horiz.scaleTextureCoordinates(new Vector2f(WIDTH, HEIGHT));
 			Geometry geometry = new Geometry("horiz", horiz);
 			geometry.setMaterial(floor_mat);
-			geometry.setLocalTranslation(0, .1f, z);
+			//geometry.setLocalTranslation(0, .1f, z);
 			this.main_node.attachChild(geometry);
 		}
 

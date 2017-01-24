@@ -81,10 +81,10 @@ public class Player extends AbstractEntity {
 				//time_until_next_footstep_sfx = 0;
 			}
 		} else {
-			if (game.hasPlayerWon() == false) {
+			/*if (game.hasPlayerWon() == false) {
 				// todo - not working
 				this.main_node.lookAt(game.monster.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
-			}
+			}*/
 		}
 
 	}
