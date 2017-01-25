@@ -2,9 +2,10 @@ package com.scs.slenderman;
 
 public class Settings {
 	
-	public static final boolean SHOW_DEBUG = true;
-	public static final boolean DEBUG_LIGHT = false;
-	public static final boolean MONSTER_ALWAYS_MOVES = false;
+	public static final boolean USE_BENS_SOUND = true;
+	public static final boolean SHOW_DEBUG = false;
+	public static final boolean DEBUG_LIGHT = true;
+	//public static final boolean MONSTER_ALWAYS_MOVES = false;
 	public static final boolean SHOW_LOGO = false;
 	
 	public static final float CAM_DIST = 30f;
@@ -34,6 +35,7 @@ public class Settings {
 	public static final int MAP_SKULL = 10;
 	public static final int MAP_SKULL2 = 11;
 	public static final int MAP_STONE_COFFIN = 13;
+	public static final int MAP_MONSTER_MOVING_STATUE = 14;
 	
 	// Key codes
 	public static final String KEY_RECORD = "record";

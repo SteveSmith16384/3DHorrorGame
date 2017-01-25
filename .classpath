@@ -45,5 +45,10 @@
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/vecmath.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/xmlpull-xpp3.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/xstream.jar"/>
+	<classpathentry kind="lib" path="libs/jmeCapture-0.1/audio-send-natives.jar"/>
+	<classpathentry kind="lib" path="libs/jmeCapture-0.1/audio-send.jar"/>
+	<classpathentry kind="lib" path="libs/jmeCapture-0.1/jmeCapture.jar"/>
+	<classpathentry kind="lib" path="libs/jmeCapture-0.1/tritonus_aos-0.3.6.jar"/>
+	<classpathentry kind="lib" path="libs/jmeCapture-0.1/tritonus_share-0.3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

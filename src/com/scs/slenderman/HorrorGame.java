@@ -1,11 +1,14 @@
 package com.scs.slenderman;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.prefs.BackingStoreException;
 
+import com.aurellem.capture.Capture;
+import com.aurellem.capture.IsoTimer;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.VideoRecorderAppState;
@@ -38,12 +41,13 @@ import com.scs.slenderman.entities.Collectable;
 import com.scs.slenderman.entities.Fence;
 import com.scs.slenderman.entities.MedievalStatue;
 import com.scs.slenderman.entities.Monster2DGhost;
-import com.scs.slenderman.entities.MonsterStatue;
+import com.scs.slenderman.entities.MovingMonsterStatue;
 import com.scs.slenderman.entities.Player;
 import com.scs.slenderman.entities.SimpleCross;
 import com.scs.slenderman.entities.SimplePillar;
 import com.scs.slenderman.entities.Skull;
 import com.scs.slenderman.entities.Skull2;
+import com.scs.slenderman.entities.StaticMonsterStatue;
 import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
 import com.scs.slenderman.hud.HUD;
@@ -60,17 +64,21 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * HOME:-
+ * Add new statue to map
  * Kids record scary noises
  * Kids create scary images
- * Walls not touching on map
+ * DONE Walls not touching on map
  * 
  * TODO:-
+ * Is it too dark?
+ * Find new monster models
+ * DONE Move statue when looked at
+ * DONE Use Ben's sound
  * Create credits file
  * Create screenshots
  * Create runnable game and upload
  * Use new logo
  * Test skull2 on map
- * Find models with textures
  * 
  * Mention on OpengameArt
  * Move a direction light for nice effect
@@ -144,30 +152,46 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private AudioNode ambient_node;
 	private AudioNode game_over_sound_node;
 	public AudioNode thunderclap_sound_node;
-	private AudioNode scary_sound1, scary_sound2;
+	private AudioNode scary_sound1, scary_sound2, bens_sfx;
 	private float next_scary_sound = 10;
 
 	public List<IProcessable> objects = new ArrayList<IProcessable>();
 
 
 	public static void main(String[] args) {
-		AppSettings settings = new AppSettings(true);
 		try {
-			settings.load(Settings.NAME);
-		} catch (BackingStoreException e) {
+			AppSettings settings = new AppSettings(true);
+			try {
+				settings.load(Settings.NAME);
+			} catch (BackingStoreException e) {
+				e.printStackTrace();
+			}
+			settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
+			if (Settings.SHOW_LOGO) {
+				settings.setSettingsDialogImage("/ad_logo.png");
+			} else {
+				settings.setSettingsDialogImage(null);
+			}
+
+			File video = File.createTempFile("JME-water-video", ".avi");
+			File audio = File.createTempFile("JME-water-audio", ".wav");
+
+			HorrorGame app = new HorrorGame();
+			app.setTimer(new IsoTimer(60));
+			app.setSettings(settings);
+			app.setPauseOnLostFocus(true);
+
+			Capture.captureVideo(app, video);
+		    Capture.captureAudio(app, audio);
+		    
+		    app.start();
+		    
+		    System.out.println(video.getCanonicalPath());
+		    System.out.println(audio.getCanonicalPath());
+		    
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
-		if (Settings.SHOW_LOGO) {
-			settings.setSettingsDialogImage("/ad_logo.png");
-		} else {
-			settings.setSettingsDialogImage(null);
-		}
-
-		HorrorGame app = new HorrorGame();
-		app.setSettings(settings);
-		app.setPauseOnLostFocus(true);
-		app.start();
 
 	}
 
@@ -209,7 +233,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			e.printStackTrace();
 			map = new ArrayMap();
 		}
-		//map = new ArrayMap();
+		map = new ArrayMap();
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
 
@@ -238,6 +262,10 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		scary_sound2 = new AudioNode(assetManager, "Sound/churchbell.ogg", true);
 		scary_sound2.setPositional(false);
 		this.rootNode.attachChild(scary_sound2);
+
+		bens_sfx = new AudioNode(assetManager, "Sound/benscarypoo.ogg", true);
+		bens_sfx.setPositional(false);
+		this.rootNode.attachChild(bens_sfx);
 
 		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", true);
 		game_over_sound_node.setPositional(false);
@@ -360,9 +388,15 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER_STATUE:
-					AbstractEntity monster = new MonsterStatue(this, this.assetManager, x, z);
+					AbstractEntity monster = new StaticMonsterStatue(this, this.assetManager, x, z);
 					rootNode.attachChild(monster.getMainNode());
 					this.objects.add(monster);
+					break;
+
+				case Settings.MAP_MONSTER_MOVING_STATUE:
+					AbstractEntity monster3 = new MovingMonsterStatue(this, this.assetManager, x, z);
+					rootNode.attachChild(monster3.getMainNode());
+					this.objects.add(monster3);
 					break;
 
 				case Settings.MAP_TREE:
@@ -580,14 +614,18 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 
 	private void playRandomScarySound() {
-		int i = rnd.nextInt(2);
-		switch (i) {
-		case 0:
-			this.scary_sound1.play();
-			break;
-		case 1:
-			this.scary_sound2.play();
-			break;
+		if (Settings.USE_BENS_SOUND) {
+			this.bens_sfx.play();
+		} else {
+			int i = rnd.nextInt(2);
+			switch (i) {
+			case 0:
+				this.scary_sound1.play();
+				break;
+			case 1:
+				this.scary_sound2.play();
+				break;
+			}
 		}
 	}
 

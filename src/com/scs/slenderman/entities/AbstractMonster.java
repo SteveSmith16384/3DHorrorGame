@@ -18,12 +18,13 @@ import com.scs.slenderman.shapes.AbstractBillboard;
 
 public abstract class AbstractMonster extends AbstractEntity implements IProcessable {
 
-	private static final float SPEED = .4f;
+	protected static final float SPEED = .4f;
 
 	private Spatial geometry;
 	private RigidBodyControl floor_phy;
 
 	private AudioNode audio_node_i_see_you;
+	private AudioNode bens_sfx;
 	private List<AudioNode> audio_node_moans = new ArrayList<>();
 	private float next_scary_sound = 10;
 	protected float dist_to_player;
@@ -69,6 +70,10 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 		audio_node_i_see_you.setPositional(true);
 		this.getMainNode().attachChild(audio_node_i_see_you);
 
+		/*bens_sfx = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", true);
+		bens_sfx.setPositional(true);
+		this.getMainNode().attachChild(bens_sfx);
+*/
 		for (int i=1 ; i<=5 ; i++) {
 			AudioNode an = new AudioNode(assetManager, "Sound/qubodup-GhostMoans/wav/qubodup-GhostMoan0" + i + ".ogg", true);
 			an.setPositional(true);
@@ -112,8 +117,8 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 			next_scary_sound = 10 + HorrorGame.rnd.nextInt(5);
 		}
 
-		insideoutside = game.getInsideOutside(this); //this.getGeometry().getWorldTranslation();
-		if (insideoutside == FrustumIntersect.Outside || Settings.MONSTER_ALWAYS_MOVES) { // Only move if we can't be seen
+		insideoutside = game.getInsideOutside(this);
+		//if (insideoutside == FrustumIntersect.Outside) { // Only move if we can't be seen
 			/*Vector3f player_pos = game.player.getGeometry().getWorldTranslation(); 
 			float left_dist = this.left_node.getWorldTranslation().distance(player_pos);
 			float right_dist = this.right_node.getWorldTranslation().distance(player_pos);
@@ -124,8 +129,8 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 				this.turnLeft(tpf);
 			}*/
 
-			JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
-		}
+		//	JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
+		//}
 	}
 
 
