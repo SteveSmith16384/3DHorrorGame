@@ -2,6 +2,7 @@ package com.scs.slenderman;
 
 public class Settings {
 	
+	public static final boolean RECORD_VID = false;
 	public static final boolean USE_BENS_SOUND = true;
 	public static final boolean SHOW_DEBUG = false;
 	public static final boolean DEBUG_LIGHT = true;

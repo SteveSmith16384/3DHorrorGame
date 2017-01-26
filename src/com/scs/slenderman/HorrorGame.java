@@ -70,13 +70,14 @@ import com.scs.slenderman.shapes.CreateShapes;
  * DONE Walls not touching on map
  * 
  * TODO:-
- * Is it too dark?
- * Find new monster models
- * DONE Move statue when looked at
- * DONE Use Ben's sound
+ * Why sometimes no sound
+ * Post to meprogrammer
  * Create credits file
  * Create screenshots
- * Create runnable game and upload
+ * Upload to GameJolt
+ * Create new vid with sound
+ * Is it too dark?
+ * Find new monster models
  * Use new logo
  * Test skull2 on map
  * 
@@ -85,8 +86,6 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Evil Tree too high
  * Lean simplecross back
  * Add skull2 to map
- * Create my own simple models
- * Mention on JavaGaming once monster in vid
  * Stuff rises out of ground
  * Use different method to indicate how close a collectable is
  * Change tex on grave when not looked at, to show blood
@@ -173,22 +172,26 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				settings.setSettingsDialogImage(null);
 			}
 
-			File video = File.createTempFile("JME-water-video", ".avi");
-			File audio = File.createTempFile("JME-water-audio", ".wav");
-
 			HorrorGame app = new HorrorGame();
-			app.setTimer(new IsoTimer(60));
 			app.setSettings(settings);
 			app.setPauseOnLostFocus(true);
 
-			Capture.captureVideo(app, video);
-		    Capture.captureAudio(app, audio);
-		    
-		    app.start();
-		    
-		    System.out.println(video.getCanonicalPath());
-		    System.out.println(audio.getCanonicalPath());
-		    
+			File video, audio;
+			if (Settings.RECORD_VID) {
+				app.setTimer(new IsoTimer(60));
+				video = File.createTempFile("JME-water-video", ".avi");
+				audio = File.createTempFile("JME-water-audio", ".wav");
+				Capture.captureVideo(app, video);
+				Capture.captureAudio(app, audio);
+			}
+			
+			app.start();
+
+			if (Settings.RECORD_VID) {
+				System.out.println("Video saved at " + video.getCanonicalPath());
+				System.out.println("Audio saved at " + audio.getCanonicalPath());
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
