@@ -70,6 +70,7 @@ import com.scs.slenderman.shapes.CreateShapes;
  * DONE Walls not touching on map
  * 
  * TODO:-
+ * Make an adventure - SCP
  * Why sometimes no sound
  * Post to meprogrammer
  * Create credits file
