@@ -2,6 +2,7 @@ package com.scs.slenderman;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
@@ -59,6 +60,12 @@ public class ModelViewer extends SimpleApplication {
 
 		this.rootNode.attachChild(JMEFunctions.GetGrid(assetManager, 10));
 		
+		AudioNode bens_sfx = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", false);
+		bens_sfx.setPositional(true);
+		bens_sfx.setLooping(true);
+		bens_sfx.play();
+		this.rootNode.attachChild(bens_sfx);
+
 		this.flyCam.setMoveSpeed(12f);
 		
 		rootNode.updateGeometricState();
