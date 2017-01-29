@@ -13,9 +13,12 @@ import com.jme3.scene.Spatial;
 
 public class ModelViewer extends SimpleApplication {
 
+	AudioNode bens_sfx;
+	
 	public static void main(String[] args){
 		ModelViewer app = new ModelViewer();
 		app.showSettings = false;
+		
 		app.start();
 	}
 
@@ -60,11 +63,12 @@ public class ModelViewer extends SimpleApplication {
 
 		this.rootNode.attachChild(JMEFunctions.GetGrid(assetManager, 10));
 		
-		AudioNode bens_sfx = new AudioNode(assetManager, "Sound/i_see_you_voice.ogg", false);
-		bens_sfx.setPositional(true);
+		bens_sfx = new AudioNode(assetManager, "Sound/churchbell.ogg", false);
+		bens_sfx.setPositional(false);
 		bens_sfx.setLooping(true);
-		bens_sfx.play();
+		bens_sfx.setVolume(2);
 		this.rootNode.attachChild(bens_sfx);
+		bens_sfx.play();
 
 		this.flyCam.setMoveSpeed(12f);
 		
@@ -96,7 +100,9 @@ public class ModelViewer extends SimpleApplication {
 	public void simpleUpdate(float tpf) {
 		//System.out.println("Pos: " + this.cam.getLocation());
 		//this.rootNode.rotate(0,  tpf,  tpf);
-	}
+
+		bens_sfx.play();
+}
 
 	
 }

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.prefs.BackingStoreException;
 
-import com.aurellem.capture.Capture;
-import com.aurellem.capture.IsoTimer;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.VideoRecorderAppState;
@@ -70,6 +68,10 @@ import com.scs.slenderman.shapes.CreateShapes;
  * DONE Walls not touching on map
  * 
  * TODO:-
+ * not playing all sounds
+ * make footsteps quieter
+ * make ambience quieter
+ * sfx when collecting collectable
  * Make an adventure - SCP
  * Why sometimes no sound
  * Post to meprogrammer
@@ -179,11 +181,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 			File video, audio;
 			if (Settings.RECORD_VID) {
-				app.setTimer(new IsoTimer(60));
-				video = File.createTempFile("JME-water-video", ".avi");
-				audio = File.createTempFile("JME-water-audio", ".wav");
-				Capture.captureVideo(app, video);
-				Capture.captureAudio(app, audio);
+				//app.setTimer(new IsoTimer(60));
+				//video = File.createTempFile("JME-water-video", ".avi");
+				//audio = File.createTempFile("JME-water-audio", ".wav");
+				//Capture.captureVideo(app, video);
+				//Capture.captureAudio(app, audio);
 			}
 			
 			app.start();
@@ -237,7 +239,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			e.printStackTrace();
 			map = new ArrayMap();
 		}
-		map = new ArrayMap();
+		//map = new ArrayMap();
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
 
@@ -269,6 +271,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 		bens_sfx = new AudioNode(assetManager, "Sound/benscarypoo.ogg", true);
 		bens_sfx.setPositional(false);
+		bens_sfx.setVolume(3);
 		this.rootNode.attachChild(bens_sfx);
 
 		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", true);
@@ -313,7 +316,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			next_scary_sound -= tpf_secs;
 			if (next_scary_sound <= 0) {
 				playRandomScarySound();
-				next_scary_sound = 20 + rnd.nextInt(10);
+				next_scary_sound = 5 + rnd.nextInt(10);
 			}
 		}
 
