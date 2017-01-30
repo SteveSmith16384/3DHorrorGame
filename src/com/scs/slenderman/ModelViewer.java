@@ -50,8 +50,11 @@ public class ModelViewer extends SimpleApplication {
 		model.scale(0.1f);
 		JMEFunctions.SetTextureOnSpatial(assetManager, model, "stonecoffin.tga");*/
 		
-		Spatial model = assetManager.loadModel("Models/skull2/skull/skull.obj");
-		JMEFunctions.SetTextureOnSpatial(assetManager, model, "skull.tga");
+		//Spatial model = assetManager.loadModel("Models/skull2/skull/skull.obj");
+		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "skull.tga");
+
+		Spatial model = assetManager.loadModel("Models/Scientist.blend");
+		model.scale(0.01f);
 
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();
