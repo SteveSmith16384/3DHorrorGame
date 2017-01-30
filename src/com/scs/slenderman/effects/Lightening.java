@@ -6,7 +6,7 @@ import com.scs.slenderman.IProcessable;
 
 public class Lightening implements IProcessable {
 
-	private float next_flash = 0;
+	private float next_flash = 10;
 	private HorrorGame game;
 	private boolean flash_on = false;
 

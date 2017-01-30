@@ -14,7 +14,7 @@ import com.scs.slenderman.Settings;
 
 public class Player extends AbstractEntity {
 
-	private static final float FOOTSTEP_INTERVAL = .8f;
+	private static final float FOOTSTEP_INTERVAL = .3f;
 
 	private Geometry playerGeometry;
 	public BetterCharacterControl playerControl;
@@ -55,6 +55,7 @@ public class Player extends AbstractEntity {
 		for (int i=1 ; i<=8 ; i++) {
 			AudioNode an = new AudioNode(game.getAssetManager(), "Sound/jute-dh-steps/stepdirt_" + i + ".ogg", false);
 			an.setPositional(false);
+			an.setVolume(.3f);
 			this.getMainNode().attachChild(an);
 			this.audio_node_footsteps.add(an);
 		}
@@ -75,7 +76,7 @@ public class Player extends AbstractEntity {
 					if (next_footstep_sound >= audio_node_footsteps.size()) {
 						next_footstep_sound = 0;
 					}
-					time_until_next_footstep_sfx = FOOTSTEP_INTERVAL;
+					time_until_next_footstep_sfx = FOOTSTEP_INTERVAL + (HorrorGame.rnd.nextFloat()/3);
 				}
 			} else {
 				//time_until_next_footstep_sfx = 0;

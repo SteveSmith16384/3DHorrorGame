@@ -6,6 +6,7 @@ import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.JMEFunctions;
+import com.scs.slenderman.Settings;
 import com.scs.slenderman.shapes.AbstractBillboard;
 
 public class Monster2DGhost extends AbstractMonster {
@@ -32,7 +33,12 @@ public class Monster2DGhost extends AbstractMonster {
 	
 	@Override
 	protected Spatial getModel() {
-		Spatial geometry = new AbstractBillboard(game.getAssetManager(), "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
+		Spatial geometry;
+		if (Settings.USE_BENS_SOUND) {
+		geometry = new AbstractBillboard(game.getAssetManager(), "Textures/ben_scary.png", COLL_WIDTH, COLL_HEIGHT);
+		} else {
+			geometry = new AbstractBillboard(game.getAssetManager(), "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
+		}
 		//this.geometry = new AbstractBillboard(assetManager, "Textures/mud.png", COLL_WIDTH, COLL_HEIGHT);
 		geometry.setLocalTranslation(-COLL_WIDTH/2, 0, 0); // Keep origin at bottom
 		return geometry;
