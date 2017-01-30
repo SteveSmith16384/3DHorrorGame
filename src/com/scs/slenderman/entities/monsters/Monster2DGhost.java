@@ -1,6 +1,5 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.monsters;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
@@ -9,16 +8,19 @@ import com.scs.slenderman.JMEFunctions;
 import com.scs.slenderman.Settings;
 import com.scs.slenderman.shapes.AbstractBillboard;
 
+/*
+ * 2D ghost that moves when not looked at.
+ */
 public class Monster2DGhost extends AbstractMonster {
 
 	private static final float COLL_WIDTH = 1f;
 	private static final float COLL_HEIGHT = 2f;
 
-	public Monster2DGhost(HorrorGame game, AssetManager assetManager, float x, float z) {
-		super(game, assetManager, x, z);
+	public Monster2DGhost(HorrorGame game, float x, float z) {
+		super(game, x, z);
 	}
 
-	
+
 	@Override
 	public void process(float tpf) {
 		super.process(tpf);
@@ -29,13 +31,13 @@ public class Monster2DGhost extends AbstractMonster {
 			JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
 		}
 	}
-	
-	
+
+
 	@Override
 	protected Spatial getModel() {
 		Spatial geometry;
 		if (Settings.USE_BENS_SOUND) {
-		geometry = new AbstractBillboard(game.getAssetManager(), "Textures/ben_scary.png", COLL_WIDTH, COLL_HEIGHT);
+			geometry = new AbstractBillboard(game.getAssetManager(), "Textures/ben_scary.png", COLL_WIDTH, COLL_HEIGHT);
 		} else {
 			geometry = new AbstractBillboard(game.getAssetManager(), "Textures/skeleton-ghost.png", COLL_WIDTH, COLL_HEIGHT);
 		}

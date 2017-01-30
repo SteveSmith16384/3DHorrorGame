@@ -9,7 +9,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
-import com.jme3.ui.Picture;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.IProcessable;
 import com.scs.slenderman.gui.TextArea;

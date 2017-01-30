@@ -1,6 +1,5 @@
 package com.scs.slenderman.entities.unused;
 
-import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.entities.AbstractEntity;
 import com.scs.slenderman.shapes.CreateShapes;

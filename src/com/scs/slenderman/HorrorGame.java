@@ -34,20 +34,21 @@ import com.jme3.system.AppSettings;
 import com.scs.slenderman.effects.DistanceToClosestCollectable;
 import com.scs.slenderman.effects.Lightening;
 import com.scs.slenderman.entities.AbstractEntity;
-import com.scs.slenderman.entities.AbstractMonster;
+import com.scs.slenderman.entities.ChargingHarmlessMonster;
 import com.scs.slenderman.entities.Collectable;
 import com.scs.slenderman.entities.Fence;
 import com.scs.slenderman.entities.MedievalStatue;
-import com.scs.slenderman.entities.Monster2DGhost;
-import com.scs.slenderman.entities.MovingMonsterStatue;
 import com.scs.slenderman.entities.Player;
 import com.scs.slenderman.entities.SimpleCross;
 import com.scs.slenderman.entities.SimplePillar;
 import com.scs.slenderman.entities.Skull;
 import com.scs.slenderman.entities.Skull2;
-import com.scs.slenderman.entities.StaticMonsterStatue;
 import com.scs.slenderman.entities.StoneCoffin;
 import com.scs.slenderman.entities.Tree;
+import com.scs.slenderman.entities.monsters.AbstractMonster;
+import com.scs.slenderman.entities.monsters.Monster2DGhost;
+import com.scs.slenderman.entities.monsters.MovingMonsterStatue;
+import com.scs.slenderman.entities.monsters.StaticMonsterStatue;
 import com.scs.slenderman.hud.HUD;
 import com.scs.slenderman.map.ArrayMap;
 import com.scs.slenderman.map.CSVMap;
@@ -62,24 +63,28 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * HOME:-
- * Add new statue to map
+ * sfx for charging ghost
+ * sfx when collecting collectable
  * Kids record scary noises
  * Kids create scary images
- * DONE Walls not touching on map
  * 
  * TODO:-
- * not playing all sounds
- * make footsteps quieter
- * make ambience quieter
+ * Ghosts that fly at player but don't do harm
+ * Different levels
+ * Random enemy each time
+ * Add kids gfx
+ * DONE not playing all sounds
+ * DONE make footsteps quieter
+ * DONE make ambience quieter
+ * Use barrels
  * sfx when collecting collectable
  * Make an adventure - SCP
- * Why sometimes no sound
+ * DONE Why sometimes no sound?
  * Post to meprogrammer
- * Create credits file
+ * DONE Create credits file
  * Create screenshots
  * Upload to GameJolt
  * Create new vid with sound
- * Is it too dark?
  * Find new monster models
  * Use new logo
  * Test skull2 on map
@@ -254,31 +259,32 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.objects.add(closest);
 
 		// Audio nodes
-		ambient_node = new AudioNode(assetManager, "Sound/horror ambient.ogg", false);
+		ambient_node = new AudioNode(assetManager, "Sound/horror ambient.ogg", true);
 		ambient_node.setPositional(false);
+		ambient_node.setVolume(0.3f);
 		ambient_node.setLooping(true);
 		this.rootNode.attachChild(ambient_node);
 		ambient_node.play();
 
-		scary_sound1 = new AudioNode(assetManager, "Sound/ghost_1.ogg", true);
+		scary_sound1 = new AudioNode(assetManager, "Sound/ghost_1.ogg", false);
 		scary_sound1.setVolume(.1f);
 		scary_sound1.setPositional(false);
 		this.rootNode.attachChild(scary_sound1);
 
-		scary_sound2 = new AudioNode(assetManager, "Sound/churchbell.ogg", true);
+		scary_sound2 = new AudioNode(assetManager, "Sound/churchbell.ogg", false);
 		scary_sound2.setPositional(false);
 		this.rootNode.attachChild(scary_sound2);
 
-		bens_sfx = new AudioNode(assetManager, "Sound/benscarypoo.ogg", true);
+		bens_sfx = new AudioNode(assetManager, "Sound/benscarypoo.ogg", false);
 		bens_sfx.setPositional(false);
 		bens_sfx.setVolume(3);
 		this.rootNode.attachChild(bens_sfx);
 
-		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", true);
+		game_over_sound_node = new AudioNode(assetManager, "Sound/excited horror sound.ogg", false);
 		game_over_sound_node.setPositional(false);
 		this.rootNode.attachChild(game_over_sound_node);
 
-		thunderclap_sound_node = new AudioNode(assetManager, "Sound/rock_breaking.ogg", true);
+		thunderclap_sound_node = new AudioNode(assetManager, "Sound/rock_breaking.ogg", false);
 		thunderclap_sound_node.setPositional(false);
 		this.rootNode.attachChild(thunderclap_sound_node);
 
@@ -389,19 +395,19 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER_GHOST:
-					AbstractEntity monster2 = new Monster2DGhost(this, this.assetManager, x, z);
+					AbstractEntity monster2 = new Monster2DGhost(this, x, z);
 					rootNode.attachChild(monster2.getMainNode());
 					this.objects.add(monster2);
 					break;
 
 				case Settings.MAP_MONSTER_STATUE:
-					AbstractEntity monster = new StaticMonsterStatue(this, this.assetManager, x, z);
+					AbstractEntity monster = new StaticMonsterStatue(this, x, z);
 					rootNode.attachChild(monster.getMainNode());
 					this.objects.add(monster);
 					break;
 
 				case Settings.MAP_MONSTER_MOVING_STATUE:
-					AbstractEntity monster3 = new MovingMonsterStatue(this, this.assetManager, x, z);
+					AbstractEntity monster3 = new MovingMonsterStatue(this, x, z);
 					rootNode.attachChild(monster3.getMainNode());
 					this.objects.add(monster3);
 					break;
@@ -449,6 +455,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				case Settings.MAP_SKULL2:
 					AbstractEntity skull2 = new Skull2(this, x, z);
 					this.rootNode.attachChild(skull2.getMainNode());
+					break;
+
+				case Settings.MAP_CHARGING_GHOST:
+					AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
+					this.rootNode.attachChild(ch.getMainNode());
 					break;
 
 				default:
@@ -601,7 +612,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			p("GAME OVER!");
 			this.game_over = true;
 			player_won =_player_won;
-			game_over_sound_node.play();
+			game_over_sound_node.playInstance();
 			player.playerControl.setGravity(new Vector3f(0f, 1f, 0f)); // float upwards
 			if (!player_won) {
 				hud.showDamageBox();
@@ -622,15 +633,15 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 	private void playRandomScarySound() {
 		if (Settings.USE_BENS_SOUND) {
-			this.bens_sfx.play();
+			this.bens_sfx.playInstance();
 		} else {
 			int i = rnd.nextInt(2);
 			switch (i) {
 			case 0:
-				this.scary_sound1.play();
+				this.scary_sound1.playInstance();
 				break;
 			case 1:
-				this.scary_sound2.play();
+				this.scary_sound2.playInstance();
 				break;
 			}
 		}

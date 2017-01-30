@@ -37,6 +37,7 @@ public class Settings {
 	public static final int MAP_SKULL2 = 11;
 	public static final int MAP_STONE_COFFIN = 13;
 	public static final int MAP_MONSTER_MOVING_STATUE = 14;
+	public static final int MAP_CHARGING_GHOST = 15;
 	
 	// Key codes
 	public static final String KEY_RECORD = "record";
