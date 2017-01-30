@@ -57,23 +57,3 @@ TEXTURES:
 http://opengameart.org/content/ground-outdoors-dirt-with-weeds-seamless-texture-with-normalmap-0
 http://opengameart.org/content/old-red-brick-wall-seamless-texture-with-normalmap
 
-
-
-    Warning: Invalid argument supplied for foreach() in element_children() (line 6540 of /var/www/sites/opengameart/includes/common.inc).
-    Warning: Illegal string offset '#tree' in form_builder() (line 1890 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#tree' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#parents' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
-    Notice: Array to string conversion in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#array_parents' in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
-    Notice: Array to string conversion in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#weight' in form_builder() (line 1919 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#processed' in form_builder() (line 1801 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Invalid argument supplied for foreach() in element_children() (line 6540 of /var/www/sites/opengameart/includes/common.inc).
-    Warning: Illegal string offset '#tree' in form_builder() (line 1890 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#tree' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#parents' in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
-    Notice: Array to string conversion in form_builder() (line 1910 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#array_parents' in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
-    Notice: Array to string conversion in form_builder() (line 1915 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#weight' in form_builder() (line 1919 of /var/www/sites/opengameart/includes/form.inc).
-    Warning: Illegal string offset '#processed' in form_builder() (line 1801 of /var/www/sites/opengameart/includes/form.inc).

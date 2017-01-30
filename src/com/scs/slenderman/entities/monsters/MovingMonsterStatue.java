@@ -1,6 +1,5 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.monsters;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
@@ -8,14 +7,17 @@ import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.JMEFunctions;
 import com.scs.slenderman.models.MedievalStatueModel;
 
+/*
+ * Statue that moves when looked at.
+ */
 public class MovingMonsterStatue extends AbstractMonster {
 
 	private static final float ACTIVATE_DURATION = 1;
 
 	private float time_until_move = ACTIVATE_DURATION;
 
-	public MovingMonsterStatue(HorrorGame game, AssetManager assetManager, float x, float z) {
-		super(game, assetManager, x, z);
+	public MovingMonsterStatue(HorrorGame game, float x, float z) {
+		super(game, x, z);
 	}
 
 
@@ -23,7 +25,7 @@ public class MovingMonsterStatue extends AbstractMonster {
 	public void process(float tpf) {
 		super.process(tpf);
 
-		if (insideoutside != FrustumIntersect.Outside) { // Only move if we can't be seen - todo - only do if close
+		if (insideoutside != FrustumIntersect.Outside) { // Only move if we can't be seen
 			time_until_move -= tpf;
 			if (time_until_move < 0) {
 				Vector3f player_pos = game.player.getMainNode().getWorldTranslation(); 

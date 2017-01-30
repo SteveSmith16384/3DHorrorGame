@@ -1,18 +1,19 @@
-package com.scs.slenderman.entities;
+package com.scs.slenderman.entities.monsters;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.slenderman.HorrorGame;
 import com.scs.slenderman.JMEFunctions;
-import com.scs.slenderman.Settings;
 import com.scs.slenderman.models.MedievalStatueModel;
 
+/*
+ * Statue that moves when NOT looked at.
+ */
 public class StaticMonsterStatue extends AbstractMonster {
 
-	public StaticMonsterStatue(HorrorGame game, AssetManager assetManager, float x, float z) {
-		super(game, assetManager, x, z);
+	public StaticMonsterStatue(HorrorGame game, float x, float z) {
+		super(game, x, z);
 	}
 
 

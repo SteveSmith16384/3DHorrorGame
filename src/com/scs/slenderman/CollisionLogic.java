@@ -2,8 +2,8 @@ package com.scs.slenderman;
 
 import com.scs.slenderman.entities.Collectable;
 import com.scs.slenderman.entities.AbstractEntity;
-import com.scs.slenderman.entities.AbstractMonster;
 import com.scs.slenderman.entities.Player;
+import com.scs.slenderman.entities.monsters.AbstractMonster;
 
 public class CollisionLogic {
 

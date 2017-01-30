@@ -17,7 +17,6 @@ public class LongGrave extends AbstractEntity {
 		floor_geo = new LongGraveModel(game.getAssetManager());
 		floor_geo.setLocalTranslation(x, 0, z);
 		this.main_node.attachChild(floor_geo);
-		// todo - rotate random amount, and maybe scale slightly
 
 		floor_phy = new RigidBodyControl(0f);
 		floor_geo.addControl(floor_phy);

@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="jMonkeyEngine3-sources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-core.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-desktop.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-effects.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-jbullet.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-lwjgl.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-lwjgl-natives.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/lwjgl.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-bullet.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-bullet-natives.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/eventbus.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jbullet.jar"/>
@@ -19,10 +9,18 @@
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jinput.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-android.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-blender.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-bullet.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-bullet-natives.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-bullet-natives-android.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-core.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-desktop.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-effects.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-ios.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-jbullet.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-jogg.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-jogl.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-lwjgl.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-lwjgl-natives.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-networking.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-niftygui.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jME3-openal-soft-natives-android.jar"/>
@@ -34,6 +32,7 @@
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/j-ogg-vorbisd.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jogl-all.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/launch4j.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/lwjgl.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/nifty.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/nifty-default-controls.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/nifty-default-controls-javadoc.jar"/>
@@ -45,10 +44,5 @@
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/vecmath.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/xmlpull-xpp3.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/xstream.jar"/>
-	<classpathentry kind="lib" path="libs/jmeCapture-0.1/audio-send-natives.jar"/>
-	<classpathentry kind="lib" path="libs/jmeCapture-0.1/audio-send.jar"/>
-	<classpathentry kind="lib" path="libs/jmeCapture-0.1/jmeCapture.jar"/>
-	<classpathentry kind="lib" path="libs/jmeCapture-0.1/tritonus_aos-0.3.6.jar"/>
-	<classpathentry kind="lib" path="libs/jmeCapture-0.1/tritonus_share-0.3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
