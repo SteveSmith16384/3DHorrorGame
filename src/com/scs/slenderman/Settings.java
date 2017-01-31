@@ -6,7 +6,6 @@ public class Settings {
 	public static final boolean USE_BENS_SOUND = true;
 	public static final boolean SHOW_DEBUG = false;
 	public static final boolean DEBUG_LIGHT = false;
-	//public static final boolean MONSTER_ALWAYS_MOVES = false;
 	public static final boolean SHOW_LOGO = false;
 	
 	public static final float CAM_DIST = 30f;

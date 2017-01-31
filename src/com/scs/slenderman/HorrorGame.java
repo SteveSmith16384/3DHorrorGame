@@ -63,28 +63,29 @@ import com.scs.slenderman.shapes.CreateShapes;
  * 2) Player must collect stuff.  Ghosts appear from graves as time goes on
 
  * HOME:-
- * sfx for charging ghost
  * sfx when collecting collectable
+ * Get Friendly image
  * Kids record scary noises
  * Kids create scary images
  * 
  * TODO:-
- * Ghosts that fly at player but don't do harm
- * Different levels
- * Random enemy each time
- * Add kids gfx
+ * DONE Why sometimes no sound?
  * DONE not playing all sounds
  * DONE make footsteps quieter
  * DONE make ambience quieter
+ * Create screenshots
+ * Create new vid with sound
+ * Post to meprogrammer
+ * Shadows?
+ * Skulls look at player when touched
+ * Friendly face that changes to scary when close
+ * Different levels
+ * Random enemy each time
+ * Add kids gfx
  * Use barrels
  * sfx when collecting collectable
  * Make an adventure - SCP
- * DONE Why sometimes no sound?
- * Post to meprogrammer
- * DONE Create credits file
- * Create screenshots
  * Upload to GameJolt
- * Create new vid with sound
  * Find new monster models
  * Use new logo
  * Test skull2 on map
@@ -155,6 +156,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	private VideoRecorderAppState video_recorder;
 	public static final Random rnd = new Random();
 	private DistanceToClosestCollectable closest;
+	public boolean started = false;
 
 	private AudioNode ambient_node;
 	private AudioNode game_over_sound_node;
@@ -247,7 +249,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		//map = new ArrayMap();
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
-
+		addHarmlessMonsters((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
+		
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
 
 		hud = new HUD(this, this.getAssetManager(), cam.getWidth(), cam.getHeight(), guiFont_small);
@@ -370,6 +373,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			this.spotlight.setPosition(cam.getLocation());
 			this.spotlight.setDirection(cam.getDirection());
 		}
+		
+		started = true;
 	}
 
 
@@ -460,6 +465,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				case Settings.MAP_CHARGING_GHOST:
 					AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
 					this.rootNode.attachChild(ch.getMainNode());
+					this.objects.add(ch);
 					break;
 
 				default:
@@ -566,14 +572,26 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 
 	private void addCollectables(int num, int max_w, float max_d) {
-		//this.num_remaining = num;
-		int INSETS = 3;
+		int INSETS = 4;
 		for (int i=0 ; i<num ; i++) {
 			float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
 			float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
 			Collectable col = new Collectable(this, x+INSETS, z+INSETS);
 			rootNode.attachChild(col.getMainNode());
 			coll_remaining.add(col);
+		}
+	}
+
+
+	private void addHarmlessMonsters(int num, int max_w, float max_d) {
+		int INSETS = 4;
+		for (int i=0 ; i<num ; i++) {
+			float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
+			float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
+			
+			AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
+			this.rootNode.attachChild(ch.getMainNode());
+			this.objects.add(ch);
 		}
 	}
 
@@ -587,7 +605,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
 		//System.out.println(event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString());
-
+		// SkullModel (SkullModel) collided with Player_MainNode (Node)
+		
 		Spatial ga = (Spatial)event.getObjectA().getUserObject(); 
 		AbstractEntity a = ga.getUserData(Settings.ENTITY);
 		/*if (a == null) {
