@@ -73,6 +73,7 @@ import com.scs.slenderman.shapes.CreateShapes;
  * DONE not playing all sounds
  * DONE make footsteps quieter
  * DONE make ambience quieter
+ * Lightening - increase ambientlight for a sec
  * Create screenshots
  * Create new vid with sound
  * Post to meprogrammer
@@ -227,13 +228,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		setUpKeys();
 		setUpLight();
 
+		FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
 		if (Settings.DEBUG_LIGHT == false) {
-			FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-			FogFilter fog = new FogFilter(ColorRGBA.Black, 1f, 2f);//Settings.CAM_DIST/2);
-			fog.setFogDistance(2);
-			fpp.addFilter(fog);
-			viewPort.addProcessor(fpp);
+			FogFilter fog = new FogFilter(ColorRGBA.Red, 1f, 2f);//Settings.CAM_DIST/2);
+			fog.setFogDistance(2f);
+			//fpp.addFilter(fog);
 		}
+		viewPort.addProcessor(fpp);
 
 		player = new Player(this);
 		rootNode.attachChild(player.getMainNode());
@@ -292,6 +293,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.rootNode.attachChild(thunderclap_sound_node);
 
 		stateManager.getState(StatsAppState.class).toggleStats(); // Turn off stats
+		
 	}
 
 
