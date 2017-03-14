@@ -113,4 +113,5 @@ public abstract class AbstractMonster extends AbstractEntity implements IProcess
 		}
 
 	}
+	
 }

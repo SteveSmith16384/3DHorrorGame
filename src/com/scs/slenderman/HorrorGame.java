@@ -69,10 +69,6 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Kids create scary images
  * 
  * TODO:-
- * DONE Why sometimes no sound?
- * DONE not playing all sounds
- * DONE make footsteps quieter
- * DONE make ambience quieter
  * Lightening - increase ambientlight for a sec
  * Create screenshots
  * Create new vid with sound
@@ -195,7 +191,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 				//Capture.captureVideo(app, video);
 				//Capture.captureAudio(app, audio);
 			}
-			
+
 			app.start();
 
 			if (Settings.RECORD_VID) {
@@ -243,15 +239,25 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		IMapInterface map;
 		try {
 			map = new CSVMap("./maps/map1.csv");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			map = new ArrayMap();
+			try {
+				map = new CSVMap("./map1.csv");
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				try {
+					map = new CSVMap("/map1.csv");
+				} catch (Exception e3) {
+					e3.printStackTrace();
+					throw new RuntimeException("Unable to load map");
+				}
+			}
 		}
 		//map = new ArrayMap();
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
 		addHarmlessMonsters((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
-		
+
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
 
 		hud = new HUD(this, this.getAssetManager(), cam.getWidth(), cam.getHeight(), guiFont_small);
@@ -293,7 +299,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		this.rootNode.attachChild(thunderclap_sound_node);
 
 		stateManager.getState(StatsAppState.class).toggleStats(); // Turn off stats
-		
+
 	}
 
 
@@ -375,7 +381,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			this.spotlight.setPosition(cam.getLocation());
 			this.spotlight.setDirection(cam.getDirection());
 		}
-		
+
 		started = true;
 	}
 
@@ -402,21 +408,24 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER_GHOST:
-					AbstractEntity monster2 = new Monster2DGhost(this, x, z);
-					rootNode.attachChild(monster2.getMainNode());
-					this.objects.add(monster2);
+					this.addRandomMonster(x, z);
+					//AbstractEntity monster2 = new Monster2DGhost(this, x, z);
+					//rootNode.attachChild(monster2.getMainNode());
+					//this.objects.add(monster2);
 					break;
 
 				case Settings.MAP_MONSTER_STATUE:
-					AbstractEntity monster = new StaticMonsterStatue(this, x, z);
-					rootNode.attachChild(monster.getMainNode());
-					this.objects.add(monster);
+					this.addRandomMonster(x, z);
+					//AbstractEntity monster = new StaticMonsterStatue(this, x, z);
+					//rootNode.attachChild(monster.getMainNode());
+					//this.objects.add(monster);
 					break;
 
 				case Settings.MAP_MONSTER_MOVING_STATUE:
-					AbstractEntity monster3 = new MovingMonsterStatue(this, x, z);
-					rootNode.attachChild(monster3.getMainNode());
-					this.objects.add(monster3);
+					this.addRandomMonster(x, z);
+					//AbstractEntity monster3 = new MovingMonsterStatue(this, x, z);
+					//rootNode.attachChild(monster3.getMainNode());
+					//this.objects.add(monster3);
 					break;
 
 				case Settings.MAP_TREE:
@@ -486,6 +495,31 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 		Corridor corr2 = new Corridor(this, 10f, 2f, 14f, 4f, 2f, 4f, true, false);
 		this.rootNode.attachChild(corr2.getMainNode());*/
+
+	}
+
+
+	private void addRandomMonster(float x, float z) {
+		int i = rnd.nextInt(3);
+		switch (i) {
+		case 0:
+			AbstractEntity monster2 = new Monster2DGhost(this, x, z);
+			rootNode.attachChild(monster2.getMainNode());
+			this.objects.add(monster2);
+			break;
+
+		case 1:
+			AbstractEntity monster = new StaticMonsterStatue(this, x, z);
+			rootNode.attachChild(monster.getMainNode());
+			this.objects.add(monster);
+			break;
+
+		case 2:
+			AbstractEntity monster3 = new MovingMonsterStatue(this, x, z);
+			rootNode.attachChild(monster3.getMainNode());
+			this.objects.add(monster3);
+			break;
+		}
 
 	}
 
@@ -590,7 +624,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		for (int i=0 ; i<num ; i++) {
 			float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
 			float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
-			
+
 			AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
 			this.rootNode.attachChild(ch.getMainNode());
 			this.objects.add(ch);
@@ -608,7 +642,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 	public void collision(PhysicsCollisionEvent event) {
 		//System.out.println(event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString());
 		// SkullModel (SkullModel) collided with Player_MainNode (Node)
-		
+
 		Spatial ga = (Spatial)event.getObjectA().getUserObject(); 
 		AbstractEntity a = ga.getUserData(Settings.ENTITY);
 		/*if (a == null) {
