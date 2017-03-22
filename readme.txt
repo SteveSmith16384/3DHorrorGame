@@ -1,3 +1,16 @@
+SOLE COLLECTOR
+
+A simple but (hopefully) atmospheric horror game.  Written by Stephen Carlyle-Smith (stephen.carlylesmith@googlmail.com)
+
+
+CONTROLS
+W, A, S, D to move, and mouse to look around.
+
+
+OBJECTIVE
+You must walk around and collect all the small boxes from the graveyard.  There are random monsters that also roam around, some who only move when looked at, and some who only move when *not* looked at.  Avoid them or die!
+
+
 CREDITS
 Ambient sound effect taken from - http://opengameart.org/content/horror-ambient
 Game Over sound taken from http://opengameart.org/content/excited-horror-sound
