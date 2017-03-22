@@ -250,7 +250,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		//map = new ArrayMap();
 		loadMap(map);
 		addCollectables((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
-		addHarmlessMonsters((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
+		//addHarmlessMonsters((map.getWidth() * map.getDepth())/500, map.getWidth(), map.getDepth());
 		
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
 
@@ -465,9 +465,9 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_CHARGING_GHOST:
-					AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
-					this.rootNode.attachChild(ch.getMainNode());
-					this.objects.add(ch);
+					//AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
+					//this.rootNode.attachChild(ch.getMainNode());
+					//this.objects.add(ch);
 					break;
 
 				default:
