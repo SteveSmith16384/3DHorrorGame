@@ -69,6 +69,8 @@ import com.scs.slenderman.shapes.CreateShapes;
  * Kids create scary images
  * 
  * TODO:-
+ * Throw skulls at monsters?
+ * Put /maps into /src dir
  * Lightening - increase ambientlight for a sec
  * Create screenshots
  * Create new vid with sound

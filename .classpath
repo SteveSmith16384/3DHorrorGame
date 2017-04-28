@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="assets"/>
-	<classpathentry including="*" kind="src" path="maps"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/eventbus.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/jmonkeyplatform/jmonkeyplatform/libs/jbullet.jar"/>
