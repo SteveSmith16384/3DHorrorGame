@@ -1,7 +1,6 @@
 package com.scs.slenderman;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,7 +49,6 @@ import com.scs.slenderman.entities.monsters.Monster2DGhost;
 import com.scs.slenderman.entities.monsters.MovingMonsterStatue;
 import com.scs.slenderman.entities.monsters.StaticMonsterStatue;
 import com.scs.slenderman.hud.HUD;
-import com.scs.slenderman.map.ArrayMap;
 import com.scs.slenderman.map.CSVMap;
 import com.scs.slenderman.map.IMapInterface;
 import com.scs.slenderman.shapes.CreateShapes;
@@ -186,20 +184,20 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 			app.setPauseOnLostFocus(true);
 
 			File video, audio;
-			if (Settings.RECORD_VID) {
-				//app.setTimer(new IsoTimer(60));
-				//video = File.createTempFile("JME-water-video", ".avi");
-				//audio = File.createTempFile("JME-water-audio", ".wav");
-				//Capture.captureVideo(app, video);
-				//Capture.captureAudio(app, audio);
-			}
+			/*if (Settings.RECORD_VID) {
+				app.setTimer(new IsoTimer(60));
+				video = File.createTempFile("JME-water-video", ".avi");
+				audio = File.createTempFile("JME-water-audio", ".wav");
+				Capture.captureVideo(app, video);
+				Capture.captureAudio(app, audio);
+			}*/
 
 			app.start();
 
-			if (Settings.RECORD_VID) {
+			/*if (Settings.RECORD_VID) {
 				System.out.println("Video saved at " + video.getCanonicalPath());
 				System.out.println("Audio saved at " + audio.getCanonicalPath());
-			}
+			}*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
