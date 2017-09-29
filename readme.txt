@@ -2,6 +2,7 @@ SOLE COLLECTOR
 
 A simple but (hopefully) atmospheric horror game.  Written by Stephen Carlyle-Smith (stephen.carlylesmith@googlmail.com)
 
+[Youtube vid](https://www.youtube.com/watch?v=9XoFWwiDZeA&list=PLbGkfhhJ5G3-5OWBnA5efXr-gRIV5YR6L)
 
 CONTROLS
 W, A, S, D to move, and mouse to look around.
