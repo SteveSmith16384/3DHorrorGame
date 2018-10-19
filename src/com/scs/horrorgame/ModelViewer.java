@@ -1,5 +1,8 @@
 package com.scs.horrorgame;
 
+import com.jme3.animation.AnimChannel;
+import com.jme3.animation.AnimControl;
+import com.jme3.animation.AnimEventListener;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bounding.BoundingBox;
@@ -8,11 +11,16 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-public class ModelViewer extends SimpleApplication {
+public class ModelViewer extends SimpleApplication implements AnimEventListener {
 
-	public static void main(String[] args){
+	private AnimControl control;
+	private FilterPostProcessor fpp;
+
+	public static void main(String[] args) {
 		ModelViewer app = new ModelViewer();
 		app.showSettings = false;
 
@@ -32,42 +40,52 @@ public class ModelViewer extends SimpleApplication {
 
 		cam.setFrustumPerspective(60, settings.getWidth() / settings.getHeight(), .1f, 100);
 
+		super.getViewPort().setBackgroundColor(ColorRGBA.Black);
+
 		setupLight();
 
-		//Spatial model = assetManager.loadModel("Models/big_wood_barrel.obj");
-		//model.scale(.01f);
 
-		//Spatial model = assetManager.loadModel("Models/arbol_seco.blend");
+		Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
+		String animNode = "Low Poly Characte.001 (Node)";
+		String animToUse = "ArmatureAction.001";
+		
+		model.scale(5);
 
-		/*Spatial model = assetManager.loadModel("Models/Tree_Creature.blend");
-		model.scale(0.1f);*/
-
-		/*Spatial model = assetManager.loadModel("Models/InnansorraStatueUpload.blend");
-		model.scale(1.3f);
-		model.setLocalTranslation(0, 1f, 0);*/
-
-		/*Spatial model = assetManager.loadModel("Models/Stone_coffin.obj");
-		model.scale(0.1f);
-		JMEFunctions.SetTextureOnSpatial(assetManager, model, "stonecoffin.tga");*/
-
-		//Spatial model = assetManager.loadModel("Models/skull2/skull/skull.obj");
-		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "skull.tga");
-
-		Spatial model = assetManager.loadModel("Models/Scientist.blend");
-		model.scale(0.01f);
-
-		model.setModelBound(new BoundingBox());
-		model.updateModelBound();
+		if (model instanceof Node) {
+			HorrorGame.p("Listing anims:");
+			JMEModelFunctions.listAllAnimations((Node)model);
+			HorrorGame.p("Finished listing anims");
+			
+			control = JMEModelFunctions.getNodeWithControls(animNode, (Node)model);
+			if (control != null) {
+				control.addListener(this);
+				//Globals.p("Control Animations: " + control.getAnimationNames());
+				AnimChannel channel = control.createChannel();
+				try {
+					channel.setAnim(animToUse);
+					HorrorGame.p("Runnign anim " + animToUse);
+				} catch (IllegalArgumentException ex) {
+					HorrorGame.pe("Try running the right anim code!");
+				}
+			} else {
+				HorrorGame.p("No animation control on selected node '" + animNode + "'");
+			}
+		}
 
 		rootNode.attachChild(model);
 
-		this.rootNode.attachChild(JMEFunctions.GetGrid(assetManager, 10));
-
-		this.flyCam.setMoveSpeed(12f);
+		this.rootNode.attachChild(JMEModelFunctions.getGrid(assetManager, 10));
 
 		rootNode.updateGeometricState();
 
-	}
+		model.updateModelBound();
+		BoundingBox bb = (BoundingBox)model.getWorldBound();
+		//Globals.p("Model w/h/d: " + (bb.getXExtent()*2) + "/" + (bb.getYExtent()*2) + "/" + (bb.getZExtent()*2));
+
+		this.flyCam.setMoveSpeed(12f);
+
+		fpp = new FilterPostProcessor(assetManager);
+		viewPort.addProcessor(fpp);	}
 
 
 	private void setupLight() {
@@ -93,6 +111,18 @@ public class ModelViewer extends SimpleApplication {
 	public void simpleUpdate(float tpf) {
 		//System.out.println("Pos: " + this.cam.getLocation());
 		//this.rootNode.rotate(0,  tpf,  tpf);
+	}
+
+
+	@Override
+	public void onAnimCycleDone(AnimControl control, AnimChannel channel, String animName) {
+
+	}
+
+
+	@Override
+	public void onAnimChange(AnimControl control, AnimChannel channel, String animName) {
+
 	}
 
 

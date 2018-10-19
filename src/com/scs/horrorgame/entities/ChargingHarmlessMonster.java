@@ -5,7 +5,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.horrorgame.HorrorGame;
-import com.scs.horrorgame.JMEFunctions;
+import com.scs.horrorgame.JMEAngleFunctions;
 import com.scs.horrorgame.Settings;
 import com.scs.horrorgame.shapes.AbstractBillboard;
 
@@ -57,14 +57,19 @@ public class ChargingHarmlessMonster extends AbstractEntity {
 				if (insideoutside == FrustumIntersect.Inside) { // Only move if we can't be seen
 					float dist_to_player = this.getMainNode().getWorldTranslation().distance(game.player.getMainNode().getWorldTranslation());
 					if (dist_to_player <= ATTACK_DIST) {
-						this.audio_node.play();
+						try {
+							this.audio_node.play();
+						} catch (java.lang.IllegalStateException ex) {
+							// Unable to play sounds - no audiocard/speakers?
+						}
+
 						active = true;
 						main_node.attachChild(geometry);
 					}
 				}
 			} else {
 				this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
-				JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
+				JMEAngleFunctions.moveForwards(this.getMainNode(), SPEED * tpf);
 				float dist_to_player = this.getMainNode().getWorldTranslation().distance(game.player.getMainNode().getWorldTranslation());
 				if (dist_to_player <= .5f) {
 					this.remove();

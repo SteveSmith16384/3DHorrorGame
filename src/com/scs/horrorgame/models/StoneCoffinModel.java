@@ -3,7 +3,7 @@ package com.scs.horrorgame.models;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.scs.horrorgame.JMEFunctions;
+import com.scs.horrorgame.JMEModelFunctions;
 
 public class StoneCoffinModel extends Node {
 	
@@ -13,7 +13,7 @@ public class StoneCoffinModel extends Node {
 		Spatial s = assetManager.loadModel("Models/Stone_coffin.obj");
 		//s.rotate(0, 90 * FastMath.DEG_TO_RAD, 0);
 		s.scale(0.021f);
-		JMEFunctions.SetTextureOnSpatial(assetManager, s, "Textures/stonecoffin.tga");
+		JMEModelFunctions.setTextureOnSpatial(assetManager, s, "Textures/stonecoffin.tga");
 	
 		this.attachChild(s);
 	}

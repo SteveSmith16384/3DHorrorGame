@@ -4,7 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.horrorgame.HorrorGame;
-import com.scs.horrorgame.JMEFunctions;
+import com.scs.horrorgame.JMEAngleFunctions;
 import com.scs.horrorgame.Settings;
 import com.scs.horrorgame.shapes.AbstractBillboard;
 
@@ -28,7 +28,7 @@ public class Monster2DGhost extends AbstractMonster {
 		this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
 
 		if (insideoutside == FrustumIntersect.Outside) { // Only move if we can't be seen
-			JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
+			JMEAngleFunctions.moveForwards(this.getMainNode(), SPEED * tpf);
 		}
 	}
 

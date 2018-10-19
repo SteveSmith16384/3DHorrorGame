@@ -4,7 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.horrorgame.HorrorGame;
-import com.scs.horrorgame.JMEFunctions;
+import com.scs.horrorgame.JMEAngleFunctions;
 import com.scs.horrorgame.models.MedievalStatueModel;
 
 /*
@@ -25,7 +25,7 @@ public class StaticMonsterStatue extends AbstractMonster {
 			if (dist_to_player <= 3) {
 				this.getMainNode().lookAt(super.game.player.getMainNode().getWorldTranslation(), Vector3f.UNIT_Y);
 			}
-			JMEFunctions.MoveForwards(this.getMainNode(), SPEED * tpf);
+			JMEAngleFunctions.moveForwards(this.getMainNode(), SPEED * tpf);
 		}
 	}
 

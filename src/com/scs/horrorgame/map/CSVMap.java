@@ -9,29 +9,35 @@ import java.util.ArrayList;
 
 import com.scs.horrorgame.HorrorGame;
 
+import ssmith.lang.Functions;
+
 public class CSVMap implements IMapInterface {
 
-	private ArrayList<String> al = new ArrayList<>();
+	private ArrayList<String> al;// = new ArrayList<>();
 
 	public CSVMap(String filename) throws IOException {
 		HorrorGame.p("Trying to load " + filename + "...");
-		BufferedReader br = null;
+		al = new ArrayList<>();
+		String all = Functions.readAllFileFromJar(filename);
+		String[] lines = all.split("\\n");
+		/*BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filename));
 		} catch (FileNotFoundException ex) {
 			br =  new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)));
 		}
-		try {
-			while (true) {
-				String line = br.readLine();
-				if (line == null) {
-					break;
-				}
-				al.add(line.trim());
+		try {*/
+		for (int i=0 ; i<lines.length ; i++) {
+			String line = lines[i];// br.readLine();
+			if (line == null) {
+				break;
 			}
-		} finally {
-			br.close();
+			al.add(line.trim());
 		}
+		HorrorGame.p("Loaded map");
+		/*} finally {
+			br.close();
+		}*/
 	}
 
 

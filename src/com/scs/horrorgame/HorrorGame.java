@@ -36,7 +36,6 @@ import com.scs.horrorgame.entities.AbstractEntity;
 import com.scs.horrorgame.entities.ChargingHarmlessMonster;
 import com.scs.horrorgame.entities.Collectable;
 import com.scs.horrorgame.entities.Fence;
-import com.scs.horrorgame.entities.MedievalStatue;
 import com.scs.horrorgame.entities.Player;
 import com.scs.horrorgame.entities.SimpleCross;
 import com.scs.horrorgame.entities.SimplePillar;
@@ -46,8 +45,6 @@ import com.scs.horrorgame.entities.StoneCoffin;
 import com.scs.horrorgame.entities.Tree;
 import com.scs.horrorgame.entities.monsters.AbstractMonster;
 import com.scs.horrorgame.entities.monsters.Monster2DGhost;
-import com.scs.horrorgame.entities.monsters.MovingMonsterStatue;
-import com.scs.horrorgame.entities.monsters.StaticMonsterStatue;
 import com.scs.horrorgame.hud.HUD;
 import com.scs.horrorgame.map.CSVMap;
 import com.scs.horrorgame.map.IMapInterface;
@@ -273,7 +270,11 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		ambient_node.setVolume(0.3f);
 		ambient_node.setLooping(true);
 		this.rootNode.attachChild(ambient_node);
-		ambient_node.play();
+		try {
+			ambient_node.play();
+		} catch (java.lang.IllegalStateException ex) {
+			// Unable to play sounds - no audiocard/speakers?
+		}
 
 		scary_sound1 = new AudioNode(assetManager, "Sound/ghost_1.ogg", false);
 		scary_sound1.setVolume(.1f);
@@ -414,7 +415,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MONSTER_STATUE:
-					this.addRandomMonster(x, z);
+					this.addRandomMonster(x, z); 
+
 					//AbstractEntity monster = new StaticMonsterStatue(this, x, z);
 					//rootNode.attachChild(monster.getMainNode());
 					//this.objects.add(monster);
@@ -443,8 +445,8 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 					break;
 
 				case Settings.MAP_MEDIEVAL_STATUE:
-					AbstractEntity ms = new MedievalStatue(this, x, z);
-					this.rootNode.attachChild(ms.getMainNode());
+					/*AbstractEntity ms = new MedievalStatue(this, x, z);
+					this.rootNode.attachChild(ms.getMainNode());*/
 					break;
 
 				case Settings.MAP_SIMPLE_PILLAR:
@@ -499,13 +501,13 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 
 
 	private void addRandomMonster(float x, float z) {
-		int i = rnd.nextInt(3);
+		/*int i = rnd.nextInt(3);
 		switch (i) {
-		case 0:
-			AbstractEntity monster2 = new Monster2DGhost(this, x, z);
-			rootNode.attachChild(monster2.getMainNode());
-			this.objects.add(monster2);
-			break;
+		case 0:*/
+		AbstractEntity monster2 = new Monster2DGhost(this, x, z);
+		rootNode.attachChild(monster2.getMainNode());
+		this.objects.add(monster2);
+		/*break;
 
 		case 1:
 			AbstractEntity monster = new StaticMonsterStatue(this, x, z);
@@ -516,200 +518,205 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		case 2:
 			AbstractEntity monster3 = new MovingMonsterStatue(this, x, z);
 			rootNode.attachChild(monster3.getMainNode());
-			this.objects.add(monster3);
-			break;
-		}
+			this.objects.add(monster3);*/
+		break;
+	}
+	*/
+}
 
+
+private void setUpLight() {
+	// Remove existing lights
+	this.rootNode.getWorldLightList().clear(); //this.rootNode.getWorldLightList().size();
+	LightList list = this.rootNode.getWorldLightList();
+	for (Light it : list) {
+		this.rootNode.removeLight(it);
 	}
 
+	if (Settings.DEBUG_LIGHT == false) {
+		AmbientLight al = new AmbientLight();
+		al.setColor(ColorRGBA.White.mult(.5f));
+		rootNode.addLight(al);
 
-	private void setUpLight() {
-		// Remove existing lights
-		this.rootNode.getWorldLightList().clear(); //this.rootNode.getWorldLightList().size();
-		LightList list = this.rootNode.getWorldLightList();
-		for (Light it : list) {
-			this.rootNode.removeLight(it);
-		}
-
-		if (Settings.DEBUG_LIGHT == false) {
-			AmbientLight al = new AmbientLight();
-			al.setColor(ColorRGBA.White.mult(.5f));
-			rootNode.addLight(al);
-
-			this.spotlight = new SpotLight();
-			spotlight.setColor(ColorRGBA.White.mult(3f));
-			spotlight.setSpotRange(10f);
-			spotlight.setSpotInnerAngle(FastMath.QUARTER_PI / 8);
-			spotlight.setSpotOuterAngle(FastMath.QUARTER_PI / 2);
-			rootNode.addLight(spotlight);
-		} else {
-			AmbientLight al = new AmbientLight();
-			al.setColor(ColorRGBA.White.mult(3));
-			rootNode.addLight(al);
-		}
+		this.spotlight = new SpotLight();
+		spotlight.setColor(ColorRGBA.White.mult(3f));
+		spotlight.setSpotRange(10f);
+		spotlight.setSpotInnerAngle(FastMath.QUARTER_PI / 8);
+		spotlight.setSpotOuterAngle(FastMath.QUARTER_PI / 2);
+		rootNode.addLight(spotlight);
+	} else {
+		AmbientLight al = new AmbientLight();
+		al.setColor(ColorRGBA.White.mult(3));
+		rootNode.addLight(al);
 	}
+}
 
 
-	/** We over-write some navigational key mappings here, so we can
-	 * add physics-controlled walking and jumping: */
-	private void setUpKeys() {
-		inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
-		inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
-		inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
-		inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping(Settings.KEY_RECORD, new KeyTrigger(KeyInput.KEY_R));
+/** We over-write some navigational key mappings here, so we can
+ * add physics-controlled walking and jumping: */
+private void setUpKeys() {
+	inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
+	inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
+	inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
+	inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
+	inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+	inputManager.addMapping(Settings.KEY_RECORD, new KeyTrigger(KeyInput.KEY_R));
 
-		inputManager.addListener(this, "Left");
-		inputManager.addListener(this, "Right");
-		inputManager.addListener(this, "Up");
-		inputManager.addListener(this, "Down");
-		inputManager.addListener(this, "Jump");
-		inputManager.addListener(this, Settings.KEY_RECORD);
-	}
+	inputManager.addListener(this, "Left");
+	inputManager.addListener(this, "Right");
+	inputManager.addListener(this, "Up");
+	inputManager.addListener(this, "Down");
+	inputManager.addListener(this, "Jump");
+	inputManager.addListener(this, Settings.KEY_RECORD);
+}
 
 
-	/** These are our custom actions triggered by key presses.
-	 * We do not walk yet, we just keep track of the direction the user pressed. */
-	public void onAction(String binding, boolean isPressed, float tpf) {
-		if (this.game_over == false) {
-			if (binding.equals("Left")) {
-				left = isPressed;
-			} else if (binding.equals("Right")) {
-				right = isPressed;
-			} else if (binding.equals("Up")) {
-				up = isPressed;
-				//p("player: " + this.player.getGeometry().getWorldTranslation());
-			} else if (binding.equals("Down")) {
-				down = isPressed;
-			} else if (binding.equals("Jump")) {
-				if (isPressed) { 
-					player.playerControl.jump(); 
-				}
-			} else if (binding.equals(Settings.KEY_RECORD)) {
-				if (isPressed) {
-					if (video_recorder == null) {
-						//log("RECORDING VIDEO");
-						video_recorder = new VideoRecorderAppState();
-						stateManager.attach(video_recorder);
-						/*if (Statics.MUTE) {
+/** These are our custom actions triggered by key presses.
+ * We do not walk yet, we just keep track of the direction the user pressed. */
+public void onAction(String binding, boolean isPressed, float tpf) {
+	if (this.game_over == false) {
+		if (binding.equals("Left")) {
+			left = isPressed;
+		} else if (binding.equals("Right")) {
+			right = isPressed;
+		} else if (binding.equals("Up")) {
+			up = isPressed;
+			//p("player: " + this.player.getGeometry().getWorldTranslation());
+		} else if (binding.equals("Down")) {
+			down = isPressed;
+		} else if (binding.equals("Jump")) {
+			if (isPressed) { 
+				player.playerControl.jump(); 
+			}
+		} else if (binding.equals(Settings.KEY_RECORD)) {
+			if (isPressed) {
+				if (video_recorder == null) {
+					//log("RECORDING VIDEO");
+					video_recorder = new VideoRecorderAppState();
+					stateManager.attach(video_recorder);
+					/*if (Statics.MUTE) {
 						log("Warning: sounds are muted");
 					}*/
-					} else {
-						//log("STOPPED RECORDING");
-						stateManager.detach(video_recorder);
-						video_recorder = null;
-					}
+				} else {
+					//log("STOPPED RECORDING");
+					stateManager.detach(video_recorder);
+					video_recorder = null;
 				}
 			}
 		}
 	}
+}
 
 
-	private void addCollectables(int num, int max_w, float max_d) {
-		int INSETS = 4;
-		for (int i=0 ; i<num ; i++) {
-			float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
-			float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
-			Collectable col = new Collectable(this, x+INSETS, z+INSETS);
-			rootNode.attachChild(col.getMainNode());
-			coll_remaining.add(col);
-		}
+private void addCollectables(int num, int max_w, float max_d) {
+	int INSETS = 4;
+	for (int i=0 ; i<num ; i++) {
+		float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
+		float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
+		Collectable col = new Collectable(this, x+INSETS, z+INSETS);
+		rootNode.attachChild(col.getMainNode());
+		coll_remaining.add(col);
 	}
+}
 
 
-	private void addHarmlessMonsters(int num, int max_w, float max_d) {
-		int INSETS = 4;
-		for (int i=0 ; i<num ; i++) {
-			float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
-			float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
+private void addHarmlessMonsters(int num, int max_w, float max_d) {
+	int INSETS = 4;
+	for (int i=0 ; i<num ; i++) {
+		float x = rnd.nextFloat() * (max_w-INSETS-INSETS);
+		float z = rnd.nextFloat() * (max_d-INSETS-INSETS);
 
-			AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
-			this.rootNode.attachChild(ch.getMainNode());
-			this.objects.add(ch);
-		}
+		AbstractEntity ch = new ChargingHarmlessMonster(this, x, z);
+		this.rootNode.attachChild(ch.getMainNode());
+		this.objects.add(ch);
 	}
+}
 
 
-	public FrustumIntersect getInsideOutside(AbstractEntity entity) {
-		FrustumIntersect insideoutside = cam.contains(entity.getMainNode().getWorldBound());
-		return insideoutside;
-	}
+public FrustumIntersect getInsideOutside(AbstractEntity entity) {
+	FrustumIntersect insideoutside = cam.contains(entity.getMainNode().getWorldBound());
+	return insideoutside;
+}
 
 
-	@Override
-	public void collision(PhysicsCollisionEvent event) {
-		//System.out.println(event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString());
-		// SkullModel (SkullModel) collided with Player_MainNode (Node)
+@Override
+public void collision(PhysicsCollisionEvent event) {
+	//System.out.println(event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString());
+	// SkullModel (SkullModel) collided with Player_MainNode (Node)
 
-		Spatial ga = (Spatial)event.getObjectA().getUserObject(); 
-		AbstractEntity a = ga.getUserData(Settings.ENTITY);
-		/*if (a == null) {
+	Spatial ga = (Spatial)event.getObjectA().getUserObject(); 
+	AbstractEntity a = ga.getUserData(Settings.ENTITY);
+	/*if (a == null) {
 			throw new RuntimeException("Geometry " + ga.getName() + " has no entity");
 		}*/
 
-		Spatial gb = (Spatial)event.getObjectB().getUserObject(); 
-		AbstractEntity b = gb.getUserData(Settings.ENTITY);
-		/*if (b == null) {
+	Spatial gb = (Spatial)event.getObjectB().getUserObject(); 
+	AbstractEntity b = gb.getUserData(Settings.ENTITY);
+	/*if (b == null) {
 			throw new RuntimeException("Geometry " + gb.getName() + " has no entity");
 		}*/
 
-		if (a != null && b != null) {
-			CollisionLogic.collision(this, a, b);
+	if (a != null && b != null) {
+		CollisionLogic.collision(this, a, b);
+	}
+}
+
+
+public void gameOver(boolean _player_won, AbstractMonster monster) {
+	if (this.game_over == false) {
+		this.monster_that_killed_player = monster;
+		p("GAME OVER!");
+		this.game_over = true;
+		player_won =_player_won;
+		game_over_sound_node.playInstance();
+		player.playerControl.setGravity(new Vector3f(0f, 1f, 0f)); // float upwards
+		if (!player_won) {
+			hud.showDamageBox();
 		}
 	}
+}
 
 
-	public void gameOver(boolean _player_won, AbstractMonster monster) {
-		if (this.game_over == false) {
-			this.monster_that_killed_player = monster;
-			p("GAME OVER!");
-			this.game_over = true;
-			player_won =_player_won;
-			game_over_sound_node.playInstance();
-			player.playerControl.setGravity(new Vector3f(0f, 1f, 0f)); // float upwards
-			if (!player_won) {
-				hud.showDamageBox();
-			}
+public boolean isGameOver() {
+	return this.game_over;
+}
+
+
+public boolean hasPlayerWon() {
+	return this.player_won;
+}
+
+
+private void playRandomScarySound() {
+	if (Settings.USE_BENS_SOUND) {
+		this.bens_sfx.playInstance();
+	} else {
+		int i = rnd.nextInt(2);
+		switch (i) {
+		case 0:
+			this.scary_sound1.playInstance();
+			break;
+		case 1:
+			this.scary_sound2.playInstance();
+			break;
 		}
 	}
+}
 
 
-	public boolean isGameOver() {
-		return this.game_over;
-	}
+public static void p(String s) {
+	System.out.println(System.currentTimeMillis() + ": " + s);
+}
 
 
-	public boolean hasPlayerWon() {
-		return this.player_won;
-	}
+public static void pe(String s) {
+	System.err.println(System.currentTimeMillis() + ": " + s);
+}
 
 
-	private void playRandomScarySound() {
-		if (Settings.USE_BENS_SOUND) {
-			this.bens_sfx.playInstance();
-		} else {
-			int i = rnd.nextInt(2);
-			switch (i) {
-			case 0:
-				this.scary_sound1.playInstance();
-				break;
-			case 1:
-				this.scary_sound2.playInstance();
-				break;
-			}
-		}
-	}
-
-
-	public static void p(String s) {
-		System.out.println(System.currentTimeMillis() + ": " + s);
-	}
-
-
-	public BulletAppState getBulletAppState() {
-		return bulletAppState;
-	}
+public BulletAppState getBulletAppState() {
+	return bulletAppState;
+}
 
 
 }
