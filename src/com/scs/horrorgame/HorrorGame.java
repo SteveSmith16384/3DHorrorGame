@@ -518,7 +518,7 @@ public class HorrorGame extends SimpleApplication implements ActionListener, Phy
 		case 2:
 			AbstractEntity monster3 = new MovingMonsterStatue(this, x, z);
 			rootNode.attachChild(monster3.getMainNode());
-			this.objects.add(monster3);*/
+			this.objects.add(monster3);
 		break;
 	}
 	*/
